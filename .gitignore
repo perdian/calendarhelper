@@ -1,0 +1,8 @@
+/.classpath
+/.factorypath
+/.project
+/.settings
+/src/development
+/target
+/dependency-reduced-pom.xml
+.DS_Store
