@@ -1,5 +1,7 @@
 /.classpath
+/.env
 /.factorypath
+/.idea
 /.project
 /.settings
 /src/development
