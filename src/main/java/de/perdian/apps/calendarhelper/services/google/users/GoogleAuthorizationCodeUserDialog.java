@@ -1,4 +1,4 @@
-package de.perdian.apps.calendarhelper.services.google.users.support;
+package de.perdian.apps.calendarhelper.services.google.users;
 
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -7,11 +7,13 @@ import javafx.scene.web.WebView;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.util.concurrent.CompletableFuture;
+
 class GoogleAuthorizationCodeUserDialog implements AutoCloseable {
 
     private Stage loginStage = null;
 
-    GoogleAuthorizationCodeUserDialog(String loginUrl) {
+    GoogleAuthorizationCodeUserDialog(String loginUrl, CompletableFuture<String> authorizationCodeFuture) {
         Platform.runLater(() -> {
 
             WebView webView = new WebView();
@@ -26,6 +28,7 @@ class GoogleAuthorizationCodeUserDialog implements AutoCloseable {
             loginStage.setScene(new Scene(loginPane, 800, 850));
             loginStage.centerOnScreen();
             loginStage.show();
+            loginStage.setOnCloseRequest(event -> authorizationCodeFuture.completeExceptionally(new GoogleUserException("Login cancelled at Google")));
             this.setLoginStage(loginStage);
 
         });

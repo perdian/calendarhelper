@@ -1,6 +1,5 @@
-package de.perdian.apps.calendarhelper.services.google.users.support;
+package de.perdian.apps.calendarhelper.services.google.users;
 
-import de.perdian.apps.calendarhelper.services.google.users.GoogleUserException;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;

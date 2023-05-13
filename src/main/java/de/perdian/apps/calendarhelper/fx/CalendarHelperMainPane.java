@@ -4,7 +4,7 @@ import javafx.scene.layout.BorderPane;
 
 class CalendarHelperMainPane extends BorderPane {
 
-    CalendarHelperMainPane(CalendarContext calendarContext) {
+    CalendarHelperMainPane(CalendarHelperContext calendarContext) {
     }
 
 }

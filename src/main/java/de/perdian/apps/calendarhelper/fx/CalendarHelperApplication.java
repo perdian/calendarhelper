@@ -1,6 +1,7 @@
 package de.perdian.apps.calendarhelper.fx;
 
 import de.perdian.apps.calendarhelper.CalendarHelperConfiguration;
+import de.perdian.apps.calendarhelper.services.google.users.GoogleUser;
 import de.perdian.apps.calendarhelper.services.google.users.GoogleUserException;
 import de.perdian.apps.calendarhelper.services.google.users.GoogleUserProvider;
 import javafx.application.Application;
@@ -21,22 +22,24 @@ public class CalendarHelperApplication extends Application {
     private static final Logger log = LoggerFactory.getLogger(CalendarHelperApplication.class);
 
     private ApplicationContext applicationContext = null;
-    private CalendarContext calendarContext = null;
+    private CalendarHelperContext calendarHelperContext = null;
 
     @Override
     public void init() {
 
         log.info("Initializing Spring ApplicationContext");
-        this.setCalendarContext(new CalendarContext());
-        this.setApplicationContext(new AnnotationConfigApplicationContext(CalendarHelperConfiguration.class));
+        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(CalendarHelperConfiguration.class);
+        CalendarHelperContext calendarHelperContext = new CalendarHelperContext(applicationContext);
+
+        this.setApplicationContext(applicationContext);
+        this.setCalendarHelperContext(calendarHelperContext);
 
     }
 
     @Override
     public void start(Stage primaryStage) {
 
-        CalendarContext calendarContext = this.getCalendarContext();
-        CalendarHelperMainPane mainPane = new CalendarHelperMainPane(calendarContext);
+        CalendarHelperMainPane mainPane = new CalendarHelperMainPane(this.getCalendarHelperContext());
         Scene primaryScene = new Scene(mainPane);
 
         log.debug("Opening main application window");
@@ -55,7 +58,9 @@ public class CalendarHelperApplication extends Application {
             log.debug("Ensure that we have a valid Google user");
             try {
                 GoogleUserProvider googleUserProvider = this.getApplicationContext().getBean(GoogleUserProvider.class);
-                calendarContext.googleUserProperty().setValue(googleUserProvider.lookupUser());
+                GoogleUser googleUser = googleUserProvider.lookupUser();
+                log.info("Using Google user: {}", googleUser);
+                this.getCalendarHelperContext().googleUserProperty().setValue(googleUser);
             } catch (GoogleUserException e) {
                 log.info("Could not lookup Google user", e);
                 Platform.runLater(() -> {
@@ -70,11 +75,11 @@ public class CalendarHelperApplication extends Application {
 
     }
 
-    private CalendarContext getCalendarContext() {
-        return calendarContext;
+    private CalendarHelperContext getCalendarHelperContext() {
+        return calendarHelperContext;
     }
-    private void setCalendarContext(CalendarContext calendarContext) {
-        this.calendarContext = calendarContext;
+    private void setCalendarHelperContext(CalendarHelperContext calendarHelperContext) {
+        this.calendarHelperContext = calendarHelperContext;
     }
 
     private void setApplicationContext(ApplicationContext applicationContext) {
