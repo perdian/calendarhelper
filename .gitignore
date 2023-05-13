@@ -4,7 +4,8 @@
 /.idea
 /.project
 /.settings
+/dependency-reduced-pom.xml
 /src/development
 /target
-/dependency-reduced-pom.xml
+/tmp
 .DS_Store

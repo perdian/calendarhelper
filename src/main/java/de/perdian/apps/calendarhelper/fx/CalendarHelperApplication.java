@@ -1,6 +1,6 @@
 package de.perdian.apps.calendarhelper.fx;
 
-import de.perdian.apps.calendarhelper.services.ServicesConfiguration;
+import de.perdian.apps.calendarhelper.CalendarHelperConfiguration;
 import de.perdian.apps.calendarhelper.services.google.users.GoogleUserException;
 import de.perdian.apps.calendarhelper.services.google.users.GoogleUserProvider;
 import javafx.application.Application;
@@ -28,7 +28,7 @@ public class CalendarHelperApplication extends Application {
 
         log.info("Initializing Spring ApplicationContext");
         this.setCalendarContext(new CalendarContext());
-        this.setApplicationContext(new AnnotationConfigApplicationContext(ServicesConfiguration.class));
+        this.setApplicationContext(new AnnotationConfigApplicationContext(CalendarHelperConfiguration.class));
 
     }
 
@@ -55,7 +55,7 @@ public class CalendarHelperApplication extends Application {
             log.debug("Ensure that we have a valid Google user");
             try {
                 GoogleUserProvider googleUserProvider = this.getApplicationContext().getBean(GoogleUserProvider.class);
-                calendarContext.googleUserProperty().setValue(googleUserProvider.lookupValidatedUser());
+                calendarContext.googleUserProperty().setValue(googleUserProvider.lookupUser());
             } catch (GoogleUserException e) {
                 log.info("Could not lookup Google user", e);
                 Platform.runLater(() -> {
