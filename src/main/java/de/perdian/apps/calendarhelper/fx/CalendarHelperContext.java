@@ -7,6 +7,7 @@ import de.perdian.apps.calendarhelper.services.google.users.GoogleUserProvider;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +19,7 @@ public class CalendarHelperContext {
 
     private final ObjectProperty<GoogleUser> googleUser = new SimpleObjectProperty<>();
     private final ObservableList<GoogleCalendar> googleCalendars = FXCollections.observableArrayList();
+    private final ObjectProperty<GoogleCalendar> activeGoogleCalendar = new SimpleObjectProperty<>();
 
     public CalendarHelperContext(ApplicationContext applicationContext) {
         this.googleUserProperty().addListener((o, oldValue, newValue) -> {
@@ -33,6 +35,12 @@ public class CalendarHelperContext {
                 });
             }
         });
+        this.googleCalendars().addListener((ListChangeListener.Change<? extends GoogleCalendar> change) -> {
+            GoogleCalendar activeCalendar = this.activeGoogleCalendarProperty().getValue();
+            if (activeCalendar != null && !change.getList().contains(activeCalendar)) {
+                this.activeGoogleCalendarProperty().setValue(null);
+            }
+        });
     }
 
     public ObjectProperty<GoogleUser> googleUserProperty() {
@@ -41,6 +49,10 @@ public class CalendarHelperContext {
 
     public ObservableList<GoogleCalendar> googleCalendars() {
         return googleCalendars;
+    }
+
+    public ObjectProperty<GoogleCalendar> activeGoogleCalendarProperty() {
+        return activeGoogleCalendar;
     }
 
 }
