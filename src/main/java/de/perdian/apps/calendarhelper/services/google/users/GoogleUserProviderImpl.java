@@ -56,6 +56,11 @@ class GoogleUserProviderImpl implements GoogleUserProvider {
 
     }
 
+    @Override
+    public void logoutUser() {
+        this.getGoogleRefreshTokenStore().updateRefreshToken(null);
+    }
+
     GoogleApplicationCredentials getGoogleApplicationCredentials() {
         return googleApplicationCredentials;
     }

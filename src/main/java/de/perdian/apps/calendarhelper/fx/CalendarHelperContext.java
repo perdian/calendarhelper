@@ -1,8 +1,9 @@
 package de.perdian.apps.calendarhelper.fx;
 
-import de.perdian.apps.calendarhelper.services.google.calendar.Calendar;
-import de.perdian.apps.calendarhelper.services.google.calendar.CalendarClient;
+import de.perdian.apps.calendarhelper.services.google.calendar.GoogleCalendar;
+import de.perdian.apps.calendarhelper.services.google.calendar.GoogleCalendarClient;
 import de.perdian.apps.calendarhelper.services.google.users.GoogleUser;
+import de.perdian.apps.calendarhelper.services.google.users.GoogleUserProvider;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -16,15 +17,18 @@ public class CalendarHelperContext {
     private static final Logger log = LoggerFactory.getLogger(CalendarHelperContext.class);
 
     private final ObjectProperty<GoogleUser> googleUser = new SimpleObjectProperty<>();
-    private final ObservableList<Calendar> googleCalendars = FXCollections.observableArrayList();
+    private final ObservableList<GoogleCalendar> googleCalendars = FXCollections.observableArrayList();
 
     public CalendarHelperContext(ApplicationContext applicationContext) {
         this.googleUserProperty().addListener((o, oldValue, newValue) -> {
             log.info("Updating globally used Google user: {}", newValue);
             this.googleCalendars().clear();
-            if (newValue != null) {
+            if (newValue == null) {
+                GoogleUserProvider googleUserProvider = applicationContext.getBean(GoogleUserProvider.class);
+                googleUserProvider.logoutUser();
+            } else {
                 Thread.ofVirtual().start(() -> {
-                    CalendarClient calendarClient = applicationContext.getBean(CalendarClient.class);
+                    GoogleCalendarClient calendarClient = applicationContext.getBean(GoogleCalendarClient.class);
                     this.googleCalendars().setAll(calendarClient.loadCalendars(newValue));
                 });
             }
@@ -35,7 +39,7 @@ public class CalendarHelperContext {
         return googleUser;
     }
 
-    public ObservableList<Calendar> googleCalendars() {
+    public ObservableList<GoogleCalendar> googleCalendars() {
         return googleCalendars;
     }
 

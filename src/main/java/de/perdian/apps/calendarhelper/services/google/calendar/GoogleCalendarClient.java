@@ -4,8 +4,8 @@ import de.perdian.apps.calendarhelper.services.google.users.GoogleUser;
 
 import java.util.List;
 
-public interface CalendarClient {
+public interface GoogleCalendarClient {
 
-    List<Calendar> loadCalendars(GoogleUser googleUser);
+    List<GoogleCalendar> loadCalendars(GoogleUser googleUser);
 
 }

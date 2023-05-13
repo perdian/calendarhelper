@@ -9,12 +9,12 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
-class CalendarClientImpl implements CalendarClient {
+class GoogleCalendarClientImpl implements GoogleCalendarClient {
 
-    private static final Logger log = LoggerFactory.getLogger(CalendarClientImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(GoogleCalendarClientImpl.class);
 
     @Override
-    public List<Calendar> loadCalendars(GoogleUser googleUser) {
+    public List<GoogleCalendar> loadCalendars(GoogleUser googleUser) {
         log.debug("Loading all calendars for Google user: {}", googleUser);
         return Collections.emptyList();
     }

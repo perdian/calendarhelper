@@ -93,9 +93,15 @@ public class PersistentCookieStore implements CookieStore {
     private void flushToFileSystem() {
         Collection<PersistentCookie> allCookies = this.getCookiesByKey().values();
         log.trace("Storing {} persistent cookies into path at: {}", allCookies.size(), this.getStoragePath());
-        try (ObjectOutputStream objectStream = new ObjectOutputStream(new GZIPOutputStream(new BufferedOutputStream(Files.newOutputStream(this.getStoragePath()))))) {
-            objectStream.writeObject(new ArrayList<>(allCookies));
-            objectStream.flush();
+        try {
+            if (!Files.exists(this.getStoragePath().getParent())) {
+                log.debug("Creating parent directory for cookie store at: {}", this.getStoragePath().getParent());
+                Files.createDirectories(this.getStoragePath().getParent());
+            }
+            try (ObjectOutputStream objectStream = new ObjectOutputStream(new GZIPOutputStream(new BufferedOutputStream(Files.newOutputStream(this.getStoragePath()))))) {
+                objectStream.writeObject(new ArrayList<>(allCookies));
+                objectStream.flush();
+            }
         } catch (Exception e) {
             log.debug("Cannot store persistent cookies into path at: {}", this.getStoragePath(), e);
         }

@@ -20,4 +20,9 @@ public interface GoogleUserProvider {
      */
     GoogleUser forceLoginUser() throws GoogleUserException;
 
+    /**
+     * Requests a logout of the currently active user
+     */
+    void logoutUser();
+
 }
