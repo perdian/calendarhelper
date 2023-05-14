@@ -3,7 +3,7 @@ package de.perdian.apps.calendarhelper.fx;
 import de.perdian.apps.calendarhelper.CalendarHelperConfiguration;
 import de.perdian.apps.calendarhelper.services.google.users.GoogleUser;
 import de.perdian.apps.calendarhelper.services.google.users.GoogleUserException;
-import de.perdian.apps.calendarhelper.services.google.users.GoogleUserProvider;
+import de.perdian.apps.calendarhelper.services.google.users.GoogleUserService;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
@@ -39,7 +39,7 @@ public class CalendarHelperApplication extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-        CalendarHelperMainPane mainPane = new CalendarHelperMainPane(this.getCalendarHelperContext());
+        CalendarHelperMainPane mainPane = new CalendarHelperMainPane(this.getCalendarHelperContext(), this.getApplicationContext());
         Scene primaryScene = new Scene(mainPane);
 
         log.debug("Opening main application window");
@@ -57,7 +57,7 @@ public class CalendarHelperApplication extends Application {
         Thread.ofVirtual().start(() -> {
             log.debug("Ensure that we have a valid Google user");
             try {
-                GoogleUserProvider googleUserProvider = this.getApplicationContext().getBean(GoogleUserProvider.class);
+                GoogleUserService googleUserProvider = this.getApplicationContext().getBean(GoogleUserService.class);
                 GoogleUser googleUser = googleUserProvider.lookupUser();
                 log.info("Using Google user: {}", googleUser);
                 this.getCalendarHelperContext().googleUserProperty().setValue(googleUser);

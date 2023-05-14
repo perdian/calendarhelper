@@ -1,6 +1,6 @@
 package de.perdian.apps.calendarhelper.services.google.users;
 
-public interface GoogleUserProvider {
+public interface GoogleUserService {
 
     /**
      * Requests a valid {@link GoogleUser}. If no user can be found in a session (or other stored location)

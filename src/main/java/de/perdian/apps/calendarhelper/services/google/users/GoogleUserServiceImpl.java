@@ -8,14 +8,14 @@ import de.perdian.apps.calendarhelper.services.google.application.GoogleApplicat
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.concurrent.CompletableFuture;
 
-@Component
-class GoogleUserProviderImpl implements GoogleUserProvider {
+@Service
+class GoogleUserServiceImpl implements GoogleUserService {
 
-    private static final Logger log = LoggerFactory.getLogger(GoogleUserProviderImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(GoogleUserServiceImpl.class);
     private GoogleApplicationCredentials googleApplicationCredentials = null;
     private GoogleRefreshTokenStore googleRefreshTokenStore = null;
 

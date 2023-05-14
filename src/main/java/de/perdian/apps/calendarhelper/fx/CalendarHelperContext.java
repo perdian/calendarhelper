@@ -3,7 +3,7 @@ package de.perdian.apps.calendarhelper.fx;
 import de.perdian.apps.calendarhelper.services.google.calendar.GoogleCalendar;
 import de.perdian.apps.calendarhelper.services.google.calendar.GoogleCalendarClient;
 import de.perdian.apps.calendarhelper.services.google.users.GoogleUser;
-import de.perdian.apps.calendarhelper.services.google.users.GoogleUserProvider;
+import de.perdian.apps.calendarhelper.services.google.users.GoogleUserService;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -26,7 +26,7 @@ public class CalendarHelperContext {
             log.info("Updating globally used Google user: {}", newValue);
             this.googleCalendars().clear();
             if (newValue == null) {
-                GoogleUserProvider googleUserProvider = applicationContext.getBean(GoogleUserProvider.class);
+                GoogleUserService googleUserProvider = applicationContext.getBean(GoogleUserService.class);
                 googleUserProvider.logoutUser();
             } else {
                 Thread.ofVirtual().start(() -> {
