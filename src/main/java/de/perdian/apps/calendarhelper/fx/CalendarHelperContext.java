@@ -4,6 +4,7 @@ import de.perdian.apps.calendarhelper.services.google.calendar.GoogleCalendar;
 import de.perdian.apps.calendarhelper.services.google.calendar.GoogleCalendarService;
 import de.perdian.apps.calendarhelper.services.google.users.GoogleUser;
 import de.perdian.apps.calendarhelper.services.google.users.GoogleUserService;
+import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -24,7 +25,7 @@ public class CalendarHelperContext {
     public CalendarHelperContext(ApplicationContext applicationContext) {
         this.activeGoogleUserProperty().addListener((o, oldValue, newValue) -> {
             log.info("Updating globally used Google user: {}", newValue);
-            this.googleCalendars().clear();
+            Platform.runLater(() -> this.googleCalendars().clear());
             if (newValue == null) {
                 GoogleUserService googleUserProvider = applicationContext.getBean(GoogleUserService.class);
                 googleUserProvider.logoutUser();
