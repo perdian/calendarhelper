@@ -15,23 +15,20 @@ class CalendarHelperMainPane extends GridPane {
     CalendarHelperMainPane(CalendarHelperContext calendarContext, ApplicationContext applicationContext) {
 
         CurrentAccountPane currentAccountPane = new CurrentAccountPane(calendarContext, applicationContext.getBean(GoogleUserService.class));
-        currentAccountPane.setPadding(new Insets(10, 10, 10, 10));
         currentAccountPane.setPrefWidth(500);
         TitledPane currentAccountTitledPane = new TitledPane("Current account", currentAccountPane);
         currentAccountTitledPane.setExpanded(true);
         currentAccountTitledPane.setCollapsible(false);
         currentAccountTitledPane.setMaxHeight(Double.MAX_VALUE);
 
-        ActionsPane actionsPane = new ActionsPane();
-        actionsPane.setPadding(new Insets(10, 10, 10, 10));
+        ActionsPane actionsPane = new ActionsPane(calendarContext.editorItems());
         TitledPane actionsTitledPane = new TitledPane("Actions", actionsPane);
         actionsTitledPane.setExpanded(true);
         actionsTitledPane.setCollapsible(false);
         actionsTitledPane.setMaxHeight(Double.MAX_VALUE);
         GridPane.setHgrow(actionsTitledPane, Priority.ALWAYS);
 
-        EditorPane editorPane = new EditorPane();
-        editorPane.setPadding(new Insets(10, 10, 10, 10));
+        EditorPane editorPane = new EditorPane(calendarContext.editorItems());
         TitledPane editorTitledPane = new TitledPane("Editor", editorPane);
         editorTitledPane.setExpanded(true);
         editorTitledPane.setCollapsible(false);

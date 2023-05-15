@@ -1,5 +1,6 @@
 package de.perdian.apps.calendarhelper.fx;
 
+import de.perdian.apps.calendarhelper.fx.modules.editor.EditorItem;
 import de.perdian.apps.calendarhelper.services.google.calendar.GoogleCalendar;
 import de.perdian.apps.calendarhelper.services.google.calendar.GoogleCalendarService;
 import de.perdian.apps.calendarhelper.services.google.users.GoogleUser;
@@ -14,6 +15,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
+import java.util.List;
+
 public class CalendarHelperContext {
 
     private static final Logger log = LoggerFactory.getLogger(CalendarHelperContext.class);
@@ -21,6 +24,7 @@ public class CalendarHelperContext {
     private final ObjectProperty<GoogleUser> activeGoogleUser = new SimpleObjectProperty<>();
     private final ObservableList<GoogleCalendar> googleCalendars = FXCollections.observableArrayList();
     private final ObjectProperty<GoogleCalendar> activeGoogleCalendar = new SimpleObjectProperty<>();
+    private final ObservableList<EditorItem> editorItems = FXCollections.observableArrayList();
 
     public CalendarHelperContext(ApplicationContext applicationContext) {
         this.activeGoogleUserProperty().addListener((o, oldValue, newValue) -> {
@@ -32,7 +36,8 @@ public class CalendarHelperContext {
             } else {
                 Thread.ofVirtual().start(() -> {
                     GoogleCalendarService calendarClient = applicationContext.getBean(GoogleCalendarService.class);
-                    this.googleCalendars().setAll(calendarClient.loadCalendars(newValue));
+                    List<GoogleCalendar> calendarList = calendarClient.loadCalendars(newValue);
+                    Platform.runLater(() -> this.googleCalendars().setAll(calendarList));
                 });
             }
         });
@@ -56,6 +61,10 @@ public class CalendarHelperContext {
 
     public ObjectProperty<GoogleCalendar> activeGoogleCalendarProperty() {
         return activeGoogleCalendar;
+    }
+
+    public ObservableList<EditorItem> editorItems() {
+        return editorItems;
     }
 
 }

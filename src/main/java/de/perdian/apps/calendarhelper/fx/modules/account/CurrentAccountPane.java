@@ -6,6 +6,7 @@ import de.perdian.apps.calendarhelper.services.google.users.GoogleUser;
 import de.perdian.apps.calendarhelper.services.google.users.GoogleUserService;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
+import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -29,7 +30,6 @@ public class CurrentAccountPane extends GridPane {
 
         Label userNameTitleLabel = new Label("User name:");
         Label userNameLabel = new Label("<< No user logged in yet >>");
-        userNameLabel.setStyle("-fx-font-style: bold;");
         userNameLabel.setMaxWidth(Double.MAX_VALUE);
         GridPane.setHgrow(userNameLabel, Priority.ALWAYS);
         calendarHelperContext.activeGoogleUserProperty().addListener((o, oldValue, newValue) -> {
@@ -86,6 +86,7 @@ public class CurrentAccountPane extends GridPane {
         this.add(buttonBar, 2, 0, 1, 1);
         this.add(calendarTitleLabel, 0, 1, 1, 1);
         this.add(calendarBox, 1, 1, 2, 1);
+        this.setPadding(new Insets(10, 10, 10, 10));
         this.setHgap(10);
         this.setVgap(10);
 
