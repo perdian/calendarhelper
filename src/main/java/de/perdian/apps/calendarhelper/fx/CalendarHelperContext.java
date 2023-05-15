@@ -1,7 +1,7 @@
 package de.perdian.apps.calendarhelper.fx;
 
 import de.perdian.apps.calendarhelper.services.google.calendar.GoogleCalendar;
-import de.perdian.apps.calendarhelper.services.google.calendar.GoogleCalendarClient;
+import de.perdian.apps.calendarhelper.services.google.calendar.GoogleCalendarService;
 import de.perdian.apps.calendarhelper.services.google.users.GoogleUser;
 import de.perdian.apps.calendarhelper.services.google.users.GoogleUserService;
 import javafx.beans.property.ObjectProperty;
@@ -30,7 +30,7 @@ public class CalendarHelperContext {
                 googleUserProvider.logoutUser();
             } else {
                 Thread.ofVirtual().start(() -> {
-                    GoogleCalendarClient calendarClient = applicationContext.getBean(GoogleCalendarClient.class);
+                    GoogleCalendarService calendarClient = applicationContext.getBean(GoogleCalendarService.class);
                     this.googleCalendars().setAll(calendarClient.loadCalendars(newValue));
                 });
             }
@@ -39,6 +39,8 @@ public class CalendarHelperContext {
             GoogleCalendar activeCalendar = this.activeGoogleCalendarProperty().getValue();
             if (activeCalendar != null && !change.getList().contains(activeCalendar)) {
                 this.activeGoogleCalendarProperty().setValue(null);
+            } else if (activeCalendar == null && !change.getList().isEmpty()) {
+                this.activeGoogleCalendarProperty().setValue(change.getList().stream().filter(entry -> entry.isPrimary()).findFirst().orElse(null));
             }
         });
     }

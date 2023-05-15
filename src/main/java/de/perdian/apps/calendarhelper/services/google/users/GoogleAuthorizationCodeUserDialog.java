@@ -1,5 +1,6 @@
 package de.perdian.apps.calendarhelper.services.google.users;
 
+import de.perdian.apps.calendarhelper.services.google.GoogleApiException;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
@@ -28,7 +29,7 @@ class GoogleAuthorizationCodeUserDialog implements AutoCloseable {
             loginStage.setScene(new Scene(loginPane, 800, 850));
             loginStage.centerOnScreen();
             loginStage.show();
-            loginStage.setOnCloseRequest(event -> authorizationCodeFuture.completeExceptionally(new GoogleUserException("Login cancelled at Google")));
+            loginStage.setOnCloseRequest(event -> authorizationCodeFuture.completeExceptionally(new GoogleApiException("Login cancelled at Google")));
             this.setLoginStage(loginStage);
 
         });

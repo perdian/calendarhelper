@@ -1,5 +1,6 @@
 package de.perdian.apps.calendarhelper.services.google.users;
 
+import de.perdian.apps.calendarhelper.services.google.GoogleApiException;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.utils.URLEncodedUtils;
@@ -21,7 +22,7 @@ class GoogleAuthorizationCodeCallbackServer implements AutoCloseable {
     private HttpServer httpServer = null;
     private CompletableFuture<String> authorizationCodeFuture = null;
 
-    GoogleAuthorizationCodeCallbackServer(CompletableFuture<String> authorizationCodeFuture) throws GoogleUserException {
+    GoogleAuthorizationCodeCallbackServer(CompletableFuture<String> authorizationCodeFuture) throws GoogleApiException {
         this.setAuthorizationCodeFuture(authorizationCodeFuture);
 
         HttpServer httpServer = ServerBootstrap.bootstrap()
@@ -50,7 +51,7 @@ class GoogleAuthorizationCodeCallbackServer implements AutoCloseable {
             httpServer.start();
             log.debug("Started HTTP server to await incoming request with Google refresh token listening on port: {}", httpServer.getLocalPort());
         } catch (Exception e) {
-            throw new GoogleUserException("Cannot launch HTTP server to await Google refresh token", e);
+            throw new GoogleApiException("Cannot launch HTTP server to await Google refresh token", e);
         }
 
     }

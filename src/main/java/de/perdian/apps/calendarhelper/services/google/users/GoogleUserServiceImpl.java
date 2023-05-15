@@ -4,6 +4,7 @@ import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
+import de.perdian.apps.calendarhelper.services.google.GoogleApiException;
 import de.perdian.apps.calendarhelper.services.google.application.GoogleApplicationCredentials;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,7 +21,7 @@ class GoogleUserServiceImpl implements GoogleUserService {
     private GoogleRefreshTokenStore googleRefreshTokenStore = null;
 
     @Override
-    public GoogleUser lookupUser() throws GoogleUserException {
+    public GoogleUser lookupUser() throws GoogleApiException {
 
         GoogleRefreshToken refreshToken = this.getGoogleRefreshTokenStore().loadRefreshToken();
         if (refreshToken != null) {
@@ -37,7 +38,7 @@ class GoogleUserServiceImpl implements GoogleUserService {
     }
 
     @Override
-    public GoogleUser forceLoginUser() throws GoogleUserException {
+    public GoogleUser forceLoginUser() throws GoogleApiException {
         try {
 
             NetHttpTransport googleHttpTransport = GoogleNetHttpTransport.newTrustedTransport();
@@ -48,10 +49,10 @@ class GoogleUserServiceImpl implements GoogleUserService {
                     .thenApply(new GoogleRefreshTokenToUserFunction(this.getGoogleApplicationCredentials()))
                     .get();
 
-        } catch (GoogleUserException e) {
+        } catch (GoogleApiException e) {
             throw e;
         } catch (Exception e) {
-            throw new GoogleUserException("Cannot perform login at Google", e);
+            throw new GoogleApiException("Cannot perform login at Google", e);
         }
 
     }

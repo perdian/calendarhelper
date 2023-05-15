@@ -9,6 +9,7 @@ import com.google.api.services.gmail.model.Profile;
 import com.google.auth.http.HttpCredentialsAdapter;
 import com.google.auth.oauth2.AccessToken;
 import com.google.auth.oauth2.UserCredentials;
+import de.perdian.apps.calendarhelper.services.google.GoogleApiException;
 import de.perdian.apps.calendarhelper.services.google.application.GoogleApplicationCredentials;
 
 import java.util.Date;
@@ -47,7 +48,7 @@ class GoogleRefreshTokenToUserFunction implements Function<GoogleRefreshToken, G
             return googleUser;
 
         } catch (Exception e) {
-            throw new GoogleUserException("Cannot load Google user", e);
+            throw new GoogleApiException("Cannot load Google user", e);
         }
     }
 

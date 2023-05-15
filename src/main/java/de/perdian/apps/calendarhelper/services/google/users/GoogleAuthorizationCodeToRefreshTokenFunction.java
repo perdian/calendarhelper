@@ -2,6 +2,7 @@ package de.perdian.apps.calendarhelper.services.google.users;
 
 import com.google.api.client.auth.oauth2.TokenRequest;
 import com.google.api.client.auth.oauth2.TokenResponse;
+import de.perdian.apps.calendarhelper.services.google.GoogleApiException;
 
 import java.io.IOException;
 import java.util.function.Function;
@@ -23,7 +24,7 @@ class GoogleAuthorizationCodeToRefreshTokenFunction implements Function<GoogleAu
             this.getGoogleRefreshTokenStore().updateRefreshToken(token);
             return token;
         } catch (IOException e) {
-            throw new GoogleUserException("Cannot request refresh token from Google", e);
+            throw new GoogleApiException("Cannot request refresh token from Google", e);
         }
     }
 

@@ -1,8 +1,8 @@
 package de.perdian.apps.calendarhelper.fx;
 
 import de.perdian.apps.calendarhelper.CalendarHelperConfiguration;
+import de.perdian.apps.calendarhelper.services.google.GoogleApiException;
 import de.perdian.apps.calendarhelper.services.google.users.GoogleUser;
-import de.perdian.apps.calendarhelper.services.google.users.GoogleUserException;
 import de.perdian.apps.calendarhelper.services.google.users.GoogleUserService;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -61,7 +61,7 @@ public class CalendarHelperApplication extends Application {
                 GoogleUser googleUser = googleUserProvider.lookupUser();
                 log.info("Using Google user: {}", googleUser);
                 this.getCalendarHelperContext().googleUserProperty().setValue(googleUser);
-            } catch (GoogleUserException e) {
+            } catch (GoogleApiException e) {
                 log.info("Could not lookup Google user", e);
                 Platform.runLater(() -> {
                     Alert missingUserAlert = new Alert(Alert.AlertType.ERROR);

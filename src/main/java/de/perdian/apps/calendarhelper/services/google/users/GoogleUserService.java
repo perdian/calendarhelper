@@ -1,5 +1,7 @@
 package de.perdian.apps.calendarhelper.services.google.users;
 
+import de.perdian.apps.calendarhelper.services.google.GoogleApiException;
+
 public interface GoogleUserService {
 
     /**
@@ -10,7 +12,7 @@ public interface GoogleUserService {
      *
      * @return the currently available (and validated) user.
      */
-    GoogleUser lookupUser() throws GoogleUserException;
+    GoogleUser lookupUser() throws GoogleApiException;
 
     /**
      * Force a login of a new user session, independently of whether or not user credentials can be found
@@ -18,7 +20,7 @@ public interface GoogleUserService {
      *
      * @return the currently available (and validated) user.
      */
-    GoogleUser forceLoginUser() throws GoogleUserException;
+    GoogleUser forceLoginUser() throws GoogleApiException;
 
     /**
      * Requests a logout of the currently active user

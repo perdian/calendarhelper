@@ -4,6 +4,7 @@ import com.google.api.client.auth.oauth2.AuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
+import de.perdian.apps.calendarhelper.services.google.GoogleApiException;
 import de.perdian.apps.calendarhelper.services.google.application.GoogleApplicationCredentials;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,7 +49,7 @@ class GoogleAuthorizationCodeSupplier implements Supplier<GoogleAuthorizationCod
                 return new GoogleAuthorizationCode(authorizationCodeFlow, callbackUrl, authorizationCode);
             }
         } catch (Exception e) {
-            throw new GoogleUserException("Cannot request authorization code from Google", e);
+            throw new GoogleApiException("Cannot request authorization code from Google", e);
         }
 
     }
