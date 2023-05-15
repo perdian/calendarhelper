@@ -29,31 +29,30 @@ public enum EditorItemTemplate {
     }
 
     public String getTitle() {
-        return title;
+        return this.title;
     }
     private void setTitle(String title) {
         this.title = title;
     }
 
     public Ikon getIcon() {
-        return icon;
+        return this.icon;
     }
     private void setIcon(Ikon icon) {
         this.icon = icon;
     }
 
     public Supplier<EditorItem> getEditorItemSupplier() {
-        return editorItemSupplier;
+        return this.editorItemSupplier;
     }
-    private void setEditorItemSupplier(Supplier<EditorItem> editorItemSupplier) {
+    public void setEditorItemSupplier(Supplier<EditorItem> editorItemSupplier) {
         this.editorItemSupplier = editorItemSupplier;
     }
 
     public Function<EditorItem, Pane> getEditorItemPaneFunction() {
-        return editorItemPaneFunction;
+        return this.editorItemPaneFunction;
     }
     private void setEditorItemPaneFunction(Function<EditorItem, Pane> editorItemPaneFunction) {
         this.editorItemPaneFunction = editorItemPaneFunction;
     }
-
 }

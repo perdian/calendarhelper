@@ -115,22 +115,22 @@ public class EditorPane extends GridPane {
         this.getEditorItems().clear();
     }
 
-    private ObservableList<EditorItem> getEditorItems() {
-        return editorItems;
-    }
-    private void setEditorItems(ObservableList<EditorItem> editorItems) {
-        this.editorItems = editorItems;
-    }
-
-    private Map<EditorItem, Region> getEditorItemToRegionMap() {
-        return editorItemToRegionMap;
+    public Map<EditorItem, Region> getEditorItemToRegionMap() {
+        return this.editorItemToRegionMap;
     }
     private void setEditorItemToRegionMap(Map<EditorItem, Region> editorItemToRegionMap) {
         this.editorItemToRegionMap = editorItemToRegionMap;
     }
 
-    private VBox getEditorItemsContainer() {
-        return editorItemsContainer;
+    public ObservableList<EditorItem> getEditorItems() {
+        return this.editorItems;
+    }
+    private void setEditorItems(ObservableList<EditorItem> editorItems) {
+        this.editorItems = editorItems;
+    }
+
+    public VBox getEditorItemsContainer() {
+        return this.editorItemsContainer;
     }
     private void setEditorItemsContainer(VBox editorItemsContainer) {
         this.editorItemsContainer = editorItemsContainer;
