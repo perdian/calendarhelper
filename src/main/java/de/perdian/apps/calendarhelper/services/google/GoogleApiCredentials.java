@@ -1,16 +1,12 @@
-package de.perdian.apps.calendarhelper.services.google.application;
-
-import org.springframework.stereotype.Component;
+package de.perdian.apps.calendarhelper.services.google;
 
 import java.util.List;
 
-@Component
-public class GoogleApplicationCredentials {
+public class GoogleApiCredentials {
 
-    private String clientId = System.getenv("GOOGLE_APP_CLIENT_ID");
-    private String clientSecret = System.getenv("GOOGLE_APP_CLIENT_SECRET");
+    private String clientId = null;
+    private String clientSecret = null;
     private List<String> scopes = List.of(
-            "https://mail.google.com/",
             "https://www.googleapis.com/auth/userinfo.email",
             "https://www.googleapis.com/auth/userinfo.profile",
             "https://www.googleapis.com/auth/calendar"

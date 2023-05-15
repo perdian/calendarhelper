@@ -17,12 +17,12 @@ public class CalendarHelperContext {
 
     private static final Logger log = LoggerFactory.getLogger(CalendarHelperContext.class);
 
-    private final ObjectProperty<GoogleUser> googleUser = new SimpleObjectProperty<>();
+    private final ObjectProperty<GoogleUser> activeGoogleUser = new SimpleObjectProperty<>();
     private final ObservableList<GoogleCalendar> googleCalendars = FXCollections.observableArrayList();
     private final ObjectProperty<GoogleCalendar> activeGoogleCalendar = new SimpleObjectProperty<>();
 
     public CalendarHelperContext(ApplicationContext applicationContext) {
-        this.googleUserProperty().addListener((o, oldValue, newValue) -> {
+        this.activeGoogleUserProperty().addListener((o, oldValue, newValue) -> {
             log.info("Updating globally used Google user: {}", newValue);
             this.googleCalendars().clear();
             if (newValue == null) {
@@ -45,8 +45,8 @@ public class CalendarHelperContext {
         });
     }
 
-    public ObjectProperty<GoogleUser> googleUserProperty() {
-        return googleUser;
+    public ObjectProperty<GoogleUser> activeGoogleUserProperty() {
+        return activeGoogleUser;
     }
 
     public ObservableList<GoogleCalendar> googleCalendars() {

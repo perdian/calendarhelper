@@ -28,8 +28,8 @@
         <commons-text.version>1.10.0</commons-text.version>
         <google-auth.version>1.16.1</google-auth.version>
         <google-api.version>2.2.0</google-api.version>
-        <google-api-services-gmail.version>v1-rev20230424-2.0.0</google-api-services-gmail.version>
         <google-api-services-calendar.version>v3-rev20230406-2.0.0</google-api-services-calendar.version>
+        <google-api-services-oauth2.version>v2-rev20200213-2.0.0</google-api-services-oauth2.version>
         <ikonli.version>12.3.1</ikonli.version>
         <java.version>20</java.version>
         <javafx.version>20</javafx.version>
@@ -116,13 +116,13 @@
         </dependency>
         <dependency>
             <groupId>com.google.apis</groupId>
-            <artifactId>google-api-services-gmail</artifactId>
-            <version>${google-api-services-gmail.version}</version>
+            <artifactId>google-api-services-calendar</artifactId>
+            <version>${google-api-services-calendar.version}</version>
         </dependency>
         <dependency>
             <groupId>com.google.apis</groupId>
-            <artifactId>google-api-services-calendar</artifactId>
-            <version>${google-api-services-calendar.version}</version>
+            <artifactId>google-api-services-oauth2</artifactId>
+            <version>${google-api-services-oauth2.version}</version>
         </dependency>
 
         <dependency>
@@ -184,6 +184,7 @@
                                 <JVMOptions>
                                     <string>-Dapple.laf.useScreenMenuBar=true</string>
                                     <string>-Xdock:name=${project.name}</string>
+                                    <string>--enable-preview</string>
                                 </JVMOptions>
                             </plist>
                         </configuration>

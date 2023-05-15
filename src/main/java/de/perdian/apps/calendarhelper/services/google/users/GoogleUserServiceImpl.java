@@ -4,8 +4,8 @@ import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
+import de.perdian.apps.calendarhelper.services.google.GoogleApiCredentials;
 import de.perdian.apps.calendarhelper.services.google.GoogleApiException;
-import de.perdian.apps.calendarhelper.services.google.application.GoogleApplicationCredentials;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import java.util.concurrent.CompletableFuture;
 class GoogleUserServiceImpl implements GoogleUserService {
 
     private static final Logger log = LoggerFactory.getLogger(GoogleUserServiceImpl.class);
-    private GoogleApplicationCredentials googleApplicationCredentials = null;
+    private GoogleApiCredentials googleApplicationCredentials = null;
     private GoogleRefreshTokenStore googleRefreshTokenStore = null;
 
     @Override
@@ -62,11 +62,11 @@ class GoogleUserServiceImpl implements GoogleUserService {
         this.getGoogleRefreshTokenStore().updateRefreshToken(null);
     }
 
-    GoogleApplicationCredentials getGoogleApplicationCredentials() {
+    GoogleApiCredentials getGoogleApplicationCredentials() {
         return googleApplicationCredentials;
     }
     @Autowired
-    void setGoogleApplicationCredentials(GoogleApplicationCredentials googleApplicationCredentials) {
+    void setGoogleApplicationCredentials(GoogleApiCredentials googleApplicationCredentials) {
         this.googleApplicationCredentials = googleApplicationCredentials;
     }
 

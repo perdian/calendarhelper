@@ -60,7 +60,7 @@ public class CalendarHelperApplication extends Application {
                 GoogleUserService googleUserProvider = this.getApplicationContext().getBean(GoogleUserService.class);
                 GoogleUser googleUser = googleUserProvider.lookupUser();
                 log.info("Using Google user: {}", googleUser);
-                this.getCalendarHelperContext().googleUserProperty().setValue(googleUser);
+                this.getCalendarHelperContext().activeGoogleUserProperty().setValue(googleUser);
             } catch (GoogleApiException e) {
                 log.info("Could not lookup Google user", e);
                 Platform.runLater(() -> {

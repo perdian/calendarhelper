@@ -1,9 +1,8 @@
 package de.perdian.apps.calendarhelper.fx;
 
+import de.perdian.apps.calendarhelper.fx.modules.account.CurrentAccountPane;
 import de.perdian.apps.calendarhelper.fx.modules.actions.ActionsPane;
-import de.perdian.apps.calendarhelper.fx.modules.calendar.ActiveCalendarPane;
 import de.perdian.apps.calendarhelper.fx.modules.editor.EditorPane;
-import de.perdian.apps.calendarhelper.fx.modules.user.CurrentUserPane;
 import de.perdian.apps.calendarhelper.services.google.users.GoogleUserService;
 import javafx.geometry.Insets;
 import javafx.scene.control.TitledPane;
@@ -15,21 +14,13 @@ class CalendarHelperMainPane extends GridPane {
 
     CalendarHelperMainPane(CalendarHelperContext calendarContext, ApplicationContext applicationContext) {
 
-        CurrentUserPane currentUserPane = new CurrentUserPane(calendarContext.googleUserProperty(), applicationContext.getBean(GoogleUserService.class));
-        currentUserPane.setPadding(new Insets(10, 10, 10, 10));
-        currentUserPane.setPrefWidth(300);
-        TitledPane currentUserTitledPane = new TitledPane("Current user", currentUserPane);
-        currentUserTitledPane.setExpanded(true);
-        currentUserTitledPane.setCollapsible(false);
-        currentUserTitledPane.setMaxHeight(Double.MAX_VALUE);
-
-        ActiveCalendarPane activeCalendarPane = new ActiveCalendarPane(calendarContext.googleCalendars(), calendarContext.activeGoogleCalendarProperty());
-        activeCalendarPane.setPadding(new Insets(10, 10, 10, 10));
-        activeCalendarPane.setPrefWidth(600);
-        TitledPane activeCalendarTitledPane = new TitledPane("Active calendar", activeCalendarPane);
-        activeCalendarTitledPane.setExpanded(true);
-        activeCalendarTitledPane.setCollapsible(false);
-        activeCalendarTitledPane.setMaxHeight(Double.MAX_VALUE);
+        CurrentAccountPane currentAccountPane = new CurrentAccountPane(calendarContext, applicationContext.getBean(GoogleUserService.class));
+        currentAccountPane.setPadding(new Insets(10, 10, 10, 10));
+        currentAccountPane.setPrefWidth(500);
+        TitledPane currentAccountTitledPane = new TitledPane("Current account", currentAccountPane);
+        currentAccountTitledPane.setExpanded(true);
+        currentAccountTitledPane.setCollapsible(false);
+        currentAccountTitledPane.setMaxHeight(Double.MAX_VALUE);
 
         ActionsPane actionsPane = new ActionsPane();
         actionsPane.setPadding(new Insets(10, 10, 10, 10));
@@ -48,10 +39,9 @@ class CalendarHelperMainPane extends GridPane {
         GridPane.setHgrow(editorTitledPane, Priority.ALWAYS);
         GridPane.setVgrow(editorTitledPane, Priority.ALWAYS);
 
-        this.add(currentUserTitledPane, 0, 0, 1, 1);
-        this.add(activeCalendarTitledPane, 1, 0, 1, 1);
-        this.add(actionsTitledPane, 2, 0, 1, 1);
-        this.add(editorTitledPane, 0, 1, 3, 1);
+        this.add(currentAccountTitledPane, 0, 0, 1, 1);
+        this.add(actionsTitledPane, 1, 0, 1, 1);
+        this.add(editorTitledPane, 0, 1, 2, 1);
         this.setHgap(10);
         this.setVgap(10);
         this.setPadding(new Insets(10, 10, 10, 10));

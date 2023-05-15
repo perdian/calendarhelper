@@ -4,12 +4,13 @@ import com.google.api.client.auth.oauth2.AuthorizationCodeFlow;
 import com.google.api.client.googleapis.auth.oauth2.GoogleAuthorizationCodeFlow;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
+import de.perdian.apps.calendarhelper.services.google.GoogleApiCredentials;
 import de.perdian.apps.calendarhelper.services.google.GoogleApiException;
-import de.perdian.apps.calendarhelper.services.google.application.GoogleApplicationCredentials;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Supplier;
 
@@ -17,12 +18,12 @@ class GoogleAuthorizationCodeSupplier implements Supplier<GoogleAuthorizationCod
 
     private static final Logger log = LoggerFactory.getLogger(GoogleAuthorizationCodeSupplier.class);
 
-    private GoogleApplicationCredentials googleApplicationCredentials = null;
+    private GoogleApiCredentials googleApiCredentials = null;
     private NetHttpTransport googleHttpTransport = null;
     private JsonFactory googleJsonFactory = null;
 
-    GoogleAuthorizationCodeSupplier(GoogleApplicationCredentials googleApplicationCredentials, NetHttpTransport googleHttpTransport, JsonFactory googleJsonFactory) {
-        this.setGoogleApplicationCredentials(googleApplicationCredentials);
+    GoogleAuthorizationCodeSupplier(GoogleApiCredentials googleApplicationCredentials, NetHttpTransport googleHttpTransport, JsonFactory googleJsonFactory) {
+        this.setGoogleApiCredentials(googleApplicationCredentials);
         this.setGoogleHttpTransport(googleHttpTransport);
         this.setGoogleJsonFactory(googleJsonFactory);
     }
@@ -31,9 +32,9 @@ class GoogleAuthorizationCodeSupplier implements Supplier<GoogleAuthorizationCod
     public GoogleAuthorizationCode get() {
 
         log.debug("Performing login to retrieve Google authorization code");
-        String googleClientId = this.getGoogleApplicationCredentials().getClientId();
-        String googleClientSecret = this.getGoogleApplicationCredentials().getClientSecret();
-        List<String> googleScopes = this.getGoogleApplicationCredentials().getScopes();
+        String googleClientId = Objects.requireNonNull(this.getGoogleApiCredentials().getClientId(), "No Google Cliend ID available");
+        String googleClientSecret = Objects.requireNonNull(this.getGoogleApiCredentials().getClientSecret(), "No Google Cliend Secret available");
+        List<String> googleScopes = this.getGoogleApiCredentials().getScopes();
         AuthorizationCodeFlow authorizationCodeFlow = new GoogleAuthorizationCodeFlow.Builder(googleHttpTransport, googleJsonFactory, googleClientId, googleClientSecret, googleScopes)
                 .setAccessType("offline")
                 .setApprovalPrompt("force")
@@ -54,11 +55,11 @@ class GoogleAuthorizationCodeSupplier implements Supplier<GoogleAuthorizationCod
 
     }
 
-    private GoogleApplicationCredentials getGoogleApplicationCredentials() {
-        return googleApplicationCredentials;
+    private GoogleApiCredentials getGoogleApiCredentials() {
+        return googleApiCredentials;
     }
-    private void setGoogleApplicationCredentials(GoogleApplicationCredentials googleApplicationCredentials) {
-        this.googleApplicationCredentials = googleApplicationCredentials;
+    private void setGoogleApiCredentials(GoogleApiCredentials googleApiCredentials) {
+        this.googleApiCredentials = googleApiCredentials;
     }
 
     private NetHttpTransport getGoogleHttpTransport() {

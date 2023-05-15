@@ -9,6 +9,7 @@ public class GoogleUser implements Serializable {
     static final long serialVersionUID = 1L;
 
     private UserCredentials credentials = null;
+    private String name = null;
     private String emailAddress = null;
 
     GoogleUser(UserCredentials userCredentials) {
@@ -24,6 +25,13 @@ public class GoogleUser implements Serializable {
     }
     private void setCredentials(UserCredentials credentials) {
         this.credentials = credentials;
+    }
+
+    public String getName() {
+        return name;
+    }
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getEmailAddress() {

@@ -4,22 +4,22 @@ import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
-import com.google.api.services.gmail.Gmail;
-import com.google.api.services.gmail.model.Profile;
+import com.google.api.services.oauth2.Oauth2;
+import com.google.api.services.oauth2.model.Userinfo;
 import com.google.auth.http.HttpCredentialsAdapter;
 import com.google.auth.oauth2.AccessToken;
 import com.google.auth.oauth2.UserCredentials;
+import de.perdian.apps.calendarhelper.services.google.GoogleApiCredentials;
 import de.perdian.apps.calendarhelper.services.google.GoogleApiException;
-import de.perdian.apps.calendarhelper.services.google.application.GoogleApplicationCredentials;
 
 import java.util.Date;
 import java.util.function.Function;
 
 class GoogleRefreshTokenToUserFunction implements Function<GoogleRefreshToken, GoogleUser> {
 
-    private GoogleApplicationCredentials googleApplicationCredentials = null;
+    private GoogleApiCredentials googleApplicationCredentials = null;
 
-    GoogleRefreshTokenToUserFunction(GoogleApplicationCredentials googleApplicationCredentials) {
+    GoogleRefreshTokenToUserFunction(GoogleApiCredentials googleApplicationCredentials) {
         this.setGoogleApplicationCredentials(googleApplicationCredentials);
     }
 
@@ -37,14 +37,15 @@ class GoogleRefreshTokenToUserFunction implements Function<GoogleRefreshToken, G
             NetHttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
             JsonFactory jsonFactory = GsonFactory.getDefaultInstance();
 
-            Gmail gmailService = new Gmail.Builder(httpTransport, jsonFactory, new HttpCredentialsAdapter(userCredentials))
+            Oauth2 oauth2Service = new Oauth2.Builder(httpTransport, jsonFactory, new HttpCredentialsAdapter(userCredentials))
                     .setApplicationName("Calendar Helper")
                     .build();
 
-            Profile gmailProfile = gmailService.users().getProfile("me").execute();
+            Userinfo userInfo = oauth2Service.userinfo().get().execute();
 
             GoogleUser googleUser = new GoogleUser(userCredentials);
-            googleUser.setEmailAddress(gmailProfile.getEmailAddress());
+            googleUser.setName(userInfo.getName());
+            googleUser.setEmailAddress(userInfo.getEmail());
             return googleUser;
 
         } catch (Exception e) {
@@ -52,10 +53,10 @@ class GoogleRefreshTokenToUserFunction implements Function<GoogleRefreshToken, G
         }
     }
 
-    private GoogleApplicationCredentials getGoogleApplicationCredentials() {
+    private GoogleApiCredentials getGoogleApplicationCredentials() {
         return googleApplicationCredentials;
     }
-    private void setGoogleApplicationCredentials(GoogleApplicationCredentials googleApplicationCredentials) {
+    private void setGoogleApplicationCredentials(GoogleApiCredentials googleApplicationCredentials) {
         this.googleApplicationCredentials = googleApplicationCredentials;
     }
 
