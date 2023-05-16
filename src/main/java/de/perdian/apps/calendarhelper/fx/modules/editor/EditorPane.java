@@ -66,8 +66,9 @@ public class EditorPane extends GridPane {
         this.add(buttonSeparator, 0, 1, 1, 1);
         this.add(editorItemsContainerScrollPane, 0, 2, 1, 1);
 
-        IntStream.range(0, 3).forEach(i -> this.addEditorItem(EditorItemTemplate.AIRTRAVEL_JOURNEY));
-        IntStream.range(0, 3).forEach(i -> this.addEditorItem(EditorItemTemplate.TRAIN_JOURNEY));
+        IntStream.range(0, 2).forEach(i -> this.addEditorItem(EditorItemTemplate.CONFERENCE));
+        IntStream.range(0, 2).forEach(i -> this.addEditorItem(EditorItemTemplate.AIRTRAVEL_JOURNEY));
+        IntStream.range(0, 2).forEach(i -> this.addEditorItem(EditorItemTemplate.TRAIN_JOURNEY));
 
     }
 
@@ -75,6 +76,7 @@ public class EditorPane extends GridPane {
 
         EditorItem editorItem = editorItemTemplate.getEditorItemSupplier().get();
         Pane editorItemPane = editorItemTemplate.getEditorItemPaneFunction().apply(editorItem);
+        editorItemPane.setPadding(new Insets(10, 0, 5, 0));
 
         Button removeItemButton = new Button("", new FontIcon(MaterialDesignD.DELETE));
         removeItemButton.setTooltip(new Tooltip("Remove item"));
