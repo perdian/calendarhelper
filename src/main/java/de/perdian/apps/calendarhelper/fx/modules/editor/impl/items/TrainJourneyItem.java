@@ -3,10 +3,12 @@ package de.perdian.apps.calendarhelper.fx.modules.editor.impl.items;
 import de.perdian.apps.calendarhelper.fx.modules.editor.EditorItem;
 import de.perdian.apps.calendarhelper.services.google.calendar.GoogleCalendarEntryJob;
 
+import java.util.List;
+
 public class TrainJourneyItem implements EditorItem {
 
     @Override
-    public GoogleCalendarEntryJob createEntryJob() {
+    public List<GoogleCalendarEntryJob> createEntryJobs() {
         throw new UnsupportedOperationException();
     }
 

@@ -6,8 +6,7 @@ import de.perdian.apps.calendarhelper.services.google.calendar.GoogleCalendarSer
 import de.perdian.apps.calendarhelper.services.google.users.GoogleUser;
 import de.perdian.apps.calendarhelper.services.google.users.GoogleUserService;
 import javafx.application.Platform;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -25,6 +24,8 @@ public class CalendarHelperContext {
     private final ObservableList<GoogleCalendar> googleCalendars = FXCollections.observableArrayList();
     private final ObjectProperty<GoogleCalendar> activeGoogleCalendar = new SimpleObjectProperty<>();
     private final ObservableList<EditorItem> editorItems = FXCollections.observableArrayList();
+    private final DoubleProperty executionProgress = new SimpleDoubleProperty(0);
+    private final BooleanProperty executionActive = new SimpleBooleanProperty(false);
 
     public CalendarHelperContext(ApplicationContext applicationContext) {
         this.activeGoogleUserProperty().addListener((o, oldValue, newValue) -> {
@@ -65,6 +66,14 @@ public class CalendarHelperContext {
 
     public ObservableList<EditorItem> editorItems() {
         return editorItems;
+    }
+
+    public DoubleProperty executionProgressProperty() {
+        return executionProgress;
+    }
+
+    public BooleanProperty executionActiveProperty() {
+        return executionActive;
     }
 
 }

@@ -7,6 +7,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 import java.time.LocalDate;
+import java.util.List;
 
 public class ConferenceItem implements EditorItem {
 
@@ -17,7 +18,7 @@ public class ConferenceItem implements EditorItem {
     private final SimpleStringProperty comment = new SimpleStringProperty();
 
     @Override
-    public GoogleCalendarEntryJob createEntryJob() {
+    public List<GoogleCalendarEntryJob> createEntryJobs() {
         throw new UnsupportedOperationException();
     }
 

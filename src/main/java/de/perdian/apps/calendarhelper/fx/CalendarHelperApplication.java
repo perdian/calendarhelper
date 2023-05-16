@@ -1,6 +1,7 @@
 package de.perdian.apps.calendarhelper.fx;
 
 import de.perdian.apps.calendarhelper.CalendarHelperConfiguration;
+import de.perdian.apps.calendarhelper.fx.support.CalendarHelperDialogs;
 import de.perdian.apps.calendarhelper.services.google.GoogleApiException;
 import de.perdian.apps.calendarhelper.services.google.users.GoogleUser;
 import de.perdian.apps.calendarhelper.services.google.users.GoogleUserService;
@@ -8,7 +9,6 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -63,13 +63,8 @@ public class CalendarHelperApplication extends Application {
                 this.getCalendarHelperContext().activeGoogleUserProperty().setValue(googleUser);
             } catch (GoogleApiException e) {
                 log.info("Could not lookup Google user", e);
-                Platform.runLater(() -> {
-                    Alert missingUserAlert = new Alert(Alert.AlertType.ERROR);
-                    missingUserAlert.setHeaderText("Cannot launch Calender Helper application");
-                    missingUserAlert.setContentText("Google user login failed [" + e + "]");
-                    missingUserAlert.showAndWait();
-                    Platform.exit();
-                });
+                CalendarHelperDialogs.showErrorDialog("Cannot launch Calender Helper application", "Google user login failed [" + e + "]", e);
+                Platform.exit();
             }
         });
 
