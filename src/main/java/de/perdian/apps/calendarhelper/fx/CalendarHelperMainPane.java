@@ -22,7 +22,7 @@ class CalendarHelperMainPane extends GridPane {
         currentAccountTitledPane.setCollapsible(false);
         currentAccountTitledPane.setMaxHeight(Double.MAX_VALUE);
 
-        ExecutionPane executionPane = new ExecutionPane(calendarContext);
+        ExecutionPane executionPane = new ExecutionPane(calendarContext, applicationContext);
         TitledPane executionTitledPane = new TitledPane("Execute", executionPane);
         executionTitledPane.setExpanded(true);
         executionTitledPane.setCollapsible(false);

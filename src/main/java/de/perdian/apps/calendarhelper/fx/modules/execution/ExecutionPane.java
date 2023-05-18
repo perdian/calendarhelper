@@ -10,10 +10,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignC;
+import org.springframework.context.ApplicationContext;
 
 public class ExecutionPane extends GridPane {
 
-    public ExecutionPane(CalendarHelperContext calendarHelperContext) {
+    public ExecutionPane(CalendarHelperContext calendarHelperContext, ApplicationContext applicationContext) {
 
         Label progressTitleLabel = new Label("Progress");
         ProgressBar progressBar = new ProgressBar();
@@ -25,7 +26,7 @@ public class ExecutionPane extends GridPane {
         GridPane.setHgrow(progressBar, Priority.ALWAYS);
 
         Button generateCalendarEntriesButton = new Button("Generate calendar entries", new FontIcon(MaterialDesignC.CREATION));
-        generateCalendarEntriesButton.setOnAction(new ExecutionEventHandler(calendarHelperContext));
+        generateCalendarEntriesButton.setOnAction(new ExecutionEventHandler(calendarHelperContext, applicationContext));
         generateCalendarEntriesButton.setMaxHeight(Double.MAX_VALUE);
         generateCalendarEntriesButton.disableProperty().bind(Bindings.isEmpty(calendarHelperContext.editorItems()).or(calendarHelperContext.executionActiveProperty()));
 

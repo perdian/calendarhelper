@@ -7,6 +7,7 @@ import com.google.api.client.json.gson.GsonFactory;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.model.CalendarList;
 import com.google.api.services.calendar.model.CalendarListEntry;
+import com.google.api.services.calendar.model.Event;
 import com.google.auth.http.HttpCredentialsAdapter;
 import de.perdian.apps.calendarhelper.services.google.GoogleApiException;
 import de.perdian.apps.calendarhelper.services.google.users.GoogleUser;
@@ -37,11 +38,8 @@ class GoogleCalendarServiceImpl implements GoogleCalendarService {
     @Override
     public List<GoogleCalendar> loadCalendars(GoogleUser googleUser) {
 
-        Calendar calendarService = new Calendar.Builder(this.getHttpTransport(), this.getJsonFactory(), new HttpCredentialsAdapter(googleUser.getCredentials()))
-                .setApplicationName("Calendar Helper")
-                .build();
-
         log.trace("Loading all calendars for Google user: {}", googleUser);
+        Calendar calendarService = this.createCalendarService(googleUser);
         try {
 
             List<GoogleCalendar> googleCalendars = new ArrayList<>();
@@ -67,6 +65,23 @@ class GoogleCalendarServiceImpl implements GoogleCalendarService {
             throw new GoogleApiException("Cannot load Google calendars", e);
         }
 
+    }
+
+    @Override
+    public Event insertEvent(Event event, GoogleCalendar googleCalendar, GoogleUser googleUser) {
+        log.trace("Create Google calendar event [{}] for user: {}", event, googleUser);
+        Calendar calendarService = this.createCalendarService(googleUser);
+        try {
+            return calendarService.events().insert(googleCalendar.getId(), event).execute();
+        } catch (Exception e) {
+            throw new GoogleApiException("Cannot create Google calendar event", e);
+        }
+    }
+
+    private Calendar createCalendarService(GoogleUser googleUser) {
+        return new Calendar.Builder(this.getHttpTransport(), this.getJsonFactory(), new HttpCredentialsAdapter(googleUser.getCredentials()))
+                .setApplicationName("Calendar Helper")
+                .build();
     }
 
     private NetHttpTransport getHttpTransport() {

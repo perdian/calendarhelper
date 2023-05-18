@@ -1,5 +1,6 @@
 package de.perdian.apps.calendarhelper.fx.modules.editor;
 
+import de.perdian.apps.calendarhelper.fx.modules.editor.impl.items.ConferenceItem;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
@@ -11,9 +12,9 @@ import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignD;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.stream.IntStream;
 
 public class EditorPane extends GridPane {
 
@@ -66,13 +67,13 @@ public class EditorPane extends GridPane {
         this.add(buttonSeparator, 0, 1, 1, 1);
         this.add(editorItemsContainerScrollPane, 0, 2, 1, 1);
 
-        IntStream.range(0, 2).forEach(i -> this.addEditorItem(EditorItemTemplate.CONFERENCE));
-        IntStream.range(0, 2).forEach(i -> this.addEditorItem(EditorItemTemplate.AIRTRAVEL_JOURNEY));
-        IntStream.range(0, 2).forEach(i -> this.addEditorItem(EditorItemTemplate.TRAIN_JOURNEY));
+        ConferenceItem conferenceItem = (ConferenceItem) this.addEditorItem(EditorItemTemplate.CONFERENCE);
+        conferenceItem.startDateProperty().setValue(LocalDate.now());
+        conferenceItem.nameProperty().setValue("Conference " + System.currentTimeMillis());
 
     }
 
-    private void addEditorItem(EditorItemTemplate editorItemTemplate) {
+    private EditorItem addEditorItem(EditorItemTemplate editorItemTemplate) {
 
         EditorItem editorItem = editorItemTemplate.getEditorItemSupplier().get();
         Pane editorItemPane = editorItemTemplate.getEditorItemPaneFunction().apply(editorItem);
@@ -100,6 +101,7 @@ public class EditorPane extends GridPane {
         this.getEditorItemsContainer().getChildren().add(wrapperPane);
         this.getEditorItemToRegionMap().put(editorItem, wrapperPane);
         this.getEditorItems().add(editorItem);
+        return editorItem;
 
     }
 
