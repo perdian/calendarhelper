@@ -72,7 +72,10 @@ class GoogleCalendarServiceImpl implements GoogleCalendarService {
         log.trace("Create Google calendar event [{}] for user: {}", event, googleUser);
         Calendar calendarService = this.createCalendarService(googleUser);
         try {
-            return calendarService.events().insert(googleCalendar.getId(), event).execute();
+            return calendarService.events()
+                    .insert(googleCalendar.getId(), event)
+                    .setSendUpdates("all")
+                    .execute();
         } catch (Exception e) {
             throw new GoogleApiException("Cannot create Google calendar event", e);
         }

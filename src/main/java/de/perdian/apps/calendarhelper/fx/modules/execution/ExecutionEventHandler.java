@@ -53,6 +53,7 @@ class ExecutionEventHandler implements EventHandler<ActionEvent> {
             this.getCalendarHelperContext().executionProgressProperty().setValue(((double) i) / calendarEvents.size());
             googleCalendarService.insertEvent(calendarEvent, this.getCalendarHelperContext().activeGoogleCalendarProperty().getValue(), this.getCalendarHelperContext().activeGoogleUserProperty().getValue());
         }
+        this.getCalendarHelperContext().executionProgressProperty().setValue(1);
 
     }
 

@@ -1,7 +1,10 @@
 package de.perdian.apps.calendarhelper.fx.modules.editor.impl.items;
 
+import de.perdian.apps.calendarhelper.fx.modules.editor.impl.types.Availability;
 import de.perdian.apps.calendarhelper.fx.support.components.DateField;
+import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -32,6 +35,12 @@ public class ConferenceItemPane extends GridPane {
         locationField.textProperty().bindBidirectional(conferenceItem.locationProperty());
         locationLabel.setLabelFor(locationField);
 
+        Label availabilityLabel = new Label("Availability");
+        ComboBox<Availability> availabilityBox = new ComboBox<>(FXCollections.observableArrayList(Availability.values()));
+        availabilityBox.valueProperty().bindBidirectional(conferenceItem.availabilityProperty());
+        availabilityBox.setMaxWidth(Double.MAX_VALUE);
+        availabilityLabel.setLabelFor(availabilityBox);
+
         Label descriptionLabel = new Label("Description");
         descriptionLabel.setPadding(new Insets(0, 0, 0, 20));
         TextArea descriptionArea = new TextArea();
@@ -40,16 +49,27 @@ public class ConferenceItemPane extends GridPane {
         descriptionLabel.setLabelFor(descriptionArea);
         GridPane.setHgrow(descriptionArea, Priority.ALWAYS);
 
+        Label attendeesLabel = new Label("Attendees");
+        attendeesLabel.setPadding(new Insets(0, 0, 0, 20));
+        TextField attendeesField = new TextField();
+        attendeesField.textProperty().bindBidirectional(conferenceItem.attendeesProperty());
+        attendeesLabel.setLabelFor(attendeesField);
+        GridPane.setHgrow(attendeesField, Priority.ALWAYS);
+
         this.add(startDateLabel, 0, 0, 1, 1);
         this.add(startDateField, 1, 0, 1, 1);
         this.add(endDateLabel, 0, 1, 1, 1);
         this.add(endDateField, 1, 1, 1, 1);
+        this.add(availabilityLabel, 0, 2, 1, 1);
+        this.add(availabilityBox, 1, 2, 1, 1);
         this.add(nameLabel, 2, 0, 1, 1);
         this.add(nameField, 3, 0, 1, 1);
         this.add(locationLabel, 2, 1, 1, 1);
         this.add(locationField, 3, 1, 1, 1);
         this.add(descriptionLabel, 4, 0, 1, 1);
         this.add(descriptionArea, 5, 0, 1, 2);
+        this.add(attendeesLabel, 4, 2, 1, 1);
+        this.add(attendeesField, 5, 2, 1, 1);
         this.setHgap(5);
         this.setVgap(5);
 

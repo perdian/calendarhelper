@@ -6,6 +6,7 @@ import com.google.api.services.calendar.model.EventDateTime;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -29,10 +30,12 @@ public abstract class AbstractDateTimeItem extends AbstractDateItem {
         } else if (this.endZoneIdProperty().getValue() == null) {
             throw new IllegalArgumentException("No end timezone set!");
         } else {
-            ZonedDateTime startTime = this.startDateProperty().getValue().atTime(this.startTimeProperty().getValue()).atZone(this.startZoneIdProperty().getValue());
-            ZonedDateTime endTime = this.endDateProperty().getValue().atTime(this.endTimeProperty().getValue()).atZone(this.endZoneIdProperty().getValue());
-            event.setStart(new EventDateTime().setDateTime(new DateTime(startTime.toInstant().toEpochMilli())).setTimeZone(this.startZoneIdProperty().getValue().getId()));
-            event.setEnd(new EventDateTime().setDateTime(new DateTime(endTime.toInstant().toEpochMilli())).setTimeZone(this.endZoneIdProperty().getValue().getId()));
+            LocalDate startDate = this.startDateProperty().getValue();
+            LocalDate endDate = this.endDateProperty().getValue() == null ? startDate : this.endDateProperty().getValue();
+            ZonedDateTime startDateTime = startDate.atTime(this.startTimeProperty().getValue()).atZone(this.startZoneIdProperty().getValue());
+            ZonedDateTime endDateTime = endDate.atTime(this.endTimeProperty().getValue()).atZone(this.endZoneIdProperty().getValue());
+            event.setStart(new EventDateTime().setDateTime(new DateTime(startDateTime.toInstant().toEpochMilli())).setTimeZone(this.startZoneIdProperty().getValue().getId()));
+            event.setEnd(new EventDateTime().setDateTime(new DateTime(endDateTime.toInstant().toEpochMilli())).setTimeZone(this.endZoneIdProperty().getValue().getId()));
             return event;
         }
     }
