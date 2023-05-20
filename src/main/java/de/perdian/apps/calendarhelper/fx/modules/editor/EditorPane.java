@@ -69,7 +69,7 @@ public class EditorPane extends GridPane {
 
         ConferenceItem conferenceItem = (ConferenceItem) this.addEditorItem(EditorItemTemplate.CONFERENCE);
         conferenceItem.startDateProperty().setValue(LocalDate.now());
-        conferenceItem.nameProperty().setValue("Conference " + System.currentTimeMillis());
+        conferenceItem.summaryProperty().setValue("Conference " + System.currentTimeMillis());
 
     }
 

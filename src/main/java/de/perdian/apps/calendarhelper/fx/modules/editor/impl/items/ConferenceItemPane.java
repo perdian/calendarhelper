@@ -23,7 +23,7 @@ public class ConferenceItemPane extends GridPane {
         Label nameLabel = new Label("Name");
         nameLabel.setPadding(new Insets(0, 0, 0, 20));
         TextField nameField = new TextField();
-        nameField.textProperty().bindBidirectional(conferenceItem.nameProperty());
+        nameField.textProperty().bindBidirectional(conferenceItem.summaryProperty());
         nameLabel.setLabelFor(nameField);
 
         Label locationLabel = new Label("Location");
@@ -32,13 +32,13 @@ public class ConferenceItemPane extends GridPane {
         locationField.textProperty().bindBidirectional(conferenceItem.locationProperty());
         locationLabel.setLabelFor(locationField);
 
-        Label commentLabel = new Label("Comment");
-        commentLabel.setPadding(new Insets(0, 0, 0, 20));
-        TextArea commentArea = new TextArea();
-        commentArea.textProperty().bindBidirectional(conferenceItem.commentProperty());
-        commentArea.setPrefHeight(0);
-        commentLabel.setLabelFor(commentArea);
-        GridPane.setHgrow(commentArea, Priority.ALWAYS);
+        Label descriptionLabel = new Label("Description");
+        descriptionLabel.setPadding(new Insets(0, 0, 0, 20));
+        TextArea descriptionArea = new TextArea();
+        descriptionArea.textProperty().bindBidirectional(conferenceItem.descriptionProperty());
+        descriptionArea.setPrefHeight(0);
+        descriptionLabel.setLabelFor(descriptionArea);
+        GridPane.setHgrow(descriptionArea, Priority.ALWAYS);
 
         this.add(startDateLabel, 0, 0, 1, 1);
         this.add(startDateField, 1, 0, 1, 1);
@@ -48,8 +48,8 @@ public class ConferenceItemPane extends GridPane {
         this.add(nameField, 3, 0, 1, 1);
         this.add(locationLabel, 2, 1, 1, 1);
         this.add(locationField, 3, 1, 1, 1);
-        this.add(commentLabel, 4, 0, 1, 1);
-        this.add(commentArea, 5, 0, 1, 2);
+        this.add(descriptionLabel, 4, 0, 1, 1);
+        this.add(descriptionArea, 5, 0, 1, 2);
         this.setHgap(5);
         this.setVgap(5);
 
