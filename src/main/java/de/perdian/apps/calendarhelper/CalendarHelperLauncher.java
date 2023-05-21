@@ -1,6 +1,5 @@
 package de.perdian.apps.calendarhelper;
 
-import de.perdian.apps.calendarhelper.fx.CalendarHelperApplication;
 import javafx.application.Application;
 
 public class CalendarHelperLauncher {
