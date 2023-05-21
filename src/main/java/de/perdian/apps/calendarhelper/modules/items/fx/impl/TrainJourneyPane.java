@@ -12,8 +12,8 @@ public class TrainJourneyPane extends AbstractParentPane<TrainJourneyItem, Train
     }
 
     @Override
-    protected Pane createChildPane(TrainRideItem childItem) {
-        return new TrainRidePane(childItem);
+    protected Pane createChildPane(TrainRideItem childItem, TrainJourneyItem parentItem) {
+        return new TrainRidePane(childItem, parentItem);
     }
 
 }

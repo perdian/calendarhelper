@@ -45,7 +45,7 @@ public class CalendarHelperApplication extends Application {
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();
         primaryStage.getIcons().add(new Image(this.getClass().getClassLoader().getResourceAsStream("icons/calendar-regular.png")));
         primaryStage.setOnCloseRequest(event -> Platform.exit());
-        primaryStage.setMinWidth(1200);
+        primaryStage.setMinWidth(1400);
         primaryStage.setMinHeight(700);
         primaryStage.setTitle("Calendar Helper");
         primaryStage.setWidth(Math.min(1400, screenBounds.getWidth() - 250));

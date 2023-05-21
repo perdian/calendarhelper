@@ -44,6 +44,7 @@ class ExecutionEventHandler implements EventHandler<ActionEvent> {
 
         List<Event> calendarEvents = this.getCalendarHelperContext().editorItems().stream()
                 .flatMap(editorItem -> editorItem.createEvents().stream())
+                .peek(event -> this.getCalendarHelperContext().getItemDefaults().applyTo(event))
                 .toList();
         log.info("Creating {} calendar events", calendarEvents.size());
 

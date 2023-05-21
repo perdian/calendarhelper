@@ -1,0 +1,24 @@
+package de.perdian.apps.calendarhelper.modules.items.model.types;
+
+public enum Type {
+
+    CONFERENCE("Konferenz");
+
+    private String title = null;
+
+    private Type(String title) {
+        this.setTitle(title);
+    }
+
+    @Override
+    public String toString() {
+        return this.getTitle();
+    }
+
+    public String getTitle() {
+        return this.title;
+    }
+    private void setTitle(String title) {
+        this.title = title;
+    }
+}

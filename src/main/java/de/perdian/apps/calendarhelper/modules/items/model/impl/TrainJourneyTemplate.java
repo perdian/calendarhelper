@@ -13,8 +13,11 @@ public class TrainJourneyTemplate extends AbstractParentTemplate<TrainJourneyIte
 
     @Override
     public TrainJourneyItem createItem() {
-        return new TrainJourneyItem();
+        TrainJourneyItem trainJourneyItem = new TrainJourneyItem();
+        trainJourneyItem.getChildren().add(this.createChildItem(trainJourneyItem));
+        return trainJourneyItem;
     }
+
     @Override
     public Pane createItemPane(TrainJourneyItem item) {
         return new TrainJourneyPane(item);
@@ -23,6 +26,11 @@ public class TrainJourneyTemplate extends AbstractParentTemplate<TrainJourneyIte
     @Override
     protected TrainRideItem createChildItem(TrainJourneyItem parentItem) {
         TrainRideItem childItem = new TrainRideItem();
+        if (!parentItem.getChildren().isEmpty()) {
+            TrainRideItem previousItem = parentItem.getChildren().get(parentItem.getChildren().size() - 1);
+            childItem.departureStationProperty().setValue(previousItem.arrivalStationProperty().getValue());
+            childItem.startDateProperty().setValue(previousItem.endDateProperty().getValue());
+        }
         return childItem;
     }
 

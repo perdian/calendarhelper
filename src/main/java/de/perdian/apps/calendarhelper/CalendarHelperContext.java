@@ -1,6 +1,7 @@
 package de.perdian.apps.calendarhelper;
 
 import de.perdian.apps.calendarhelper.modules.items.model.Item;
+import de.perdian.apps.calendarhelper.modules.items.model.ItemDefaults;
 import de.perdian.apps.calendarhelper.support.google.calendar.GoogleCalendar;
 import de.perdian.apps.calendarhelper.support.google.calendar.GoogleCalendarService;
 import de.perdian.apps.calendarhelper.support.google.users.GoogleUser;
@@ -26,6 +27,7 @@ public class CalendarHelperContext {
     private final ObservableList<Item> editorItems = FXCollections.observableArrayList();
     private final DoubleProperty executionProgress = new SimpleDoubleProperty(0);
     private final BooleanProperty executionActive = new SimpleBooleanProperty(false);
+    private final ItemDefaults itemDefaults = new ItemDefaults();
 
     public CalendarHelperContext(ApplicationContext applicationContext) {
         this.activeGoogleUserProperty().addListener((o, oldValue, newValue) -> {
@@ -74,6 +76,10 @@ public class CalendarHelperContext {
 
     public BooleanProperty executionActiveProperty() {
         return executionActive;
+    }
+
+    public ItemDefaults getItemDefaults() {
+        return this.itemDefaults;
     }
 
 }

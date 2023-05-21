@@ -27,8 +27,8 @@ public abstract class AbstractDateTimeItem extends AbstractItem {
 
     public AbstractDateTimeItem() {
         this.fullDayProperty().addListener((o, oldValue, newValue) -> {
-            if (Boolean.FALSE.equals(newValue)) {
-                this.endDateProperty().setValue(null);
+            if (Boolean.TRUE.equals(newValue)) {
+                this.startTimeProperty().setValue(null);
                 this.endTimeProperty().setValue(null);
             }
         });

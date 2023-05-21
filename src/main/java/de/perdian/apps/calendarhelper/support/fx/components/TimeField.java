@@ -19,7 +19,7 @@ public class TimeField extends BorderPane {
         TextField timeField = new TextField();
         timeField.setTextFormatter(timeFormatter);
         timeField.setPromptText("HH:mm");
-        timeField.setPrefWidth(75);
+        timeField.setPrefWidth(55);
 
         this.setCenter(timeField);
 

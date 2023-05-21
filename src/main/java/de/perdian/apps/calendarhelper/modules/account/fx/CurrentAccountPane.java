@@ -28,7 +28,7 @@ public class CurrentAccountPane extends GridPane {
 
     public CurrentAccountPane(CalendarHelperContext calendarHelperContext, GoogleUserService googleUserService) {
 
-        Label userNameTitleLabel = new Label("User name:");
+        Label userNameTitleLabel = new Label("User");
         Label userNameLabel = new Label("<< No user logged in yet >>");
         userNameLabel.setMaxWidth(Double.MAX_VALUE);
         GridPane.setHgrow(userNameLabel, Priority.ALWAYS);
@@ -43,7 +43,7 @@ public class CurrentAccountPane extends GridPane {
         });
         GridPane.setHgrow(userNameLabel, Priority.ALWAYS);
 
-        Label calendarTitleLabel = new Label("Calendar:");
+        Label calendarTitleLabel = new Label("Calendar");
         ComboBox<GoogleCalendar> calendarBox = new ComboBox<>(calendarHelperContext.googleCalendars());
         calendarBox.setMaxWidth(Double.MAX_VALUE);
         calendarBox.disableProperty().bind(Bindings.isEmpty(calendarHelperContext.googleCalendars()));

@@ -2,7 +2,9 @@ package de.perdian.apps.calendarhelper.modules.items.fx;
 
 import de.perdian.apps.calendarhelper.modules.items.model.Item;
 import de.perdian.apps.calendarhelper.modules.items.model.ItemTemplate;
-import de.perdian.apps.calendarhelper.modules.items.model.impl.*;
+import de.perdian.apps.calendarhelper.modules.items.model.impl.TrainJourneyItem;
+import de.perdian.apps.calendarhelper.modules.items.model.impl.TrainJourneyTemplate;
+import de.perdian.apps.calendarhelper.modules.items.model.impl.TrainRideItem;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
@@ -16,6 +18,7 @@ import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignD;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,14 +80,25 @@ public class ItemsPane extends GridPane {
 
         TrainJourneyTemplate trainJourneyTemplate = new TrainJourneyTemplate();
         TrainRideItem trainRideItem1 = new TrainRideItem();
+        trainRideItem1.typeProperty().setValue("ICE");
+        trainRideItem1.numberProperty().setValue("1234");
+        trainRideItem1.departureStationProperty().setValue("Köln Hbf");
+        trainRideItem1.startDateProperty().setValue(LocalDate.now());
+        trainRideItem1.startTimeProperty().setValue(LocalTime.of(11, 11));
+        trainRideItem1.arrivalStationProperty().setValue("Frankfurt Flughafen");
+        trainRideItem1.endDateProperty().setValue(LocalDate.now());
+        trainRideItem1.endTimeProperty().setValue(LocalTime.of(12, 12));
         TrainRideItem trainRideItem2 = new TrainRideItem();
+        trainRideItem2.typeProperty().setValue("ICE");
+        trainRideItem2.numberProperty().setValue("5678");
+        trainRideItem2.departureStationProperty().setValue("Frankfurt Flughafen");
+        trainRideItem2.startDateProperty().setValue(LocalDate.now());
+        trainRideItem2.startTimeProperty().setValue(LocalTime.of(12, 00));
+        trainRideItem2.arrivalStationProperty().setValue("Stuttgart Hbf");
+        trainRideItem2.endDateProperty().setValue(LocalDate.now());
+        trainRideItem2.endTimeProperty().setValue(LocalTime.of(14, 00));
         TrainJourneyItem trainJourneyItem = this.addItemFromTemplate(trainJourneyTemplate);
-        trainJourneyItem.getChildren().addAll(trainRideItem1, trainRideItem2);
-
-        GenericTemplate genericTemplate = new GenericTemplate();
-        GenericItem conferenceItem = this.addItemFromTemplate(genericTemplate);
-        conferenceItem.startDateProperty().setValue(LocalDate.now());
-        conferenceItem.summaryProperty().setValue("Conference " + System.currentTimeMillis());
+        trainJourneyItem.getChildren().setAll(trainRideItem1, trainRideItem2);
 
     }
 

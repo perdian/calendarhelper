@@ -19,7 +19,7 @@ public class DateField extends BorderPane {
         TextField dateField = new TextField();
         dateField.setTextFormatter(dateFormatter);
         dateField.setPromptText("yyyy-MM-dd");
-        dateField.setPrefWidth(100);
+        dateField.setPrefWidth(90);
 
         this.setCenter(dateField);
 
