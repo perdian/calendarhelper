@@ -6,6 +6,7 @@ import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
@@ -15,6 +16,7 @@ import org.kordamp.ikonli.materialdesign2.MaterialDesignD;
 
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.ServiceLoader;
 
@@ -90,19 +92,26 @@ public class EditorPane extends GridPane {
         removeItemButton.setTooltip(new Tooltip("Remove item"));
         removeItemButton.setOnAction(event -> this.removeEditorItem(editorItem));
 
-        HBox wrapperButtonsPane = new HBox(2);
-        wrapperButtonsPane.getChildren().add(removeItemButton);
-        Label wrapperTitleLabel = new Label(editorTemplate.getTitle(), new FontIcon(editorTemplate.getIcon()));
-        wrapperTitleLabel.setAlignment(Pos.CENTER_LEFT);
-        wrapperTitleLabel.setMaxHeight(Double.MAX_VALUE);
-        BorderPane wrapperTitlePane = new BorderPane();
-        wrapperTitlePane.setLeft(wrapperTitleLabel);
-        wrapperTitlePane.setRight(wrapperButtonsPane);
+        HBox titleButtonsPane = new HBox(2);
+        List<Button> additionalButtons = editorTemplate.getAdditionalButtonsSupplier() == null ? null : editorTemplate.getAdditionalButtonsSupplier().apply(editorItem);
+        if (additionalButtons != null && !additionalButtons.isEmpty()) {
+            Separator separator = new Separator(Orientation.VERTICAL);
+            separator.setPadding(new Insets(0, 2.5, 0, 5));
+            titleButtonsPane.getChildren().addAll(additionalButtons);
+            titleButtonsPane.getChildren().add(separator);
+        }
+        titleButtonsPane.getChildren().add(removeItemButton);
+        Label titleLabel = new Label(editorTemplate.getTitle(), new FontIcon(editorTemplate.getIcon()));
+        titleLabel.setAlignment(Pos.CENTER_LEFT);
+        titleLabel.setMaxHeight(Double.MAX_VALUE);
+        BorderPane titlePane = new BorderPane();
+        titlePane.setLeft(titleLabel);
+        titlePane.setRight(titleButtonsPane);
 
         BorderPane wrapperPane = new BorderPane();
         wrapperPane.setBorder(new Border(new BorderStroke(Color.LIGHTGRAY, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
         wrapperPane.setPadding(new Insets(5, 10, 5, 10));
-        wrapperPane.setTop(wrapperTitlePane);
+        wrapperPane.setTop(titlePane);
         wrapperPane.setCenter(editorItemPane);
 
         this.getEditorItemsContainer().getChildren().add(wrapperPane);
