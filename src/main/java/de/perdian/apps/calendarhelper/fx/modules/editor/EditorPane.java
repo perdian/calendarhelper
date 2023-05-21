@@ -1,6 +1,7 @@
 package de.perdian.apps.calendarhelper.fx.modules.editor;
 
-import de.perdian.apps.calendarhelper.fx.modules.editor.impl.items.ConferenceItem;
+import de.perdian.apps.calendarhelper.fx.modules.editor.impl.items.GenericItem;
+import de.perdian.apps.calendarhelper.fx.modules.editor.impl.items.GenericTemplateFactory;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
@@ -15,6 +16,7 @@ import org.kordamp.ikonli.materialdesign2.MaterialDesignD;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ServiceLoader;
 
 public class EditorPane extends GridPane {
 
@@ -34,11 +36,14 @@ public class EditorPane extends GridPane {
         newItemTitleLabel.setAlignment(Pos.CENTER);
         newItemTitleLabel.setPadding(new Insets(0, 5, 0, 4));
         leftButtonsPane.getChildren().add(newItemTitleLabel);
-        for (EditorItemTemplate editorItemTemplate : EditorItemTemplate.values()) {
-            Button newEditorItemButton = new Button(editorItemTemplate.getTitle(), new FontIcon(editorItemTemplate.getIcon()));
-            newEditorItemButton.setOnAction(event -> this.addEditorItem(editorItemTemplate));
-            leftButtonsPane.getChildren().add(newEditorItemButton);
-        }
+
+        ServiceLoader.load(EditorTemplateFactory.class).stream()
+                .map(provider -> provider.get().createTemplate())
+                .forEach(template -> {
+                    Button newEditorItemButton = new Button(template.getTitle(), new FontIcon(template.getIcon()));
+                    newEditorItemButton.setOnAction(event -> this.addItemFromTemplate(template));
+                    leftButtonsPane.getChildren().add(newEditorItemButton);
+                });
 
         Button removeAllEditorItemsButton = new Button("Remove all items", new FontIcon(MaterialDesignD.DELETE_EMPTY));
         removeAllEditorItemsButton.setOnAction(event -> this.removeAllEditorItems());
@@ -67,16 +72,18 @@ public class EditorPane extends GridPane {
         this.add(buttonSeparator, 0, 1, 1, 1);
         this.add(editorItemsContainerScrollPane, 0, 2, 1, 1);
 
-        ConferenceItem conferenceItem = (ConferenceItem) this.addEditorItem(EditorItemTemplate.CONFERENCE);
+        GenericTemplateFactory genericTemplateFactory = new GenericTemplateFactory();
+        EditorTemplate<GenericItem> genericTemplate = genericTemplateFactory.createTemplate();
+        GenericItem conferenceItem = this.addItemFromTemplate(genericTemplate);
         conferenceItem.startDateProperty().setValue(LocalDate.now());
         conferenceItem.summaryProperty().setValue("Conference " + System.currentTimeMillis());
 
     }
 
-    private EditorItem addEditorItem(EditorItemTemplate editorItemTemplate) {
+    private <T extends EditorItem> T addItemFromTemplate(EditorTemplate<T> editorTemplate) {
 
-        EditorItem editorItem = editorItemTemplate.getEditorItemSupplier().get();
-        Pane editorItemPane = editorItemTemplate.getEditorItemPaneFunction().apply(editorItem);
+        T editorItem = editorTemplate.getItemSupplier().get();
+        Pane editorItemPane = editorTemplate.getPaneSupplier().apply(editorItem);
         editorItemPane.setPadding(new Insets(10, 0, 5, 0));
 
         Button removeItemButton = new Button("", new FontIcon(MaterialDesignD.DELETE));
@@ -85,7 +92,7 @@ public class EditorPane extends GridPane {
 
         HBox wrapperButtonsPane = new HBox(2);
         wrapperButtonsPane.getChildren().add(removeItemButton);
-        Label wrapperTitleLabel = new Label(editorItemTemplate.getTitle(), new FontIcon(editorItemTemplate.getIcon()));
+        Label wrapperTitleLabel = new Label(editorTemplate.getTitle(), new FontIcon(editorTemplate.getIcon()));
         wrapperTitleLabel.setAlignment(Pos.CENTER_LEFT);
         wrapperTitleLabel.setMaxHeight(Double.MAX_VALUE);
         BorderPane wrapperTitlePane = new BorderPane();
