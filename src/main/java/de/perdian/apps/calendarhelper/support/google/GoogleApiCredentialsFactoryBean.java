@@ -24,7 +24,7 @@ public class GoogleApiCredentialsFactoryBean extends AbstractFactoryBean<GoogleA
     }
 
     @Override
-    protected GoogleApiCredentials createInstance() throws Exception {
+    protected GoogleApiCredentials createInstance() {
         Properties applicationProperties = this.loadApplicationProperties();
         GoogleApiCredentials apiCredentials = new GoogleApiCredentials();
         apiCredentials.setClientId(this.extractProperty(applicationProperties, "googleAppClientId", "GOOGLE_APP_CLIENT_ID"));

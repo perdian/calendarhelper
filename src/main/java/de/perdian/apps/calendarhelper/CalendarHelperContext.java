@@ -49,33 +49,33 @@ public class CalendarHelperContext {
             if (activeCalendar != null && !change.getList().contains(activeCalendar)) {
                 this.activeGoogleCalendarProperty().setValue(null);
             } else if (activeCalendar == null && !change.getList().isEmpty()) {
-                this.activeGoogleCalendarProperty().setValue(change.getList().stream().filter(entry -> entry.isPrimary()).findFirst().orElse(null));
+                this.activeGoogleCalendarProperty().setValue(change.getList().stream().filter(GoogleCalendar::isPrimary).findFirst().orElse(null));
             }
         });
     }
 
     public ObjectProperty<GoogleUser> activeGoogleUserProperty() {
-        return activeGoogleUser;
+        return this.activeGoogleUser;
     }
 
     public ObservableList<GoogleCalendar> googleCalendars() {
-        return googleCalendars;
+        return this.googleCalendars;
     }
 
     public ObjectProperty<GoogleCalendar> activeGoogleCalendarProperty() {
-        return activeGoogleCalendar;
+        return this.activeGoogleCalendar;
     }
 
     public ObservableList<Item> editorItems() {
-        return editorItems;
+        return this.editorItems;
     }
 
     public DoubleProperty executionProgressProperty() {
-        return executionProgress;
+        return this.executionProgress;
     }
 
     public BooleanProperty executionActiveProperty() {
-        return executionActive;
+        return this.executionActive;
     }
 
     public ItemDefaults getItemDefaults() {

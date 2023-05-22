@@ -8,6 +8,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class AirlineRepository {
@@ -48,7 +49,7 @@ public class AirlineRepository {
         List<Airline> airlines = new ArrayList<>();
         URL resourceURL = AirlineRepository.class.getResource(resourceLocation);
         log.debug("Loading airlines from resource: {}", resourceURL);
-        try (BufferedReader airlinesReader = new BufferedReader(new InputStreamReader(resourceURL.openStream(), "UTF-8"))) {
+        try (BufferedReader airlinesReader = new BufferedReader(new InputStreamReader(resourceURL.openStream(), StandardCharsets.UTF_8))) {
             for (String airlineLine = airlinesReader.readLine(); airlineLine != null; airlineLine = airlinesReader.readLine()) {
                 if (airlineLine.isEmpty() || airlineLine.startsWith("#")) {
                     continue;

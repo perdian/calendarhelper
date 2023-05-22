@@ -29,7 +29,7 @@ class GoogleAuthorizationCodeToRefreshTokenFunction implements Function<GoogleAu
     }
 
     private GoogleRefreshTokenStore getGoogleRefreshTokenStore() {
-        return googleRefreshTokenStore;
+        return this.googleRefreshTokenStore;
     }
     private void setGoogleRefreshTokenStore(GoogleRefreshTokenStore googleRefreshTokenStore) {
         this.googleRefreshTokenStore = googleRefreshTokenStore;

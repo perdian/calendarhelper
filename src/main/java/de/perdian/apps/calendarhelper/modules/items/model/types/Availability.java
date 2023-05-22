@@ -8,7 +8,7 @@ public enum Availability {
     private String title = null;
     private String apiValue = null;
 
-    private Availability(String title, String apiValue) {
+    Availability(String title, String apiValue) {
         this.setTitle(title);
         this.setApiValue(apiValue);
     }

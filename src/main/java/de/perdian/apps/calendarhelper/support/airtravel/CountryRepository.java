@@ -7,6 +7,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 public class CountryRepository {
@@ -27,7 +28,7 @@ public class CountryRepository {
             URL countriesResourceURL = CountryRepository.class.getResource("/META-INF/resources/airtravel/countries.dat");
             log.debug("Loading countries from resource: {}", countriesResourceURL);
             Map<String, String> countryCodesByTitle = new LinkedHashMap<>();
-            try (BufferedReader countriesReader = new BufferedReader(new InputStreamReader(countriesResourceURL.openStream(), "UTF-8"))) {
+            try (BufferedReader countriesReader = new BufferedReader(new InputStreamReader(countriesResourceURL.openStream(), StandardCharsets.UTF_8))) {
                 for (String countryLine = countriesReader.readLine(); countryLine != null; countryLine = countriesReader.readLine()) {
                     List<String> countryFields = CountryRepository.tokenizeLine(countryLine);
                     String countryName = countryFields.get(0);

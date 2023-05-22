@@ -63,7 +63,7 @@ class GoogleUserServiceImpl implements GoogleUserService {
     }
 
     GoogleApiCredentials getGoogleApplicationCredentials() {
-        return googleApplicationCredentials;
+        return this.googleApplicationCredentials;
     }
     @Autowired
     void setGoogleApplicationCredentials(GoogleApiCredentials googleApplicationCredentials) {
@@ -71,7 +71,7 @@ class GoogleUserServiceImpl implements GoogleUserService {
     }
 
     GoogleRefreshTokenStore getGoogleRefreshTokenStore() {
-        return googleRefreshTokenStore;
+        return this.googleRefreshTokenStore;
     }
     @Autowired
     void setGoogleRefreshTokenStore(GoogleRefreshTokenStore googleRefreshTokenStore) {

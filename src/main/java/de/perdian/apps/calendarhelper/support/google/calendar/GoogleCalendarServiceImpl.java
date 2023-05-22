@@ -88,14 +88,14 @@ class GoogleCalendarServiceImpl implements GoogleCalendarService {
     }
 
     private NetHttpTransport getHttpTransport() {
-        return httpTransport;
+        return this.httpTransport;
     }
     private void setHttpTransport(NetHttpTransport httpTransport) {
         this.httpTransport = httpTransport;
     }
 
     private JsonFactory getJsonFactory() {
-        return jsonFactory;
+        return this.jsonFactory;
     }
     private void setJsonFactory(JsonFactory jsonFactory) {
         this.jsonFactory = jsonFactory;

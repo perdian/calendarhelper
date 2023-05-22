@@ -82,7 +82,7 @@ class GoogleAuthorizationCodeCallbackServer implements AutoCloseable {
     }
 
     private CompletableFuture<String> getAuthorizationCodeFuture() {
-        return authorizationCodeFuture;
+        return this.authorizationCodeFuture;
     }
     private void setAuthorizationCodeFuture(CompletableFuture<String> authorizationCodeFuture) {
         this.authorizationCodeFuture = authorizationCodeFuture;

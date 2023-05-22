@@ -8,6 +8,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.*;
@@ -33,7 +34,7 @@ public class AirportRepository {
 
                 URL airportsResourceURL = AirportRepository.class.getResource(airportsResourceValue);
                 log.debug("Loading airports from resource: {}", airportsResourceURL);
-                try (BufferedReader airportsReader = new BufferedReader(new InputStreamReader(airportsResourceURL.openStream(), "UTF-8"))) {
+                try (BufferedReader airportsReader = new BufferedReader(new InputStreamReader(airportsResourceURL.openStream(), StandardCharsets.UTF_8))) {
                     for (String airportLine = airportsReader.readLine(); airportLine != null; airportLine = airportsReader.readLine()) {
                         if (airportLine.isEmpty() || airportLine.startsWith("#")) {
                             continue;

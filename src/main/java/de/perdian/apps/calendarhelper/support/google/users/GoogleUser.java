@@ -21,21 +21,21 @@ public class GoogleUser implements Serializable {
     }
 
     public UserCredentials getCredentials() {
-        return credentials;
+        return this.credentials;
     }
     private void setCredentials(UserCredentials credentials) {
         this.credentials = credentials;
     }
 
     public String getName() {
-        return name;
+        return this.name;
     }
     public void setName(String name) {
         this.name = name;
     }
 
     public String getEmailAddress() {
-        return emailAddress;
+        return this.emailAddress;
     }
     void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;

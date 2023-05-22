@@ -32,15 +32,13 @@ public class CurrentAccountPane extends GridPane {
         Label userNameLabel = new Label("<< No user logged in yet >>");
         userNameLabel.setMaxWidth(Double.MAX_VALUE);
         GridPane.setHgrow(userNameLabel, Priority.ALWAYS);
-        calendarHelperContext.activeGoogleUserProperty().addListener((o, oldValue, newValue) -> {
-            Platform.runLater(() -> {
-                if (newValue == null) {
-                    userNameLabel.setText("<< No user logged in yet >>");
-                } else {
-                    userNameLabel.setText(newValue.getName() + " (" + newValue.getEmailAddress() + ")");
-                }
-            });
-        });
+        calendarHelperContext.activeGoogleUserProperty().addListener((o, oldValue, newValue) -> Platform.runLater(() -> {
+            if (newValue == null) {
+                userNameLabel.setText("<< No user logged in yet >>");
+            } else {
+                userNameLabel.setText(newValue.getName() + " (" + newValue.getEmailAddress() + ")");
+            }
+        }));
         GridPane.setHgrow(userNameLabel, Priority.ALWAYS);
 
         Label calendarTitleLabel = new Label("Calendar");

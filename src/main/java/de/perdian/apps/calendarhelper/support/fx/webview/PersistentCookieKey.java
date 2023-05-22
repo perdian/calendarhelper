@@ -45,14 +45,14 @@ class PersistentCookieKey implements Serializable {
     }
 
     String getDomain() {
-        return domain;
+        return this.domain;
     }
     private void setDomain(String domain) {
         this.domain = domain;
     }
 
     String getName() {
-        return name;
+        return this.name;
     }
     private void setName(String name) {
         this.name = name;

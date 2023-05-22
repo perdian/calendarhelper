@@ -19,7 +19,7 @@ public class GenericPane extends GridPane {
         ObservableList<Type> typeValues = FXCollections.observableArrayList(Type.values());
         typeValues.add(0, null);
         Label typeLabel = new Label("Type");
-        ComboBox<Type> typeBox = new ComboBox<Type>(typeValues);
+        ComboBox<Type> typeBox = new ComboBox<>(typeValues);
         typeBox.valueProperty().bindBidirectional(item.typeProperty());
         typeBox.setMaxWidth(Double.MAX_VALUE);
 

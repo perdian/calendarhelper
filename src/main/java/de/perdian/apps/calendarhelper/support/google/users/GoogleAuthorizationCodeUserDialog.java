@@ -47,7 +47,7 @@ class GoogleAuthorizationCodeUserDialog implements AutoCloseable {
     }
 
     private Stage getLoginStage() {
-        return loginStage;
+        return this.loginStage;
     }
     private void setLoginStage(Stage loginStage) {
         this.loginStage = loginStage;

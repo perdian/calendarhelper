@@ -6,16 +6,11 @@ import org.kordamp.ikonli.Ikon;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Function;
-import java.util.function.Supplier;
 
 public abstract class ItemTemplate<T extends Item> {
 
     private String title = null;
     private Ikon icon = null;
-    private Supplier<T> itemSupplier = null;
-    private Function<T, Pane> paneSupplier = null;
-    private Function<T, List<Button>> additionalButtonsSupplier = null;
 
     public ItemTemplate(String title, Ikon icon) {
         this.setTitle(title);

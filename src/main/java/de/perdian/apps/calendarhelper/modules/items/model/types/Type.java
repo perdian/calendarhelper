@@ -6,7 +6,7 @@ public enum Type {
 
     private String title = null;
 
-    private Type(String title) {
+    Type(String title) {
         this.setTitle(title);
     }
 

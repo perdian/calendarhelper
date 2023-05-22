@@ -50,7 +50,7 @@ public class PersistentCookie implements Externalizable {
     }
 
     HttpCookie getCookie() {
-        return cookie;
+        return this.cookie;
     }
     private void setCookie(HttpCookie cookie) {
         this.cookie = cookie;

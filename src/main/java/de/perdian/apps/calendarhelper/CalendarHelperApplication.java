@@ -70,7 +70,7 @@ public class CalendarHelperApplication extends Application {
     }
 
     private CalendarHelperContext getCalendarHelperContext() {
-        return calendarHelperContext;
+        return this.calendarHelperContext;
     }
     private void setCalendarHelperContext(CalendarHelperContext calendarHelperContext) {
         this.calendarHelperContext = calendarHelperContext;
@@ -80,7 +80,7 @@ public class CalendarHelperApplication extends Application {
         this.applicationContext = applicationContext;
     }
     private ApplicationContext getApplicationContext() {
-        return applicationContext;
+        return this.applicationContext;
     }
 
 }

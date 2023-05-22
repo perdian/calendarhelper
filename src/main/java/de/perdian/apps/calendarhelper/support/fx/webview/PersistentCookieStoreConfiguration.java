@@ -25,7 +25,7 @@ class PersistentCookieStoreConfiguration {
     }
 
     StorageService getStorageService() {
-        return storageService;
+        return this.storageService;
     }
     @Autowired
     void setStorageService(StorageService storageService) {

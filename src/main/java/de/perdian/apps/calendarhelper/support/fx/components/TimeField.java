@@ -25,7 +25,7 @@ public class TimeField extends BorderPane {
 
     }
 
-    private class TimeStringConverter extends StringConverter<LocalTime> {
+    private static class TimeStringConverter extends StringConverter<LocalTime> {
 
         @Override
         public String toString(LocalTime object) {

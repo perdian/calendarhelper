@@ -15,7 +15,7 @@ public interface GoogleUserService {
     GoogleUser lookupUser() throws GoogleApiException;
 
     /**
-     * Force a login of a new user session, independently of whether or not user credentials can be found
+     * Force a login of a new user session, independently of whether user credentials can be found
      * from a previous login.
      *
      * @return the currently available (and validated) user.

@@ -35,7 +35,7 @@ class GoogleAuthorizationCodeSupplier implements Supplier<GoogleAuthorizationCod
         String googleClientId = Objects.requireNonNull(this.getGoogleApiCredentials().getClientId(), "No Google Cliend ID available");
         String googleClientSecret = Objects.requireNonNull(this.getGoogleApiCredentials().getClientSecret(), "No Google Cliend Secret available");
         List<String> googleScopes = this.getGoogleApiCredentials().getScopes();
-        AuthorizationCodeFlow authorizationCodeFlow = new GoogleAuthorizationCodeFlow.Builder(googleHttpTransport, googleJsonFactory, googleClientId, googleClientSecret, googleScopes)
+        AuthorizationCodeFlow authorizationCodeFlow = new GoogleAuthorizationCodeFlow.Builder(this.googleHttpTransport, this.googleJsonFactory, googleClientId, googleClientSecret, googleScopes)
                 .setAccessType("offline")
                 .setApprovalPrompt("force")
                 .build();
@@ -56,21 +56,21 @@ class GoogleAuthorizationCodeSupplier implements Supplier<GoogleAuthorizationCod
     }
 
     private GoogleApiCredentials getGoogleApiCredentials() {
-        return googleApiCredentials;
+        return this.googleApiCredentials;
     }
     private void setGoogleApiCredentials(GoogleApiCredentials googleApiCredentials) {
         this.googleApiCredentials = googleApiCredentials;
     }
 
     private NetHttpTransport getGoogleHttpTransport() {
-        return googleHttpTransport;
+        return this.googleHttpTransport;
     }
     private void setGoogleHttpTransport(NetHttpTransport googleHttpTransport) {
         this.googleHttpTransport = googleHttpTransport;
     }
 
     private JsonFactory getGoogleJsonFactory() {
-        return googleJsonFactory;
+        return this.googleJsonFactory;
     }
     private void setGoogleJsonFactory(JsonFactory googleJsonFactory) {
         this.googleJsonFactory = googleJsonFactory;

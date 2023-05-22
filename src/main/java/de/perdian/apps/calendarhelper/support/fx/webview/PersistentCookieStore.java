@@ -51,7 +51,7 @@ public class PersistentCookieStore implements CookieStore {
                 .filter(entry -> uri.getHost().equals(entry.getKey().getDomain()))
                 .forEach(entry -> cookiesMatchingDomainByName.put(entry.getValue().getCookie().getName(), entry.getValue().getCookie()));
 
-        return cookiesMatchingDomainByName.entrySet().stream().map(Map.Entry::getValue).toList();
+        return cookiesMatchingDomainByName.values().stream().toList();
 
     }
 
@@ -76,6 +76,7 @@ public class PersistentCookieStore implements CookieStore {
         return false;
     }
 
+    @SuppressWarnings("unchecked")
     private void loadFromFileSystem() {
         if (Files.exists(this.getStoragePath())) {
             log.trace("Loading persistent cookies from path at: {}", this.getStoragePath());
@@ -108,14 +109,14 @@ public class PersistentCookieStore implements CookieStore {
     }
 
     private Path getStoragePath() {
-        return storagePath;
+        return this.storagePath;
     }
     private void setStoragePath(Path storagePath) {
         this.storagePath = storagePath;
     }
 
     private Map<PersistentCookieKey, PersistentCookie> getCookiesByKey() {
-        return cookiesByKey;
+        return this.cookiesByKey;
     }
     private void setCookiesByKey(Map<PersistentCookieKey, PersistentCookie> cookiesByKey) {
         this.cookiesByKey = cookiesByKey;

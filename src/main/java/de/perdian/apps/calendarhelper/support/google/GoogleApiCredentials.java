@@ -13,21 +13,21 @@ public class GoogleApiCredentials {
     );
 
     public String getClientId() {
-        return clientId;
+        return this.clientId;
     }
     public void setClientId(String clientId) {
         this.clientId = clientId;
     }
 
     public String getClientSecret() {
-        return clientSecret;
+        return this.clientSecret;
     }
     public void setClientSecret(String clientSecret) {
         this.clientSecret = clientSecret;
     }
 
     public List<String> getScopes() {
-        return scopes;
+        return this.scopes;
     }
     public void setScopes(List<String> scopes) {
         this.scopes = scopes;

@@ -25,7 +25,7 @@ public class DateField extends BorderPane {
 
     }
 
-    private class DateStringConverter extends StringConverter<LocalDate> {
+    private static class DateStringConverter extends StringConverter<LocalDate> {
 
         @Override
         public String toString(LocalDate object) {

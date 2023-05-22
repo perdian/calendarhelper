@@ -15,21 +15,21 @@ class GoogleAuthorizationCode {
     }
 
     AuthorizationCodeFlow getFlow() {
-        return flow;
+        return this.flow;
     }
     private void setFlow(AuthorizationCodeFlow flow) {
         this.flow = flow;
     }
 
     String getCallbackUrl() {
-        return callbackUrl;
+        return this.callbackUrl;
     }
     private void setCallbackUrl(String callbackUrl) {
         this.callbackUrl = callbackUrl;
     }
 
     public String getValue() {
-        return value;
+        return this.value;
     }
     private void setValue(String value) {
         this.value = value;

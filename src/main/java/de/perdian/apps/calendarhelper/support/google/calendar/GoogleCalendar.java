@@ -18,7 +18,7 @@ public class GoogleCalendar {
         this.setId(calendarListEntry.getId());
         this.setColor(StringUtils.isEmpty(calendarListEntry.getBackgroundColor()) ? null : Color.web(calendarListEntry.getBackgroundColor()));
         this.setSummary(calendarListEntry.getSummary());
-        this.setPrimary(calendarListEntry.getPrimary() == null ? false : calendarListEntry.getPrimary().booleanValue());
+        this.setPrimary(calendarListEntry.getPrimary() != null && calendarListEntry.getPrimary());
         this.setTimezone(ZoneId.of(calendarListEntry.getTimeZone()));
     }
 
@@ -27,35 +27,35 @@ public class GoogleCalendar {
     }
 
     public String getId() {
-        return id;
+        return this.id;
     }
     public void setId(String id) {
         this.id = id;
     }
 
     public Color getColor() {
-        return color;
+        return this.color;
     }
     public void setColor(Color color) {
         this.color = color;
     }
 
     public String getSummary() {
-        return summary;
+        return this.summary;
     }
     public void setSummary(String summary) {
         this.summary = summary;
     }
 
     public boolean isPrimary() {
-        return primary;
+        return this.primary;
     }
     public void setPrimary(boolean primary) {
         this.primary = primary;
     }
 
     public ZoneId getTimezone() {
-        return timezone;
+        return this.timezone;
     }
     public void setTimezone(ZoneId timezone) {
         this.timezone = timezone;

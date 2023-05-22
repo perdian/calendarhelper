@@ -12,7 +12,7 @@ class StorageServiceImpl implements StorageService {
 
     @Override
     public Path getRootPath() {
-        return rootPath;
+        return this.rootPath;
     }
     private void setRootPath(Path rootPath) {
         this.rootPath = rootPath;

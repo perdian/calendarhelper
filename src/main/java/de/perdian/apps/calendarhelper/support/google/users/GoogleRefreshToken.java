@@ -13,7 +13,7 @@ class GoogleRefreshToken {
     }
 
     String getValue() {
-        return value;
+        return this.value;
     }
     private void setValue(String value) {
         this.value = value;

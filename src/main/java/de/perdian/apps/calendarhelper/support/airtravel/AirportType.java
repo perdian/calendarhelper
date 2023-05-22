@@ -1,18 +1,18 @@
 package de.perdian.apps.calendarhelper.support.airtravel;
 
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 public enum AirportType {
 
-    AIRPORT(Arrays.asList("airport")),
-    STATION(Arrays.asList("station")),
-    PORT(Arrays.asList("port")),
-    UNKNOWN(Arrays.asList("unknown"));
+    AIRPORT(List.of("airport")),
+    STATION(List.of("station")),
+    PORT(List.of("port")),
+    UNKNOWN(List.of("unknown"));
 
     private Collection<String> values = null;
 
-    private AirportType(Collection<String> values) {
+    AirportType(Collection<String> values) {
         this.setValues(values);
     }
 

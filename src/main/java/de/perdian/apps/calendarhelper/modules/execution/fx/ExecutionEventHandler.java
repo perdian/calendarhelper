@@ -40,7 +40,7 @@ class ExecutionEventHandler implements EventHandler<ActionEvent> {
         });
     }
 
-    private void createCalendarEvents() throws Exception {
+    private void createCalendarEvents() {
 
         List<Event> calendarEvents = this.getCalendarHelperContext().editorItems().stream()
                 .flatMap(editorItem -> editorItem.createEvents().stream())

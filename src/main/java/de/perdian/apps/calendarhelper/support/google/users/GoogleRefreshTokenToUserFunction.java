@@ -54,7 +54,7 @@ class GoogleRefreshTokenToUserFunction implements Function<GoogleRefreshToken, G
     }
 
     private GoogleApiCredentials getGoogleApplicationCredentials() {
-        return googleApplicationCredentials;
+        return this.googleApplicationCredentials;
     }
     private void setGoogleApplicationCredentials(GoogleApiCredentials googleApplicationCredentials) {
         this.googleApplicationCredentials = googleApplicationCredentials;

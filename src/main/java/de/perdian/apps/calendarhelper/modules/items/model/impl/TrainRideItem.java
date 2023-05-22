@@ -8,13 +8,13 @@ import org.apache.commons.lang3.StringUtils;
 
 public class TrainRideItem extends AbstractDateTimeItem {
 
-    private StringProperty type = new SimpleStringProperty();
-    private StringProperty number = new SimpleStringProperty();
-    private StringProperty departureStation = new SimpleStringProperty();
-    private StringProperty arrivalStation = new SimpleStringProperty();
-    private StringProperty reservedWagon = new SimpleStringProperty();
-    private StringProperty reservedSeats = new SimpleStringProperty();
-    private StringProperty comment = new SimpleStringProperty();
+    private final StringProperty type = new SimpleStringProperty();
+    private final StringProperty number = new SimpleStringProperty();
+    private final StringProperty departureStation = new SimpleStringProperty();
+    private final StringProperty arrivalStation = new SimpleStringProperty();
+    private final StringProperty reservedWagon = new SimpleStringProperty();
+    private final StringProperty reservedSeats = new SimpleStringProperty();
+    private final StringProperty comment = new SimpleStringProperty();
 
     @Override
     protected Event createEvent() {

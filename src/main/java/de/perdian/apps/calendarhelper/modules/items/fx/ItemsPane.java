@@ -30,6 +30,7 @@ public class ItemsPane extends GridPane {
     private ObservableList<Item> editorItems = null;
     private VBox editorItemsContainer = null;
 
+    @SuppressWarnings("unchecked")
     public ItemsPane(ObservableList<Item> editorItems) {
 
         Map<Item, Region> editorItemToRegionMap = new HashMap<>();
@@ -44,7 +45,7 @@ public class ItemsPane extends GridPane {
         leftButtonsPane.getChildren().add(newItemTitleLabel);
 
         ServiceLoader.load(ItemTemplate.class).stream()
-                .map(provider -> provider.get())
+                .map(ServiceLoader.Provider::get)
                 .forEach(template -> {
                     Button newEditorItemButton = new Button(template.getTitle(), new FontIcon(template.getIcon()));
                     newEditorItemButton.setOnAction(event -> this.addItemFromTemplate(template));
@@ -87,19 +88,19 @@ public class ItemsPane extends GridPane {
         airtravelFlightItem1.seatsProperty().setValue("15A");
         airtravelFlightItem1.departureAirportCodeProperty().setValue("CGN");
         airtravelFlightItem1.startDateProperty().setValue(LocalDate.now());
-        airtravelFlightItem1.startTimeProperty().setValue(LocalTime.of(10, 00));
+        airtravelFlightItem1.startTimeProperty().setValue(LocalTime.of(10, 0));
         airtravelFlightItem1.arrivalAirportCodeProperty().setValue("JFK");
         airtravelFlightItem1.endDateProperty().setValue(LocalDate.now());
-        airtravelFlightItem1.endTimeProperty().setValue(LocalTime.of(14, 00));
+        airtravelFlightItem1.endTimeProperty().setValue(LocalTime.of(14, 0));
         AirtravelFlightItem airtravelFlightItem2 = new AirtravelFlightItem();
         airtravelFlightItem2.airlineCodeProperty().setValue("UA");
         airtravelFlightItem2.flightNumberProperty().setValue("42");
         airtravelFlightItem2.departureAirportCodeProperty().setValue("JFK");
         airtravelFlightItem2.startDateProperty().setValue(LocalDate.now());
-        airtravelFlightItem2.startTimeProperty().setValue(LocalTime.of(16, 00));
+        airtravelFlightItem2.startTimeProperty().setValue(LocalTime.of(16, 0));
         airtravelFlightItem2.arrivalAirportCodeProperty().setValue("LAX");
         airtravelFlightItem2.endDateProperty().setValue(LocalDate.now());
-        airtravelFlightItem2.endTimeProperty().setValue(LocalTime.of(23, 00));
+        airtravelFlightItem2.endTimeProperty().setValue(LocalTime.of(23, 0));
         AirtravelJourneyTemplate airtravelJourneyTemplate = new AirtravelJourneyTemplate();
         AirtravelJourneyItem airtravelJourneyItem = this.addItemFromTemplate(airtravelJourneyTemplate);
         airtravelJourneyItem.getChildren().setAll(airtravelFlightItem1, airtravelFlightItem2);
