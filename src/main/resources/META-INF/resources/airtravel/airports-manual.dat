@@ -1,0 +1,20 @@
+# The airports-extended.dat is taken directory from https://github.com/jpatokal/openflights/blob/master/data/airports-extended.dat
+# This file allows us to configure additional airports without losing the chance to upgrade to a new file from OpenFlights
+# The structure is exactly like the structure defined in airports-extended.dat and any entry in this file overwrites
+# anything within airports-extended.dat
+
+0,"Dortmund Hbf","Dortmund","Germany","DTZ",\N,51.5175,7.458889,\N,1,"E","Europe/Berlin","station","User"
+0,"Karlsruhe Hbf","Karlsruhe","Germany","KJR",\N,48.993997,8.400558,\N,1,"E","Europe/Berlin","station","User"
+0,"Linz Hbf","Linz","Austria","LZS",\N,48.290556,14.291111,\N,1,"E","Europe/Vienna","station","User"
+0,"Mannheim Hbf","Mannheim","Germany","MHJ",\N,49.479633,8.469858,\N,1,"E","Europe/Berlin","station","User"
+0,"Kassel-Wilhelmshöhe","Kassel","Germany","KWQ",\N,51.312222,9.447222,\N,1,"E","Europe/Berlin","station","User"
+0,"Freiburg Hbf","Freiburg","Germany","QFB",\N,47.997778,7.841944,900,1,"E","Europe/Berlin","station","User"
+0,"Ulm Hbf","Ulm","Germany","QUL",\N,48.4,9.983333,\N,1,"E","Europe/Berlin","station","User"
+0,"Würzburg Hbf","Würzburg","Germany","QWU",\N,49.801389,9.935556,\N,1,"E","Europe/Berlin","station","User"
+0,"Leipzig Hbf","Leipzig","Germany","XIT",\N,51.345278,12.382222,395,1,"E","Europe/Berlin","station","User"
+0,"Erfurt Hbf","Erfurt","Germany","XIU",\N,50.972778,11.037778,\N,1,"E","Europe/Berlin","station","User"
+0,"Gottingen Hbf","Gottingen","Germany","ZEU",\N,51.536667,9.926944,485,1,"E","Europe/Berlin","station","User"
+0,"Basel Badischer Bahnhof","Basel","Switzerland","ZBA",\N,47.568056,7.606389,854,1,"E","Europe/Zurich","station","User"
+0,"Basel SBB","Basel","Switzerland","ZDH",\N,47.5475,7.589722,\N,1,"E","Europe/Zurich","station","User"
+
+0,"Beijing Daxing International","Beijing","China","PKX","ZBAD",39.509167,116.410556,\N,1,"U","Asia/Shanghai","airport","User"

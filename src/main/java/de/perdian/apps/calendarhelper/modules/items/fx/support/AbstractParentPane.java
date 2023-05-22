@@ -4,7 +4,6 @@ import de.perdian.apps.calendarhelper.modules.items.model.support.AbstractDateTi
 import de.perdian.apps.calendarhelper.modules.items.model.support.AbstractParentItem;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
-import javafx.geometry.Insets;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -19,6 +18,7 @@ public abstract class AbstractParentPane<P extends AbstractParentItem<C>, C exte
     public AbstractParentPane(P parentItem) {
 
         VBox childrenParentPane = new VBox();
+        childrenParentPane.setSpacing(10);
         parentItem.getChildren().forEach(childItem -> this.addChildItem(childItem, parentItem, childrenParentPane));
         this.setCenter(childrenParentPane);
 
@@ -34,9 +34,11 @@ public abstract class AbstractParentPane<P extends AbstractParentItem<C>, C exte
     private void addChildItem(C childItem, P parentItem, VBox parentPane) {
         Pane childPane = this.createChildPane(childItem, parentItem);
         BorderPane childWrapperPane = new BorderPane(childPane);
-        childWrapperPane.setPadding(new Insets(2, 0, 2, 0));
         this.getChildToPaneMap().put(childItem, childWrapperPane);
-        Platform.runLater(() -> parentPane.getChildren().add(childWrapperPane));
+        Platform.runLater(() -> {
+            parentPane.getChildren().add(childWrapperPane);
+            childPane.requestFocus();
+        });
     }
 
     private void removeChildItem(C childItem, VBox parentPane) {

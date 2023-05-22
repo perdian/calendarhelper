@@ -13,7 +13,9 @@ public abstract class AbstractParentItem<T extends Item> extends AbstractItem {
 
     @Override
     public List<Event> createEvents() {
-        throw new UnsupportedOperationException();
+        return this.getChildren().stream()
+                .flatMap(child -> child.createEvents().stream())
+                .toList();
     }
 
     public ObservableList<T> getChildren() {

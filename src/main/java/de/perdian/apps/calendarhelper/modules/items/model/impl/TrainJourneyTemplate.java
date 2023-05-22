@@ -14,7 +14,7 @@ public class TrainJourneyTemplate extends AbstractParentTemplate<TrainJourneyIte
     @Override
     public TrainJourneyItem createItem() {
         TrainJourneyItem trainJourneyItem = new TrainJourneyItem();
-        trainJourneyItem.getChildren().add(this.createChildItem(trainJourneyItem));
+        trainJourneyItem.getChildren().setAll(this.createChildItem(trainJourneyItem));
         return trainJourneyItem;
     }
 

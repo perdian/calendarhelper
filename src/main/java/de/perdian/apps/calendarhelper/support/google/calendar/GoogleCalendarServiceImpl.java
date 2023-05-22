@@ -73,7 +73,7 @@ class GoogleCalendarServiceImpl implements GoogleCalendarService {
         Calendar calendarService = this.createCalendarService(googleUser);
         try {
             return calendarService.events()
-                    .insert(googleCalendar.getId(), event)
+                    .update(googleCalendar.getId(), event.getId(), event)
                     .setSendUpdates("all")
                     .execute();
         } catch (Exception e) {

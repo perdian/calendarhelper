@@ -2,9 +2,9 @@ package de.perdian.apps.calendarhelper.modules.items.fx;
 
 import de.perdian.apps.calendarhelper.modules.items.model.Item;
 import de.perdian.apps.calendarhelper.modules.items.model.ItemTemplate;
-import de.perdian.apps.calendarhelper.modules.items.model.impl.TrainJourneyItem;
-import de.perdian.apps.calendarhelper.modules.items.model.impl.TrainJourneyTemplate;
-import de.perdian.apps.calendarhelper.modules.items.model.impl.TrainRideItem;
+import de.perdian.apps.calendarhelper.modules.items.model.impl.AirtravelFlightItem;
+import de.perdian.apps.calendarhelper.modules.items.model.impl.AirtravelJourneyItem;
+import de.perdian.apps.calendarhelper.modules.items.model.impl.AirtravelJourneyTemplate;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
@@ -48,12 +48,14 @@ public class ItemsPane extends GridPane {
                 .forEach(template -> {
                     Button newEditorItemButton = new Button(template.getTitle(), new FontIcon(template.getIcon()));
                     newEditorItemButton.setOnAction(event -> this.addItemFromTemplate(template));
+                    newEditorItemButton.setFocusTraversable(false);
                     leftButtonsPane.getChildren().add(newEditorItemButton);
                 });
 
         Button removeAllEditorItemsButton = new Button("Remove all items", new FontIcon(MaterialDesignD.DELETE_EMPTY));
-        removeAllEditorItemsButton.setOnAction(event -> this.removeAllEditorItems());
         removeAllEditorItemsButton.disableProperty().bind(Bindings.isEmpty(editorItems));
+        removeAllEditorItemsButton.setOnAction(event -> this.removeAllEditorItems());
+        removeAllEditorItemsButton.setFocusTraversable(false);
         HBox rightButtonsPane = new HBox(2);
         rightButtonsPane.getChildren().addAll(removeAllEditorItemsButton);
 
@@ -78,27 +80,29 @@ public class ItemsPane extends GridPane {
         this.add(buttonSeparator, 0, 1, 1, 1);
         this.add(editorItemsContainerScrollPane, 0, 2, 1, 1);
 
-        TrainJourneyTemplate trainJourneyTemplate = new TrainJourneyTemplate();
-        TrainRideItem trainRideItem1 = new TrainRideItem();
-        trainRideItem1.typeProperty().setValue("ICE");
-        trainRideItem1.numberProperty().setValue("1234");
-        trainRideItem1.departureStationProperty().setValue("Köln Hbf");
-        trainRideItem1.startDateProperty().setValue(LocalDate.now());
-        trainRideItem1.startTimeProperty().setValue(LocalTime.of(11, 11));
-        trainRideItem1.arrivalStationProperty().setValue("Frankfurt Flughafen");
-        trainRideItem1.endDateProperty().setValue(LocalDate.now());
-        trainRideItem1.endTimeProperty().setValue(LocalTime.of(12, 12));
-        TrainRideItem trainRideItem2 = new TrainRideItem();
-        trainRideItem2.typeProperty().setValue("ICE");
-        trainRideItem2.numberProperty().setValue("5678");
-        trainRideItem2.departureStationProperty().setValue("Frankfurt Flughafen");
-        trainRideItem2.startDateProperty().setValue(LocalDate.now());
-        trainRideItem2.startTimeProperty().setValue(LocalTime.of(12, 00));
-        trainRideItem2.arrivalStationProperty().setValue("Stuttgart Hbf");
-        trainRideItem2.endDateProperty().setValue(LocalDate.now());
-        trainRideItem2.endTimeProperty().setValue(LocalTime.of(14, 00));
-        TrainJourneyItem trainJourneyItem = this.addItemFromTemplate(trainJourneyTemplate);
-        trainJourneyItem.getChildren().setAll(trainRideItem1, trainRideItem2);
+        AirtravelFlightItem airtravelFlightItem1 = new AirtravelFlightItem();
+        airtravelFlightItem1.airlineCodeProperty().setValue("LH");
+        airtravelFlightItem1.flightNumberProperty().setValue("1234");
+        airtravelFlightItem1.airplaneTypeProperty().setValue("Airbus A380");
+        airtravelFlightItem1.seatsProperty().setValue("15A");
+        airtravelFlightItem1.departureAirportCodeProperty().setValue("CGN");
+        airtravelFlightItem1.startDateProperty().setValue(LocalDate.now());
+        airtravelFlightItem1.startTimeProperty().setValue(LocalTime.of(10, 00));
+        airtravelFlightItem1.arrivalAirportCodeProperty().setValue("JFK");
+        airtravelFlightItem1.endDateProperty().setValue(LocalDate.now());
+        airtravelFlightItem1.endTimeProperty().setValue(LocalTime.of(14, 00));
+        AirtravelFlightItem airtravelFlightItem2 = new AirtravelFlightItem();
+        airtravelFlightItem2.airlineCodeProperty().setValue("UA");
+        airtravelFlightItem2.flightNumberProperty().setValue("42");
+        airtravelFlightItem2.departureAirportCodeProperty().setValue("JFK");
+        airtravelFlightItem2.startDateProperty().setValue(LocalDate.now());
+        airtravelFlightItem2.startTimeProperty().setValue(LocalTime.of(16, 00));
+        airtravelFlightItem2.arrivalAirportCodeProperty().setValue("LAX");
+        airtravelFlightItem2.endDateProperty().setValue(LocalDate.now());
+        airtravelFlightItem2.endTimeProperty().setValue(LocalTime.of(23, 00));
+        AirtravelJourneyTemplate airtravelJourneyTemplate = new AirtravelJourneyTemplate();
+        AirtravelJourneyItem airtravelJourneyItem = this.addItemFromTemplate(airtravelJourneyTemplate);
+        airtravelJourneyItem.getChildren().setAll(airtravelFlightItem1, airtravelFlightItem2);
 
     }
 
@@ -111,6 +115,7 @@ public class ItemsPane extends GridPane {
         Button removeItemButton = new Button("", new FontIcon(MaterialDesignD.DELETE));
         removeItemButton.setTooltip(new Tooltip("Remove item"));
         removeItemButton.setOnAction(event -> this.removeEditorItem(item));
+        removeItemButton.setFocusTraversable(false);
 
         HBox titleButtonsPane = new HBox(2);
         List<Button> additionalButtons = itemTemplate.createAdditionalButtons(item);

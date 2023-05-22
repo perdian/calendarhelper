@@ -1,0 +1,6 @@
+# The airlines.dat is taken directory from https://github.com/jpatokal/openflights/blob/master/data/airlines.dat
+# This file allows us to configure additional airlines without losing the chance to upgrade to a new file from OpenFlights
+# The structure is exactly like the structure defined in airlines.dat and any entry in this file overwrites
+# anything within airports-extended.dat
+
+9999,"Eurowings Discover","Eurowings","4Y","OCN","OCEAN","Germany","Y"

@@ -24,6 +24,7 @@ public abstract class AbstractParentTemplate<P extends AbstractParentItem<C>, C 
         Button newChildButton = new Button("", new FontIcon(MaterialDesignP.PLUS));
         newChildButton.setTooltip(new Tooltip("New child"));
         newChildButton.setOnAction(event -> Platform.runLater(() -> item.getChildren().add(this.createChildItem(item))));
+        newChildButton.setFocusTraversable(false);
         return List.of(newChildButton);
     }
 

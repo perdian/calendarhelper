@@ -2,6 +2,7 @@ package de.perdian.apps.calendarhelper.modules.execution.fx;
 
 import de.perdian.apps.calendarhelper.CalendarHelperContext;
 import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -25,10 +26,15 @@ public class ExecutionPane extends GridPane {
         progressBar.setMaxWidth(Double.MAX_VALUE);
         GridPane.setHgrow(progressBar, Priority.ALWAYS);
 
+        BooleanBinding executionDisabled = calendarHelperContext.executionActiveProperty()
+                .or(Bindings.isEmpty(calendarHelperContext.editorItems()))
+                .or(calendarHelperContext.activeGoogleCalendarProperty().isNull())
+                .or(calendarHelperContext.activeGoogleUserProperty().isNull());
+
         Button generateCalendarEntriesButton = new Button("Generate calendar entries", new FontIcon(MaterialDesignC.CREATION));
         generateCalendarEntriesButton.setOnAction(new ExecutionEventHandler(calendarHelperContext, applicationContext));
         generateCalendarEntriesButton.setMaxHeight(Double.MAX_VALUE);
-        generateCalendarEntriesButton.disableProperty().bind(Bindings.isEmpty(calendarHelperContext.editorItems()).or(calendarHelperContext.executionActiveProperty()));
+        generateCalendarEntriesButton.disableProperty().bind(executionDisabled);
 
         this.add(progressTitleLabel, 0, 0, 1, 1);
         this.add(progressBar, 0, 1, 1, 1);

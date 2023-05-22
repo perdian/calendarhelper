@@ -19,7 +19,7 @@ public class TrainRidePane extends GridPane {
 
     TrainRidePane(TrainRideItem trainRideItem, TrainJourneyItem trainJourneyItem) {
 
-        Label numberLabel = new Label("Number");
+        Label trainLabel = new Label("Train");
         TextField typeField = new TextField();
         typeField.setPromptText("XX");
         typeField.textProperty().bindBidirectional(trainRideItem.typeProperty());
@@ -28,7 +28,7 @@ public class TrainRidePane extends GridPane {
         numberField.setPromptText("0000");
         numberField.setPrefWidth(55);
         numberField.textProperty().bindBidirectional(trainRideItem.numberProperty());
-        numberLabel.setLabelFor(typeField);
+        trainLabel.setLabelFor(typeField);
 
         Label departureStationLabel = new Label("Departure");
         TextField departureStationField = new TextField();
@@ -70,11 +70,12 @@ public class TrainRidePane extends GridPane {
         Button removeButton = new Button("", new FontIcon(MaterialDesignT.TRASH_CAN));
         removeButton.disableProperty().bind(Bindings.size(trainJourneyItem.getChildren()).lessThanOrEqualTo(1));
         removeButton.setOnAction(event -> trainJourneyItem.getChildren().remove(trainRideItem));
+        removeButton.setFocusTraversable(false);
         HBox buttonBox = new HBox(2);
         buttonBox.getChildren().add(removeButton);
         GridPane.setMargin(buttonBox, new Insets(0, 0, 0, 10));
 
-        this.add(numberLabel, 0, 0, 1, 1);
+        this.add(trainLabel, 0, 0, 1, 1);
         this.add(typeField, 1, 0, 1, 1);
         this.add(numberField, 2, 0, 1, 1);
         this.add(departureStationLabel, 3, 0, 1, 1);
