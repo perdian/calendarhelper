@@ -2,7 +2,8 @@ package de.perdian.apps.calendarhelper.modules.items.model.types;
 
 public enum Type {
 
-    CONFERENCE("Konferenz");
+    CONFERENCE("Konferenz"),
+    HOTEL("Hotel");
 
     private String title = null;
 
