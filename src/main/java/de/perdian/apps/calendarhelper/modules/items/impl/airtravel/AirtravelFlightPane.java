@@ -32,8 +32,10 @@ public class AirtravelFlightPane extends GridPane {
         flightLabel.setLabelFor(airlineField);
 
         Label departureLabel = new Label("Departure");
+        TextFormatter<String> departureAirportCodeFieldFormatter = new TextFormatter<>(new ToUppercaseStringConverter());
+        departureAirportCodeFieldFormatter.valueProperty().bindBidirectional(airtravelFlightItem.departureAirportCodeProperty());
         TextField departureAirportCodeField = new TextField();
-        departureAirportCodeField.textProperty().bindBidirectional(airtravelFlightItem.departureAirportCodeProperty());
+        departureAirportCodeField.setTextFormatter(departureAirportCodeFieldFormatter);
         departureAirportCodeField.setPromptText("ABC");
         departureAirportCodeField.setPrefWidth(50);
         departureLabel.setLabelFor(departureAirportCodeField);
@@ -46,8 +48,10 @@ public class AirtravelFlightPane extends GridPane {
         GridPane.setMargin(departureLabel, new Insets(0, 0, 0, 10));
 
         Label arrivalLabel = new Label("Arrival");
+        TextFormatter<String> arrivalAirportCodeFieldFormatter = new TextFormatter<>(new ToUppercaseStringConverter());
+        arrivalAirportCodeFieldFormatter.valueProperty().bindBidirectional(airtravelFlightItem.arrivalAirportCodeProperty());
         TextField arrivalAirportCodeField = new TextField();
-        arrivalAirportCodeField.textProperty().bindBidirectional(airtravelFlightItem.arrivalAirportCodeProperty());
+        arrivalAirportCodeField.setTextFormatter(arrivalAirportCodeFieldFormatter);
         arrivalAirportCodeField.setPromptText("ABC");
         arrivalAirportCodeField.setPrefWidth(50);
         arrivalLabel.setLabelFor(arrivalAirportCodeField);

@@ -39,7 +39,7 @@ public class ItemsPane extends GridPane {
         Label newItemTitleLabel = new Label("New item");
         newItemTitleLabel.setMaxHeight(Double.MAX_VALUE);
         newItemTitleLabel.setAlignment(Pos.CENTER);
-        newItemTitleLabel.setPadding(new Insets(0, 5, 0, 4));
+        newItemTitleLabel.setPadding(new Insets(0, 10, 0, 4));
         leftButtonsPane.getChildren().add(newItemTitleLabel);
 
         ServiceLoader.load(ItemTemplate.class).stream()
