@@ -5,17 +5,12 @@ import de.perdian.apps.calendarhelper.modules.items.ItemTemplate;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
-import org.kordamp.ikonli.Ikon;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignP;
 
 import java.util.List;
 
-public abstract class AbstractParentTemplate<P extends AbstractParentItem<C>, C extends Item> extends ItemTemplate<P> {
-
-    public AbstractParentTemplate(String title, Ikon icon) {
-        super(title, icon);
-    }
+public abstract class AbstractParentItemTemplate<P extends AbstractParentItem<C>, C extends Item> implements ItemTemplate<P> {
 
     protected abstract C createChildItem(P parentItem);
 

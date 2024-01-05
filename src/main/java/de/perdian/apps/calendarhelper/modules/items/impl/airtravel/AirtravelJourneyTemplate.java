@@ -1,13 +1,20 @@
 package de.perdian.apps.calendarhelper.modules.items.impl.airtravel;
 
-import de.perdian.apps.calendarhelper.modules.items.support.AbstractParentTemplate;
+import de.perdian.apps.calendarhelper.modules.items.support.AbstractParentItemTemplate;
 import javafx.scene.layout.Pane;
+import org.kordamp.ikonli.Ikon;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignA;
 
-public class AirtravelJourneyTemplate extends AbstractParentTemplate<AirtravelJourneyItem, AirtravelFlightItem> {
+public class AirtravelJourneyTemplate extends AbstractParentItemTemplate<AirtravelJourneyItem, AirtravelFlightItem> {
 
-    public AirtravelJourneyTemplate() {
-        super("Airtravel", MaterialDesignA.AIRPLANE);
+    @Override
+    public String createTitle() {
+        return "Airtravel";
+    }
+
+    @Override
+    public Ikon createIcon() {
+        return MaterialDesignA.AIRPLANE;
     }
 
     @Override

@@ -2,13 +2,15 @@ package de.perdian.apps.calendarhelper.modules.items.impl.generic;
 
 public enum GenericType {
 
-    CONFERENCE("Konferenz"),
-    HOTEL("Hotel");
+    CONFERENCE("Konferenz", "🎙️"),
+    HOTEL("Hotel", "🏨");
 
     private String title = null;
+    private String icon = null;
 
-    GenericType(String title) {
+    GenericType(String title, String icon) {
         this.setTitle(title);
+        this.setIcon(icon);
     }
 
     @Override
@@ -22,4 +24,12 @@ public enum GenericType {
     private void setTitle(String title) {
         this.title = title;
     }
+
+    public String getIcon() {
+        return this.icon;
+    }
+    private void setIcon(String icon) {
+        this.icon = icon;
+    }
+
 }

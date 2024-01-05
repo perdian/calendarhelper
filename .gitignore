@@ -4,6 +4,7 @@
 /.idea
 /.project
 /.settings
+/*.iml
 /dependency-reduced-pom.xml
 /src/development
 /target

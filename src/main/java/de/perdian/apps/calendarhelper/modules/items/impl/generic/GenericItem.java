@@ -27,12 +27,13 @@ public class GenericItem extends AbstractDateTimeItem {
     private String createSummary() {
         StringBuilder summaryBuilder = new StringBuilder();
         if (this.typeProperty().getValue() != null) {
-            summaryBuilder.append("[").append(this.typeProperty().getValue()).append("] ");
+            summaryBuilder.append(this.typeProperty().getValue());
+            summaryBuilder.append(" ").append(this.typeProperty().getValue().getIcon()).append(" ");
         }
         if (StringUtils.isNotEmpty(this.summaryProperty().getValue())) {
             summaryBuilder.append(this.summaryProperty().getValue());
         }
-        return summaryBuilder.toString();
+        return summaryBuilder.toString().strip();
     }
 
     public StringProperty summaryProperty() {

@@ -1,13 +1,20 @@
 package de.perdian.apps.calendarhelper.modules.items.impl.train;
 
-import de.perdian.apps.calendarhelper.modules.items.support.AbstractParentTemplate;
+import de.perdian.apps.calendarhelper.modules.items.support.AbstractParentItemTemplate;
 import javafx.scene.layout.Pane;
+import org.kordamp.ikonli.Ikon;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignT;
 
-public class TrainJourneyTemplate extends AbstractParentTemplate<TrainJourneyItem, TrainRideItem> {
+public class TrainJourneyTemplate extends AbstractParentItemTemplate<TrainJourneyItem, TrainRideItem> {
 
-    public TrainJourneyTemplate() {
-        super("Train", MaterialDesignT.TRAIN);
+    @Override
+    public String createTitle() {
+        return "Train";
+    }
+
+    @Override
+    public Ikon createIcon() {
+        return MaterialDesignT.TRAIN;
     }
 
     @Override

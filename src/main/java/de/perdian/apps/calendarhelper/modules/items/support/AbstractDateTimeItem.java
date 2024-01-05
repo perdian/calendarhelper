@@ -11,7 +11,6 @@ import javafx.beans.property.SimpleObjectProperty;
 import java.time.*;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
 public abstract class AbstractDateTimeItem extends AbstractItem {
 
@@ -50,14 +49,9 @@ public abstract class AbstractDateTimeItem extends AbstractItem {
     @Override
     protected Event createEvent() {
         Event event = super.createEvent();
-        event.setId(this.createEventId());
         event.setStart(this.createEventDateTime(this.startDateProperty(), null, this.startTimeProperty(), this.startZoneIdProperty()));
         event.setEnd(this.createEventDateTime(this.endDateProperty(), this.startDateProperty().getValue(), this.endTimeProperty(), this.endZoneIdProperty()));
         return event;
-    }
-
-    protected String createEventId() {
-        return UUID.randomUUID().toString();
     }
 
     private EventDateTime createEventDateTime(ObjectProperty<LocalDate> dateProperty, LocalDate defaultDate, ObjectProperty<LocalTime> timeProperty, ObjectProperty<ZoneId> zoneIdProperty) {

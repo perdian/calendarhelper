@@ -2,12 +2,19 @@ package de.perdian.apps.calendarhelper.modules.items.impl.generic;
 
 import de.perdian.apps.calendarhelper.modules.items.ItemTemplate;
 import javafx.scene.layout.Pane;
+import org.kordamp.ikonli.Ikon;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignC;
 
-public class GenericTemplate extends ItemTemplate<GenericItem> {
+public class GenericTemplate implements ItemTemplate<GenericItem> {
 
-    public GenericTemplate() {
-        super("Generic", MaterialDesignC.CALENDAR);
+    @Override
+    public String createTitle() {
+        return "Generic";
+    }
+
+    @Override
+    public Ikon createIcon() {
+        return MaterialDesignC.CALENDAR;
     }
 
     @Override

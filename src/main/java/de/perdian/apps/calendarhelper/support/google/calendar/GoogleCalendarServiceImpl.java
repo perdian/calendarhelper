@@ -113,7 +113,7 @@ class GoogleCalendarServiceImpl implements GoogleCalendarService {
         }
     }
 
-    private Calendar createCalendarService(GoogleUser googleUser) {
+    Calendar createCalendarService(GoogleUser googleUser) {
         return new Calendar.Builder(this.getHttpTransport(), this.getJsonFactory(), new HttpCredentialsAdapter(googleUser.getCredentials()))
                 .setApplicationName("Calendar Helper")
                 .build();
