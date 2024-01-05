@@ -28,8 +28,8 @@ class GoogleRefreshTokenToUserFunction implements Function<GoogleRefreshToken, G
         try {
 
             UserCredentials userCredentials = UserCredentials.newBuilder()
-                    .setClientId(this.getGoogleApplicationCredentials().getClientId())
-                    .setClientSecret(this.getGoogleApplicationCredentials().getClientSecret())
+                    .setClientId(this.getGoogleApplicationCredentials().clientIdProperty().getValue())
+                    .setClientSecret(this.getGoogleApplicationCredentials().clientSecretProperty().getValue())
                     .setAccessToken(new AccessToken("", new Date()))
                     .setRefreshToken(refreshToken.getValue())
                     .build();

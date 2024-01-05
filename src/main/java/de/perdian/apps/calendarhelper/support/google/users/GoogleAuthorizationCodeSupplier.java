@@ -32,8 +32,8 @@ class GoogleAuthorizationCodeSupplier implements Supplier<GoogleAuthorizationCod
     public GoogleAuthorizationCode get() {
 
         log.debug("Performing login to retrieve Google authorization code");
-        String googleClientId = Objects.requireNonNull(this.getGoogleApiCredentials().getClientId(), "No Google Cliend ID available");
-        String googleClientSecret = Objects.requireNonNull(this.getGoogleApiCredentials().getClientSecret(), "No Google Cliend Secret available");
+        String googleClientId = Objects.requireNonNull(this.getGoogleApiCredentials().clientIdProperty().getValue(), "No Google Cliend ID available");
+        String googleClientSecret = Objects.requireNonNull(this.getGoogleApiCredentials().clientSecretProperty().getValue(), "No Google Cliend Secret available");
         List<String> googleScopes = this.getGoogleApiCredentials().getScopes();
         AuthorizationCodeFlow authorizationCodeFlow = new GoogleAuthorizationCodeFlow.Builder(this.googleHttpTransport, this.googleJsonFactory, googleClientId, googleClientSecret, googleScopes)
                 .setAccessType("offline")

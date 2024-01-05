@@ -1,6 +1,7 @@
 package de.perdian.apps.calendarhelper.support.google.calendar;
 
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.googleapis.json.GoogleJsonResponseException;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.JsonFactory;
 import com.google.api.client.json.gson.GsonFactory;
@@ -11,10 +12,12 @@ import com.google.api.services.calendar.model.Event;
 import com.google.auth.http.HttpCredentialsAdapter;
 import de.perdian.apps.calendarhelper.support.google.GoogleApiException;
 import de.perdian.apps.calendarhelper.support.google.users.GoogleUser;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,12 +75,41 @@ class GoogleCalendarServiceImpl implements GoogleCalendarService {
         log.trace("Create Google calendar event [{}] for user: {}", event, googleUser);
         Calendar calendarService = this.createCalendarService(googleUser);
         try {
-            return calendarService.events()
+
+            // Check if we already have an event for the specified identifier.
+            // If yes then we need to perform an UPDATE instead of an INSERT
+            Event existingEvent = this.findExistingEventById(event.getId(), googleCalendar, googleUser);
+            if (existingEvent == null) {
+                return calendarService.events()
+                    .insert(googleCalendar.getId(), event)
+                    .setSendUpdates("all")
+                    .execute();
+            } else {
+                return calendarService.events()
                     .update(googleCalendar.getId(), event.getId(), event)
                     .setSendUpdates("all")
                     .execute();
+            }
+
         } catch (Exception e) {
             throw new GoogleApiException("Cannot create Google calendar event", e);
+        }
+    }
+
+    private Event findExistingEventById(String eventId, GoogleCalendar googleCalendar, GoogleUser googleUser) throws IOException {
+        if (StringUtils.isEmpty(eventId)) {
+            return null;
+        } else {
+            try {
+                Calendar calendarService = this.createCalendarService(googleUser);
+                return calendarService.events().get(googleCalendar.getId(), eventId).execute();
+            } catch (GoogleJsonResponseException e) {
+                if (e.getStatusCode() == 404) {
+                    return null;
+                } else {
+                    throw e;
+                }
+            }
         }
     }
 

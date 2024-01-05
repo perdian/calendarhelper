@@ -1,36 +1,38 @@
 package de.perdian.apps.calendarhelper.support.google;
 
-import java.util.List;
+import javafx.beans.property.*;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 public class GoogleApiCredentials {
 
-    private String clientId = null;
-    private String clientSecret = null;
-    private List<String> scopes = List.of(
+    private final StringProperty clientId = new SimpleStringProperty();
+    private final StringProperty clientSecret = new SimpleStringProperty();
+    private final BooleanProperty valid = new SimpleBooleanProperty();
+    private final ObservableList<String> scopes = FXCollections.observableArrayList(
             "https://www.googleapis.com/auth/userinfo.email",
             "https://www.googleapis.com/auth/userinfo.profile",
             "https://www.googleapis.com/auth/calendar"
     );
 
-    public String getClientId() {
+    GoogleApiCredentials() {
+        this.valid.bind(this.clientId.isNotEmpty().and(this.clientSecret.isNotEmpty()));
+    }
+
+    public StringProperty clientIdProperty() {
         return this.clientId;
     }
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
-    }
 
-    public String getClientSecret() {
+    public StringProperty clientSecretProperty() {
         return this.clientSecret;
     }
-    public void setClientSecret(String clientSecret) {
-        this.clientSecret = clientSecret;
+
+    public ReadOnlyBooleanProperty validProperty() {
+        return this.valid;
     }
 
-    public List<String> getScopes() {
+    public ObservableList<String> getScopes() {
         return this.scopes;
-    }
-    public void setScopes(List<String> scopes) {
-        this.scopes = scopes;
     }
 
 }

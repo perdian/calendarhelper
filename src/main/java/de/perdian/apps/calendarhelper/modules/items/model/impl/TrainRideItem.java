@@ -28,7 +28,6 @@ public class TrainRideItem extends AbstractDateTimeItem {
     private String createEventSummary() {
         StringBuilder eventSummary = new StringBuilder();
         if (StringUtils.isNotEmpty(this.typeProperty().getValue()) || StringUtils.isNotEmpty(this.numberProperty().getValue())) {
-            eventSummary.append("[");
             if (StringUtils.isNotEmpty(this.typeProperty().getValue())) {
                 eventSummary.append(this.typeProperty().getValue());
                 if (StringUtils.isNotEmpty(this.numberProperty().getValue())) {
@@ -38,7 +37,7 @@ public class TrainRideItem extends AbstractDateTimeItem {
             if (StringUtils.isNotEmpty(this.numberProperty().getValue())) {
                 eventSummary.append(this.numberProperty().getValue());
             }
-            eventSummary.append("] ");
+            eventSummary.append(" 🚊 ");
         }
         eventSummary.append(this.departureStationProperty().getValue());
         eventSummary.append(" » ");

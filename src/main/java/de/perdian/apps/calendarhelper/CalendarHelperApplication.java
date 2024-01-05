@@ -20,8 +20,8 @@ public class CalendarHelperApplication extends Application {
 
     private static final Logger log = LoggerFactory.getLogger(CalendarHelperApplication.class);
 
-    private ApplicationContext applicationContext = null;
     private CalendarHelperContext calendarHelperContext = null;
+    private ApplicationContext applicationContext = null;
 
     @Override
     public void init() {
@@ -76,11 +76,11 @@ public class CalendarHelperApplication extends Application {
         this.calendarHelperContext = calendarHelperContext;
     }
 
-    private void setApplicationContext(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
-    }
     private ApplicationContext getApplicationContext() {
         return this.applicationContext;
+    }
+    private void setApplicationContext(ApplicationContext applicationContext) {
+        this.applicationContext = applicationContext;
     }
 
 }

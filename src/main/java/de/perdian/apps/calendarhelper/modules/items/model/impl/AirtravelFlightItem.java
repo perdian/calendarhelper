@@ -62,7 +62,7 @@ public class AirtravelFlightItem extends AbstractDateTimeItem {
 
     private String createEventSummary() {
         StringBuilder eventSummary = new StringBuilder();
-        eventSummary.append("[").append(this.airlineCodeProperty().getValue()).append(" ").append(this.flightNumberProperty().getValue()).append("] ");
+        eventSummary.append(this.airlineCodeProperty().getValue()).append(" ").append(this.flightNumberProperty().getValue()).append(" ✈️ ");
         eventSummary.append(this.departureAirportCodeProperty().getValue().toUpperCase()).append(" » ").append(this.arrivalAirportCodeProperty().getValue().toUpperCase());
         if (StringUtils.isNotEmpty(this.seatsProperty().getValue())) {
             eventSummary.append(" @ ").append(this.seatsProperty().getValue());

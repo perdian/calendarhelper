@@ -4,6 +4,7 @@ import de.perdian.apps.calendarhelper.modules.account.fx.CurrentAccountPane;
 import de.perdian.apps.calendarhelper.modules.execution.fx.ExecutionPane;
 import de.perdian.apps.calendarhelper.modules.itemdefaults.fx.ItemDefaultsPane;
 import de.perdian.apps.calendarhelper.modules.items.fx.ItemsPane;
+import de.perdian.apps.calendarhelper.support.google.GoogleApiCredentials;
 import de.perdian.apps.calendarhelper.support.google.users.GoogleUserService;
 import javafx.geometry.Insets;
 import javafx.scene.control.TitledPane;
@@ -15,7 +16,7 @@ class CalendarHelperMainPane extends GridPane {
 
     CalendarHelperMainPane(CalendarHelperContext calendarContext, ApplicationContext applicationContext) {
 
-        CurrentAccountPane currentAccountPane = new CurrentAccountPane(calendarContext, applicationContext.getBean(GoogleUserService.class));
+        CurrentAccountPane currentAccountPane = new CurrentAccountPane(calendarContext, applicationContext.getBean(GoogleApiCredentials.class), applicationContext.getBean(GoogleUserService.class));
         currentAccountPane.setPrefWidth(500);
         currentAccountPane.disableProperty().bind(calendarContext.executionActiveProperty());
         TitledPane currentAccountTitledPane = new TitledPane("Current account", currentAccountPane);
