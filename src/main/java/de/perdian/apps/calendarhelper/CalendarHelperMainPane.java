@@ -1,9 +1,9 @@
 package de.perdian.apps.calendarhelper;
 
-import de.perdian.apps.calendarhelper.modules.account.fx.CurrentAccountPane;
-import de.perdian.apps.calendarhelper.modules.execution.fx.ExecutionPane;
-import de.perdian.apps.calendarhelper.modules.itemdefaults.fx.ItemDefaultsPane;
-import de.perdian.apps.calendarhelper.modules.items.fx.ItemsPane;
+import de.perdian.apps.calendarhelper.modules.account.CurrentAccountPane;
+import de.perdian.apps.calendarhelper.modules.execution.ExecutionPane;
+import de.perdian.apps.calendarhelper.modules.itemdefaults.ItemDefaultsPane;
+import de.perdian.apps.calendarhelper.modules.items.ItemsPane;
 import de.perdian.apps.calendarhelper.support.google.GoogleApiCredentials;
 import de.perdian.apps.calendarhelper.support.google.users.GoogleUserService;
 import javafx.geometry.Insets;

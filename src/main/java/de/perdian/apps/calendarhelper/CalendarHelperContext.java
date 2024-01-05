@@ -1,11 +1,12 @@
 package de.perdian.apps.calendarhelper;
 
-import de.perdian.apps.calendarhelper.modules.items.model.Item;
-import de.perdian.apps.calendarhelper.modules.items.model.ItemDefaults;
+import de.perdian.apps.calendarhelper.modules.items.Item;
+import de.perdian.apps.calendarhelper.modules.items.ItemDefaults;
 import de.perdian.apps.calendarhelper.support.google.calendar.GoogleCalendar;
 import de.perdian.apps.calendarhelper.support.google.calendar.GoogleCalendarService;
 import de.perdian.apps.calendarhelper.support.google.users.GoogleUser;
 import de.perdian.apps.calendarhelper.support.google.users.GoogleUserService;
+import de.perdian.apps.calendarhelper.support.storage.StorageService;
 import javafx.application.Platform;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
@@ -30,6 +31,7 @@ public class CalendarHelperContext {
     private final ItemDefaults itemDefaults = new ItemDefaults();
 
     public CalendarHelperContext(ApplicationContext applicationContext) {
+
         this.activeGoogleUserProperty().addListener((o, oldValue, newValue) -> {
             log.info("Updating globally used Google user: {}", newValue);
             Platform.runLater(() -> this.googleCalendars().clear());
@@ -52,6 +54,10 @@ public class CalendarHelperContext {
                 this.activeGoogleCalendarProperty().setValue(change.getList().stream().filter(GoogleCalendar::isPrimary).findFirst().orElse(null));
             }
         });
+
+        StorageService storageService = applicationContext.getBean(StorageService.class);
+        this.getItemDefaults().attendeesProperty().bindBidirectional(storageService.getPersistentProperty("ItemDefaults.attendees"));
+
     }
 
     public ObjectProperty<GoogleUser> activeGoogleUserProperty() {
