@@ -1,4 +1,4 @@
-package de.perdian.apps.calendarhelper.support.google.calendar;
+package de.perdian.apps.calendarhelper.modules.google.calendar;
 
 import com.google.api.services.calendar.model.CalendarListEntry;
 import javafx.scene.paint.Color;

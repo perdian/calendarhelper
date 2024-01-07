@@ -1,6 +1,5 @@
 package de.perdian.apps.calendarhelper.modules.itemdefaults;
 
-import de.perdian.apps.calendarhelper.modules.items.ItemDefaults;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;

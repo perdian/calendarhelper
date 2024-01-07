@@ -1,4 +1,4 @@
-package de.perdian.apps.calendarhelper.modules.items;
+package de.perdian.apps.calendarhelper.modules.itemdefaults;
 
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventAttendee;

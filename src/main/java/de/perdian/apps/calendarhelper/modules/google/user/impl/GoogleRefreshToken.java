@@ -1,4 +1,4 @@
-package de.perdian.apps.calendarhelper.support.google.users;
+package de.perdian.apps.calendarhelper.modules.google.user.impl;
 
 class GoogleRefreshToken {
 

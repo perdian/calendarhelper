@@ -1,23 +1,21 @@
-package de.perdian.apps.calendarhelper.support.google.users;
+package de.perdian.apps.calendarhelper.modules.google.user;
 
 import com.google.auth.oauth2.UserCredentials;
 
 import java.io.Serializable;
 
-public class GoogleUser implements Serializable {
-
-    static final long serialVersionUID = 1L;
+public class GoogleUser {
 
     private UserCredentials credentials = null;
     private String name = null;
     private String emailAddress = null;
 
-    GoogleUser(UserCredentials userCredentials) {
+    public GoogleUser(UserCredentials userCredentials) {
         this.setCredentials(userCredentials);
     }
 
     public String toString() {
-        return this.getEmailAddress();
+        return this.getName() + " <" + this.getEmailAddress() + ">";
     }
 
     public UserCredentials getCredentials() {
@@ -37,7 +35,7 @@ public class GoogleUser implements Serializable {
     public String getEmailAddress() {
         return this.emailAddress;
     }
-    void setEmailAddress(String emailAddress) {
+    public void setEmailAddress(String emailAddress) {
         this.emailAddress = emailAddress;
     }
 

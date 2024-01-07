@@ -1,4 +1,4 @@
-package de.perdian.apps.calendarhelper.support.google;
+package de.perdian.apps.calendarhelper.modules.google;
 
 public class GoogleApiException extends RuntimeException {
 

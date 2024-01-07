@@ -1,6 +1,6 @@
-package de.perdian.apps.calendarhelper.support.google.users;
+package de.perdian.apps.calendarhelper.modules.google.user.impl;
 
-import de.perdian.apps.calendarhelper.support.google.GoogleApiException;
+import de.perdian.apps.calendarhelper.modules.google.GoogleApiException;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
