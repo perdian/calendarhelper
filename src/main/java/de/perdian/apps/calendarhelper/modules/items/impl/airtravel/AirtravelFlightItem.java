@@ -9,7 +9,6 @@ import de.perdian.apps.calendarhelper.support.airtravel.AirportRepository;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.time.Duration;
@@ -57,7 +56,7 @@ public class AirtravelFlightItem extends AbstractDateTimeItem {
         eventId.append(this.endDateProperty().getValue());
         eventId.append(this.endTimeProperty().getValue());
         eventId.append(this.endZoneIdProperty().getValue());
-        return DigestUtils.md5Hex(eventId.toString());
+        return eventId.toString();
     }
 
     private String createEventSummary() {

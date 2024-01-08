@@ -1,23 +1,19 @@
 package de.perdian.apps.calendarhelper.support.storage;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
+import javafx.beans.property.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Properties;
+import java.util.Optional;
+import java.util.function.Supplier;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -27,81 +23,77 @@ class StorageServiceImpl implements StorageService {
     private static final Logger log = LoggerFactory.getLogger(StorageServiceImpl.class);
 
     private Path rootPath = null;
-    private Path persistentPropertiesStoragePath = null;
-    private Map<String, StringProperty> persistentProperties = null;
+    private Map<String, Property<?>> properties = null;
 
     @PostConstruct
     void initialize() {
-
-        Path storagePath = Paths.get(System.getProperty("user.home"), ".calendarhelper/");
-        if (Files.exists(storagePath)) {
-            log.debug("Using storage root path: {}", storagePath);
+        Path rootPath = Paths.get(System.getProperty("user.home"), ".calendarhelper/");
+        if (Files.exists(rootPath)) {
+            log.debug("Using storage root path: {}", rootPath);
         } else {
             try {
-                log.debug("Creating storage root path: {}", storagePath);
-                Files.createDirectories(storagePath);
+                log.debug("Creating storage root path: {}", rootPath);
+                Files.createDirectories(rootPath);
             } catch (Exception e) {
-                log.error("Cannot create storage root path at: {}", storagePath, e);
+                log.error("Cannot create storage root path at: {}", rootPath, e);
             }
         }
-        this.setRootPath(storagePath);
-
-        Map<String, StringProperty> persistentProperties = new HashMap<>();
-        Path persistentPropertiesStoragePath = storagePath.resolve("persistent-properties");
-        if (Files.exists(persistentPropertiesStoragePath)) {
-            log.debug("Loading persistent properties from: {}", persistentPropertiesStoragePath.toUri());
-            try (InputStream sourceStream = new GZIPInputStream(new BufferedInputStream(Files.newInputStream(persistentPropertiesStoragePath)))) {
-                Properties sourceProperties = new Properties();
-                sourceProperties.loadFromXML(sourceStream);
-                for (Map.Entry<?, ?> sourcePropertyEntry : sourceProperties.entrySet()) {
-                    StringProperty persistentProperty = new SimpleStringProperty((String)sourcePropertyEntry.getValue());
-                    persistentProperty.addListener((_, oldValue, newValue) -> {
-                        if (!Objects.equals(oldValue, newValue)) {
-                            this.writePersistentProperties();
-                        }
-                    });
-                    persistentProperties.put((String)sourcePropertyEntry.getKey(), persistentProperty);
-                }
-                log.trace("Loaded persistent properties from: {}", persistentPropertiesStoragePath.toUri());
-            } catch (Exception e) {
-                log.warn("Cannot load persistent properties from: {}", persistentPropertiesStoragePath.toUri(), e);
-            }
-
-        }
-        this.setPersistentPropertiesStoragePath(persistentPropertiesStoragePath);
-        this.setPersistentProperties(persistentProperties);
-    }
-
-    private void writePersistentProperties() {
-        try {
-            log.debug("Writing persistent properties into: {}", this.getPersistentPropertiesStoragePath().toUri());
-            Properties storageProperties = new Properties();
-            for (Map.Entry<String, StringProperty> persistentPropertyEntry : this.getPersistentProperties().entrySet()) {
-                if (persistentPropertyEntry.getValue().getValue() != null) {
-                    storageProperties.setProperty(persistentPropertyEntry.getKey(), persistentPropertyEntry.getValue().getValue());
-                }
-            }
-            try (OutputStream storageStream = new GZIPOutputStream(new BufferedOutputStream(Files.newOutputStream(this.getPersistentPropertiesStoragePath())))) {
-                storageProperties.storeToXML(storageStream, "");
-            }
-        } catch (Exception e) {
-            log.warn("Cannot write persistent properties into: {}", this.getPersistentPropertiesStoragePath().toUri(), e);
-        }
+        this.setRootPath(rootPath);
+        this.setProperties(new HashMap<>());
     }
 
     @Override
-    public StringProperty getPersistentProperty(String propertyName, String defaultValue) {
-        return this.getPersistentProperties().computeIfAbsent(propertyName, newPropertyName -> this.createPersistentProperty(newPropertyName, defaultValue));
+    public StringProperty getPersistentStringProperty(String propertyName, String defaultValue) {
+        return this.getPersistentProperty(propertyName, defaultValue, SimpleStringProperty::new);
     }
 
-    private StringProperty createPersistentProperty(String propertyName, String defaultValue) {
-        StringProperty property = new SimpleStringProperty(defaultValue);
-        property.addListener((_, oldValue, newValue) -> {
-            if (!Objects.equals(oldValue, newValue)) {
-                this.writePersistentProperties();
-            }
-        });
+    @Override
+    public <T extends Serializable> ObjectProperty<T> getPersistentObjectProperty(String propertyName, T defaultValue) {
+        return this.getPersistentProperty(propertyName, defaultValue, SimpleObjectProperty::new);
+    }
+
+    private <T extends Serializable, P extends Property<T>> P getPersistentProperty(String propertyName, T defaultValue, Supplier<P> newPropertySupplier) {
+        return (P)this.getProperties().computeIfAbsent(propertyName.toLowerCase(), internalPropertyName -> this.createPersistentProperty(propertyName, defaultValue, newPropertySupplier));
+    }
+
+    private <T extends Serializable, P extends Property<T>> P createPersistentProperty(String propertyName, T defaultValue, Supplier<P> newPropertySupplier) {
+        Path propertyPath = this.getRootPath().resolve("properties/" + propertyName);
+        T propertyValueValue = this.loadPropertyValue(propertyName, propertyPath);
+        P property = newPropertySupplier.get();
+        property.setValue(Optional.ofNullable(propertyValueValue).orElse(defaultValue));
+        property.addListener((_, _, newPropertyValue) -> this.writePersistedPropertyValue(propertyName, propertyPath, newPropertyValue));
         return property;
+    }
+
+    private <T extends Serializable> T loadPropertyValue(String propertyName, Path propertyPath) {
+        if (Files.exists(propertyPath)) {
+            log.trace("Loading property '{}' from path: {}", propertyName, propertyPath);
+            try (ObjectInputStream objectStream = new ObjectInputStream(new GZIPInputStream(new BufferedInputStream(Files.newInputStream(propertyPath))))) {
+                return (T)objectStream.readObject();
+            } catch (Exception e) {
+                log.warn("Cannot load persisted property for '{}' from path at: {}", propertyName, propertyPath, e);
+            }
+        }
+        return null;
+    }
+
+    private void writePersistedPropertyValue(String propertyName, Path propertyPath, Serializable newPersistencePropertyValue) {
+        try {
+            if (newPersistencePropertyValue == null) {
+                Files.deleteIfExists(propertyPath);
+            } else {
+                if (!Files.exists(propertyPath.getParent())) {
+                    log.trace("Creating parent directory for property at: {}", propertyPath.getParent());
+                    Files.createDirectories(propertyPath.getParent());
+                }
+                try (ObjectOutputStream objectStream = new ObjectOutputStream(new GZIPOutputStream(new BufferedOutputStream(Files.newOutputStream(propertyPath))))) {
+                    objectStream.writeObject(newPersistencePropertyValue);
+                    objectStream.flush();
+                }
+            }
+        } catch (Exception e) {
+            log.warn("Cannot write persistence property for '{}' into path at: {}", propertyName, propertyPath, e);
+        }
     }
 
     @Override
@@ -112,18 +104,11 @@ class StorageServiceImpl implements StorageService {
         this.rootPath = rootPath;
     }
 
-    private Path getPersistentPropertiesStoragePath() {
-        return this.persistentPropertiesStoragePath;
+    private Map<String, Property<?>> getProperties() {
+        return this.properties;
     }
-    private void setPersistentPropertiesStoragePath(Path persistentPropertiesStoragePath) {
-        this.persistentPropertiesStoragePath = persistentPropertiesStoragePath;
-    }
-
-    private Map<String, StringProperty> getPersistentProperties() {
-        return this.persistentProperties;
-    }
-    private void setPersistentProperties(Map<String, StringProperty> persistentProperties) {
-        this.persistentProperties = persistentProperties;
+    private void setProperties(Map<String, Property<?>> properties) {
+        this.properties = properties;
     }
 
 }

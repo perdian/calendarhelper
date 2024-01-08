@@ -1,14 +1,9 @@
 package de.perdian.apps.calendarhelper.modules.execution;
 
+import de.perdian.apps.calendarhelper.CalendarHelperSelection;
 import de.perdian.apps.calendarhelper.modules.execution.handlers.ExecutionActionEventHandler;
-import de.perdian.apps.calendarhelper.modules.google.calendar.GoogleCalendar;
-import de.perdian.apps.calendarhelper.modules.google.user.GoogleUser;
-import de.perdian.apps.calendarhelper.modules.itemdefaults.ItemDefaults;
-import de.perdian.apps.calendarhelper.modules.items.Item;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
-import javafx.beans.property.ReadOnlyObjectProperty;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -23,7 +18,7 @@ public class ExecutionPane extends GridPane {
 
     private final ExecutionProgress progress = new ExecutionProgress();
 
-    public ExecutionPane(ReadOnlyObjectProperty<GoogleUser> activeUser, ReadOnlyObjectProperty<GoogleCalendar> activeCalendar, ObservableList<Item> activeItems, ItemDefaults itemDefaults, ApplicationContext applicationContext) {
+    public ExecutionPane(CalendarHelperSelection selection, ApplicationContext applicationContext) {
 
         Label progressTitleLabel = new Label("Progress");
         ProgressBar progressBar = new ProgressBar();
@@ -35,12 +30,12 @@ public class ExecutionPane extends GridPane {
         GridPane.setHgrow(progressBar, Priority.ALWAYS);
 
         BooleanBinding executionDisabled = this.getProgress().busyProperty()
-                .or(Bindings.isEmpty(activeItems))
-                .or(activeUser.isNull())
-                .or(activeCalendar.isNull());
+                .or(Bindings.isEmpty(selection.getActiveItems()))
+                .or(selection.activeUserProperty().isNull())
+                .or(selection.apiCredentialsProperty().isNull());
 
         Button generateCalendarEntriesButton = new Button("Generate calendar entries", new FontIcon(MaterialDesignC.CREATION));
-        generateCalendarEntriesButton.setOnAction(new ExecutionActionEventHandler(activeUser, activeCalendar, activeItems, itemDefaults, this.getProgress(), applicationContext));
+        generateCalendarEntriesButton.setOnAction(new ExecutionActionEventHandler(selection, this.getProgress(), applicationContext));
         generateCalendarEntriesButton.setMaxHeight(Double.MAX_VALUE);
         generateCalendarEntriesButton.disableProperty().bind(executionDisabled);
 

@@ -1,4 +1,4 @@
-package de.perdian.apps.calendarhelper.modules.google.calendar;
+package de.perdian.apps.calendarhelper.modules.google.calendar.impl;
 
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.googleapis.json.GoogleJsonResponseException;
@@ -11,6 +11,8 @@ import com.google.api.services.calendar.model.CalendarListEntry;
 import com.google.api.services.calendar.model.Event;
 import com.google.auth.http.HttpCredentialsAdapter;
 import de.perdian.apps.calendarhelper.modules.google.GoogleApiException;
+import de.perdian.apps.calendarhelper.modules.google.calendar.GoogleCalendar;
+import de.perdian.apps.calendarhelper.modules.google.calendar.GoogleCalendarService;
 import de.perdian.apps.calendarhelper.modules.google.user.GoogleUser;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

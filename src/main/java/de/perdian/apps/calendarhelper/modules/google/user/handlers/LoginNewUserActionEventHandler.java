@@ -27,7 +27,6 @@ public class LoginNewUserActionEventHandler implements EventHandler<ActionEvent>
             GoogleUser newUser = this.getUserService().loginNewUser(this.getApiCredentials().getValue());
             Platform.runLater(() -> this.getActiveUser().setValue(newUser));
         });
-
     }
 
     private ObjectProperty<GoogleUser> getActiveUser() {
