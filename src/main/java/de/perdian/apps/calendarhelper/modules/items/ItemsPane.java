@@ -22,25 +22,55 @@ import java.util.function.Consumer;
 
 public class ItemsPane extends GridPane {
 
-    private Map<Item, Region> editorItemToRegionMap = null;
-    private ObservableList<Item> editorItems = null;
-    private VBox editorItemsContainer = null;
+    private Map<Item, Region> itemToRegionMap = null;
+    private ObservableList<Item> items = null;
+    private VBox itemsContainer = null;
     private ItemDefaults itemDefaults = null;
 
-    public ItemsPane(ObservableList<Item> editorItems, ItemDefaults itemDefaults) {
+    public ItemsPane(ObservableList<Item> items, ItemDefaults itemDefaults) {
 
-        Map<Item, Region> editorItemToRegionMap = new HashMap<>();
-        this.setEditorItemToRegionMap(editorItemToRegionMap);
-        this.setEditorItems(editorItems);
+        this.setItemToRegionMap(new HashMap<>());
+        this.setItems(items);
         this.setItemDefaults(itemDefaults);
 
-        HBox leftButtonsPane = new HBox(2);
         Label newItemTitleLabel = new Label("New item");
         newItemTitleLabel.setMaxHeight(Double.MAX_VALUE);
         newItemTitleLabel.setAlignment(Pos.CENTER);
         newItemTitleLabel.setPadding(new Insets(0, 10, 0, 4));
+        HBox leftButtonsPane = new HBox(2);
         leftButtonsPane.getChildren().add(newItemTitleLabel);
+        leftButtonsPane.getChildren().addAll(this.createActionButtons());
 
+        Button removeAllItemsButton = new Button("Remove all items", new FontIcon(MaterialDesignD.DELETE_EMPTY));
+        removeAllItemsButton.disableProperty().bind(Bindings.isEmpty(items));
+        removeAllItemsButton.setOnAction(event -> this.removeAllItems());
+        removeAllItemsButton.setFocusTraversable(false);
+        HBox rightButtonsPane = new HBox(2);
+        rightButtonsPane.getChildren().addAll(removeAllItemsButton);
+
+        BorderPane buttonPane = new BorderPane();
+        buttonPane.setPadding(new Insets(5, 5, 5, 5));
+        buttonPane.setLeft(leftButtonsPane);
+        buttonPane.setRight(rightButtonsPane);
+        GridPane.setHgrow(buttonPane, Priority.ALWAYS);
+
+        VBox itemsContainer = new VBox(5);
+        itemsContainer.setPadding(new Insets(5, 5, 5, 5));
+        ScrollPane itemsContainerScrollPane = new ScrollPane(itemsContainer);
+        itemsContainerScrollPane.setStyle("-fx-background-color: transparent;");
+        itemsContainerScrollPane.setFitToWidth(true);
+        GridPane.setHgrow(itemsContainer, Priority.ALWAYS);
+        GridPane.setVgrow(itemsContainer, Priority.ALWAYS);
+        this.setItemsContainer(itemsContainer);
+
+        this.add(buttonPane, 0, 0, 1, 1);
+        this.add(new Separator(), 0, 1, 1, 1);
+        this.add(itemsContainerScrollPane, 0, 2, 1, 1);
+
+    }
+
+    private List<Button> createActionButtons() {
+        List<Button> actionButtons = new ArrayList<>();
         ItemsActionsRegistry actionsRegistry = (title, icon, action) -> {
             Consumer<List<ItemTemplate<Item>>> templatesConsumer = templates -> this.addItemsFromTemplates(templates);
             EventHandler<ActionEvent> actionEventHandler = event -> {
@@ -52,40 +82,25 @@ public class ItemsPane extends GridPane {
             };
             Button actionButton = new Button(title, new FontIcon(icon));
             actionButton.setOnAction(actionEventHandler);
-            leftButtonsPane.getChildren().add(actionButton);
+            actionButtons.add(actionButton);
         };
         ServiceLoader.load(ItemsActionsContributor.class).stream()
             .map(ServiceLoader.Provider::get)
             .forEach(registryContributor -> registryContributor.contributeActionsTo(actionsRegistry));
+        return actionButtons;
 
-        Button removeAllEditorItemsButton = new Button("Remove all items", new FontIcon(MaterialDesignD.DELETE_EMPTY));
-        removeAllEditorItemsButton.disableProperty().bind(Bindings.isEmpty(editorItems));
-        removeAllEditorItemsButton.setOnAction(event -> this.removeAllEditorItems());
-        removeAllEditorItemsButton.setFocusTraversable(false);
-        HBox rightButtonsPane = new HBox(2);
-        rightButtonsPane.getChildren().addAll(removeAllEditorItemsButton);
+    }
 
-        BorderPane buttonPane = new BorderPane();
-        buttonPane.setPadding(new Insets(5, 5, 5, 5));
-        buttonPane.setLeft(leftButtonsPane);
-        buttonPane.setRight(rightButtonsPane);
-        GridPane.setHgrow(buttonPane, Priority.ALWAYS);
-
-        VBox editorItemsContainer = new VBox(5);
-        editorItemsContainer.setPadding(new Insets(5, 5, 5, 5));
-        ScrollPane editorItemsContainerScrollPane = new ScrollPane(editorItemsContainer);
-        editorItemsContainerScrollPane.setStyle("-fx-background-color: transparent;");
-        editorItemsContainerScrollPane.setFitToWidth(true);
-        GridPane.setHgrow(editorItemsContainer, Priority.ALWAYS);
-        GridPane.setVgrow(editorItemsContainer, Priority.ALWAYS);
-        this.setEditorItemsContainer(editorItemsContainer);
-
-        Separator buttonSeparator = new Separator();
-
-        this.add(buttonPane, 0, 0, 1, 1);
-        this.add(buttonSeparator, 0, 1, 1, 1);
-        this.add(editorItemsContainerScrollPane, 0, 2, 1, 1);
-
+    private List<Button> createAdditionalButtonsForItem(Item item) {
+        List<Button> buttonList = new ArrayList<>();
+        if (item instanceof AbstractParentItem<?> parentItem) {
+            Button newChildButton = new Button("", new FontIcon(MaterialDesignP.PLUS));
+            newChildButton.setTooltip(new Tooltip("New child"));
+            newChildButton.setOnAction(event -> parentItem.appendChild(this.getItemDefaults()));
+            newChildButton.setFocusTraversable(false);
+            buttonList.add(newChildButton);
+        }
+        return buttonList;
     }
 
     private <T extends Item, C extends Item> void addItemsFromTemplates(List<ItemTemplate<T>> itemTemplates) {
@@ -97,7 +112,7 @@ public class ItemsPane extends GridPane {
 
             Button removeItemButton = new Button("", new FontIcon(MaterialDesignD.DELETE));
             removeItemButton.setTooltip(new Tooltip("Remove item"));
-            removeItemButton.setOnAction(event -> this.removeEditorItem(item));
+            removeItemButton.setOnAction(event -> this.removeItem(item));
             removeItemButton.setFocusTraversable(false);
 
             List<Button> additionalButtons = this.createAdditionalButtonsForItem(item);
@@ -122,58 +137,46 @@ public class ItemsPane extends GridPane {
             wrapperPane.setTop(titlePane);
             wrapperPane.setCenter(itemPane);
 
-            this.getEditorItemsContainer().getChildren().add(wrapperPane);
-            this.getEditorItemToRegionMap().put(item, wrapperPane);
-            this.getEditorItems().add(item);
+            this.getItemsContainer().getChildren().add(wrapperPane);
+            this.getItemToRegionMap().put(item, wrapperPane);
+            this.getItems().add(item);
 
         }
     }
 
-    private <T extends Item, C extends Item> List<Button> createAdditionalButtonsForItem(T item) {
-        List<Button> buttonList = new ArrayList<>();
-        if (item instanceof AbstractParentItem<?> parentItem) {
-            Button newChildButton = new Button("", new FontIcon(MaterialDesignP.PLUS));
-            newChildButton.setTooltip(new Tooltip("New child"));
-            newChildButton.setOnAction(event -> parentItem.appendChild(this.getItemDefaults()));
-            newChildButton.setFocusTraversable(false);
-            buttonList.add(newChildButton);
+    private void removeItem(Item item) {
+        Region regionForItem = this.getItemToRegionMap().remove(item);
+        if (regionForItem != null) {
+            Platform.runLater(() -> this.getItemsContainer().getChildren().remove(regionForItem));
         }
-        return buttonList;
+        this.getItems().remove(item);
     }
 
-    private void removeEditorItem(Item editorItem) {
-        Region regionForEditorItem = this.getEditorItemToRegionMap().remove(editorItem);
-        if (regionForEditorItem != null) {
-            Platform.runLater(() -> this.getEditorItemsContainer().getChildren().remove(regionForEditorItem));
-        }
-        this.getEditorItems().remove(editorItem);
+    private void removeAllItems() {
+        this.getItemToRegionMap().clear();
+        Platform.runLater(() -> this.getItemsContainer().getChildren().clear());
+        this.getItems().clear();
     }
 
-    private void removeAllEditorItems() {
-        this.getEditorItemToRegionMap().clear();
-        Platform.runLater(() -> this.getEditorItemsContainer().getChildren().clear());
-        this.getEditorItems().clear();
+    private Map<Item, Region> getItemToRegionMap() {
+        return this.itemToRegionMap;
+    }
+    private void setItemToRegionMap(Map<Item, Region> itemToRegionMap) {
+        this.itemToRegionMap = itemToRegionMap;
     }
 
-    public Map<Item, Region> getEditorItemToRegionMap() {
-        return this.editorItemToRegionMap;
+    private ObservableList<Item> getItems() {
+        return this.items;
     }
-    private void setEditorItemToRegionMap(Map<Item, Region> editorItemToRegionMap) {
-        this.editorItemToRegionMap = editorItemToRegionMap;
-    }
-
-    public ObservableList<Item> getEditorItems() {
-        return this.editorItems;
-    }
-    private void setEditorItems(ObservableList<Item> editorItems) {
-        this.editorItems = editorItems;
+    private void setItems(ObservableList<Item> items) {
+        this.items = items;
     }
 
-    public VBox getEditorItemsContainer() {
-        return this.editorItemsContainer;
+    private VBox getItemsContainer() {
+        return this.itemsContainer;
     }
-    private void setEditorItemsContainer(VBox editorItemsContainer) {
-        this.editorItemsContainer = editorItemsContainer;
+    private void setItemsContainer(VBox itemsContainer) {
+        this.itemsContainer = itemsContainer;
     }
 
     private ItemDefaults getItemDefaults() {
