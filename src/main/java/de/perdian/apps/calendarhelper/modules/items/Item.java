@@ -6,9 +6,6 @@ import java.util.List;
 
 public interface Item {
 
-    /**
-     * Creates a list of events that are stored in the Google Calendar
-     */
     List<Event> createEvents();
 
 }

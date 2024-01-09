@@ -47,14 +47,13 @@ public class ExecutionActionEventHandler implements EventHandler<ActionEvent> {
 
         List<Event> calendarEvents = this.getSelection().getActiveItems().stream()
                 .flatMap(editorItem -> editorItem.createEvents().stream())
-                .peek(event -> this.getSelection().getItemDefaults().applyTo(event))
                 .toList();
         log.info("Creating {} calendar events", calendarEvents.size());
 
         GoogleCalendarService googleCalendarService = this.getApplicationContext().getBean(GoogleCalendarService.class);
         for (int i = 0; i < calendarEvents.size(); i++) {
             Event calendarEvent = calendarEvents.get(i);
-            this.getProgress().progressProperty().setValue(((double) i) / calendarEvents.size());
+            this.getProgress().progressProperty().setValue(((double)i) / calendarEvents.size());
             googleCalendarService.insertEvent(calendarEvent, this.getSelection().activeCalendarProperty().getValue(), this.getSelection().activeUserProperty().getValue());
         }
         this.getProgress().progressProperty().setValue(1);

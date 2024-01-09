@@ -1,19 +1,24 @@
 package de.perdian.apps.calendarhelper.modules.items.impl.generic;
 
 import com.google.api.services.calendar.model.Event;
-import de.perdian.apps.calendarhelper.modules.items.support.AbstractDateTimeItem;
+import de.perdian.apps.calendarhelper.modules.items.ItemDefaults;
+import de.perdian.apps.calendarhelper.modules.items.support.AbstractSingleItem;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import org.apache.commons.lang3.StringUtils;
 
-public class GenericItem extends AbstractDateTimeItem {
+public class GenericItem extends AbstractSingleItem {
 
     private final StringProperty summary = new SimpleStringProperty();
     private final StringProperty location = new SimpleStringProperty();
     private final StringProperty description = new SimpleStringProperty();
     private final ObjectProperty<GenericType> type = new SimpleObjectProperty<>();
+
+    public GenericItem(ItemDefaults itemDefaults) {
+        super(itemDefaults);
+    }
 
     @Override
     protected Event createEvent() {

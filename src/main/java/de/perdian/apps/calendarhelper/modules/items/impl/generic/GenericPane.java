@@ -10,6 +10,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
 
+import java.time.ZoneId;
+
 public class GenericPane extends GridPane {
 
     public GenericPane(GenericItem item) {
@@ -26,6 +28,10 @@ public class GenericPane extends GridPane {
         startLabel.setLabelFor(startDateField);
         TimeField startTimeField = new TimeField(item.startTimeProperty());
         startTimeField.disableProperty().bind(item.fullDayProperty());
+        ComboBox<ZoneId> startZoneBox = new ComboBox<>(FXCollections.observableArrayList(ZoneId.getAvailableZoneIds().stream().sorted().map(ZoneId::of).toList()));
+        startZoneBox.setPrefWidth(150);
+        startZoneBox.valueProperty().bindBidirectional(item.startZoneIdProperty());
+        startZoneBox.disableProperty().bind(item.fullDayProperty());
 
         CheckBox fullDayBox = new CheckBox("Full day");
         fullDayBox.selectedProperty().bindBidirectional(item.fullDayProperty());
@@ -36,6 +42,10 @@ public class GenericPane extends GridPane {
         endLabel.setLabelFor(endDateField);
         TimeField endTimeField = new TimeField(item.endTimeProperty());
         endTimeField.disableProperty().bind(item.fullDayProperty());
+        ComboBox<ZoneId> endZoneBox = new ComboBox<>(FXCollections.observableArrayList(ZoneId.getAvailableZoneIds().stream().sorted().map(ZoneId::of).toList()));
+        endZoneBox.setPrefWidth(150);
+        endZoneBox.valueProperty().bindBidirectional(item.endZoneIdProperty());
+        endZoneBox.disableProperty().bind(item.fullDayProperty());
 
         Label summaryLabel = new Label("Summary");
         TextField summaryField = new TextField();
@@ -66,23 +76,25 @@ public class GenericPane extends GridPane {
         GridPane.setHgrow(descriptionArea, Priority.ALWAYS);
 
         this.add(typeLabel, 0, 0, 1, 1);
-        this.add(typeBox, 1, 0, 3, 1);
+        this.add(typeBox, 1, 0, 4, 1);
         this.add(startLabel, 0, 1, 1, 1);
         this.add(startDateField, 1, 1, 1, 1);
         this.add(startTimeField, 2, 1, 1, 1);
-        this.add(fullDayBox, 3, 1, 1, 1);
+        this.add(startZoneBox, 3, 1, 1, 1);
+        this.add(fullDayBox, 4, 1, 1, 1);
         this.add(endLabel, 0, 2, 1, 1);
         this.add(endDateField, 1, 2, 1, 1);
         this.add(endTimeField, 2, 2, 1, 1);
+        this.add(endZoneBox, 3, 2, 1, 1);
         this.add(availabilityLabel, 0, 3, 1, 1);
-        this.add(availabilityBox, 1, 3, 3, 1);
+        this.add(availabilityBox, 1, 3, 4, 1);
 
-        this.add(summaryLabel, 4, 0, 1, 1);
-        this.add(summaryField, 5, 0, 1, 1);
-        this.add(locationLabel, 4, 1, 1, 1);
-        this.add(locationField, 5, 1, 1, 1);
-        this.add(descriptionLabel, 4, 2, 1, 1);
-        this.add(descriptionArea, 5, 2, 1, 3);
+        this.add(summaryLabel, 5, 0, 1, 1);
+        this.add(summaryField, 6, 0, 1, 1);
+        this.add(locationLabel, 5, 1, 1, 1);
+        this.add(locationField, 6, 1, 1, 1);
+        this.add(descriptionLabel, 5, 2, 1, 1);
+        this.add(descriptionArea, 6, 2, 1, 3);
 
         this.setHgap(5);
         this.setVgap(5);

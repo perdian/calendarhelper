@@ -1,5 +1,6 @@
 package de.perdian.apps.calendarhelper.modules.items;
 
+import de.perdian.apps.calendarhelper.modules.items.support.AbstractParentItem;
 import de.perdian.apps.calendarhelper.support.fx.CalendarHelperDialogs;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -14,11 +15,9 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignD;
+import org.kordamp.ikonli.materialdesign2.MaterialDesignP;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.ServiceLoader;
+import java.util.*;
 import java.util.function.Consumer;
 
 public class ItemsPane extends GridPane {
@@ -26,12 +25,14 @@ public class ItemsPane extends GridPane {
     private Map<Item, Region> editorItemToRegionMap = null;
     private ObservableList<Item> editorItems = null;
     private VBox editorItemsContainer = null;
+    private ItemDefaults itemDefaults = null;
 
-    public ItemsPane(ObservableList<Item> editorItems) {
+    public ItemsPane(ObservableList<Item> editorItems, ItemDefaults itemDefaults) {
 
         Map<Item, Region> editorItemToRegionMap = new HashMap<>();
         this.setEditorItemToRegionMap(editorItemToRegionMap);
         this.setEditorItems(editorItems);
+        this.setItemDefaults(itemDefaults);
 
         HBox leftButtonsPane = new HBox(2);
         Label newItemTitleLabel = new Label("New item");
@@ -87,20 +88,20 @@ public class ItemsPane extends GridPane {
 
     }
 
-    private <T extends Item> void addItemsFromTemplates(List<ItemTemplate<T>> itemTemplates) {
+    private <T extends Item, C extends Item> void addItemsFromTemplates(List<ItemTemplate<T>> itemTemplates) {
         for (ItemTemplate<T> itemTemplate : itemTemplates) {
 
-            T item = itemTemplate.createItem();
-            Pane editorItemPane = itemTemplate.createItemPane(item);
-            editorItemPane.setPadding(new Insets(10, 0, 5, 0));
+            T item = itemTemplate.createItem(this.getItemDefaults());
+            Pane itemPane = itemTemplate.createItemPane(item);
+            itemPane.setPadding(new Insets(10, 0, 5, 0));
 
             Button removeItemButton = new Button("", new FontIcon(MaterialDesignD.DELETE));
             removeItemButton.setTooltip(new Tooltip("Remove item"));
             removeItemButton.setOnAction(event -> this.removeEditorItem(item));
             removeItemButton.setFocusTraversable(false);
 
+            List<Button> additionalButtons = this.createAdditionalButtonsForItem(item);
             HBox titleButtonsPane = new HBox(2);
-            List<Button> additionalButtons = itemTemplate.createAdditionalButtons(item);
             if (additionalButtons != null && !additionalButtons.isEmpty()) {
                 Separator separator = new Separator(Orientation.VERTICAL);
                 separator.setPadding(new Insets(0, 2.5, 0, 5));
@@ -119,13 +120,25 @@ public class ItemsPane extends GridPane {
             wrapperPane.setBorder(new Border(new BorderStroke(Color.LIGHTGRAY, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
             wrapperPane.setPadding(new Insets(5, 10, 5, 10));
             wrapperPane.setTop(titlePane);
-            wrapperPane.setCenter(editorItemPane);
+            wrapperPane.setCenter(itemPane);
 
             this.getEditorItemsContainer().getChildren().add(wrapperPane);
             this.getEditorItemToRegionMap().put(item, wrapperPane);
             this.getEditorItems().add(item);
 
         }
+    }
+
+    private <T extends Item, C extends Item> List<Button> createAdditionalButtonsForItem(T item) {
+        List<Button> buttonList = new ArrayList<>();
+        if (item instanceof AbstractParentItem<?> parentItem) {
+            Button newChildButton = new Button("", new FontIcon(MaterialDesignP.PLUS));
+            newChildButton.setTooltip(new Tooltip("New child"));
+            newChildButton.setOnAction(event -> parentItem.appendChild(this.getItemDefaults()));
+            newChildButton.setFocusTraversable(false);
+            buttonList.add(newChildButton);
+        }
+        return buttonList;
     }
 
     private void removeEditorItem(Item editorItem) {
@@ -161,6 +174,13 @@ public class ItemsPane extends GridPane {
     }
     private void setEditorItemsContainer(VBox editorItemsContainer) {
         this.editorItemsContainer = editorItemsContainer;
+    }
+
+    private ItemDefaults getItemDefaults() {
+        return this.itemDefaults;
+    }
+    private void setItemDefaults(ItemDefaults itemDefaults) {
+        this.itemDefaults = itemDefaults;
     }
 
 }

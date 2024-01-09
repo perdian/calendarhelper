@@ -9,7 +9,7 @@ import javafx.scene.layout.VBox;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class AbstractParentPane<P extends AbstractParentItem<C>, C extends AbstractDateTimeItem> extends BorderPane {
+public abstract class AbstractParentPane<P extends AbstractParentItem<C>, C extends AbstractSingleItem> extends BorderPane {
 
     private final Map<C, Pane> childToPaneMap = new HashMap<>();
 

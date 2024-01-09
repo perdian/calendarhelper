@@ -1,5 +1,6 @@
 package de.perdian.apps.calendarhelper.modules.items.impl.generic;
 
+import de.perdian.apps.calendarhelper.modules.items.ItemDefaults;
 import de.perdian.apps.calendarhelper.modules.items.ItemTemplate;
 import javafx.scene.layout.Pane;
 import org.kordamp.ikonli.Ikon;
@@ -18,9 +19,10 @@ public class GenericTemplate implements ItemTemplate<GenericItem> {
     }
 
     @Override
-    public GenericItem createItem() {
-        return new GenericItem();
+    public GenericItem createItem(ItemDefaults itemDefaults) {
+        return new GenericItem(itemDefaults);
     }
+
     @Override
     public Pane createItemPane(GenericItem item) {
         return new GenericPane(item);

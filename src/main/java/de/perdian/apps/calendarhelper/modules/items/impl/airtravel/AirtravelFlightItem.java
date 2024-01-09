@@ -1,7 +1,8 @@
 package de.perdian.apps.calendarhelper.modules.items.impl.airtravel;
 
 import com.google.api.services.calendar.model.Event;
-import de.perdian.apps.calendarhelper.modules.items.support.AbstractDateTimeItem;
+import de.perdian.apps.calendarhelper.modules.items.ItemDefaults;
+import de.perdian.apps.calendarhelper.modules.items.support.AbstractSingleItem;
 import de.perdian.apps.calendarhelper.support.airtravel.Airline;
 import de.perdian.apps.calendarhelper.support.airtravel.AirlineRepository;
 import de.perdian.apps.calendarhelper.support.airtravel.Airport;
@@ -17,7 +18,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
-public class AirtravelFlightItem extends AbstractDateTimeItem {
+public class AirtravelFlightItem extends AbstractSingleItem {
 
     private final StringProperty airlineCode = new SimpleStringProperty();
     private final StringProperty flightNumber = new SimpleStringProperty();
@@ -30,7 +31,8 @@ public class AirtravelFlightItem extends AbstractDateTimeItem {
     private final StringProperty bookingCode = new SimpleStringProperty();
     private final StringProperty comments = new SimpleStringProperty();
 
-    public AirtravelFlightItem() {
+    public AirtravelFlightItem(ItemDefaults itemDefaults) {
+        super(itemDefaults);
         this.departureAirportCodeProperty().addListener((o, oldValue, newValue) -> this.afterAirportCodeUpdated(newValue, this.startZoneIdProperty(), this.departureAirportNameProperty()));
         this.arrivalAirportCodeProperty().addListener((o, oldValue, newValue) -> this.afterAirportCodeUpdated(newValue, this.endZoneIdProperty(), this.arrivalAirportNameProperty()));
         this.startZoneIdProperty().setValue(null);

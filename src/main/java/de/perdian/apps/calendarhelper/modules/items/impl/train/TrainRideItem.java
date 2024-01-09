@@ -1,12 +1,13 @@
 package de.perdian.apps.calendarhelper.modules.items.impl.train;
 
 import com.google.api.services.calendar.model.Event;
-import de.perdian.apps.calendarhelper.modules.items.support.AbstractDateTimeItem;
+import de.perdian.apps.calendarhelper.modules.items.ItemDefaults;
+import de.perdian.apps.calendarhelper.modules.items.support.AbstractSingleItem;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import org.apache.commons.lang3.StringUtils;
 
-public class TrainRideItem extends AbstractDateTimeItem {
+public class TrainRideItem extends AbstractSingleItem {
 
     private final StringProperty type = new SimpleStringProperty();
     private final StringProperty number = new SimpleStringProperty();
@@ -15,6 +16,10 @@ public class TrainRideItem extends AbstractDateTimeItem {
     private final StringProperty reservedWagon = new SimpleStringProperty();
     private final StringProperty reservedSeats = new SimpleStringProperty();
     private final StringProperty comment = new SimpleStringProperty();
+
+    public TrainRideItem(ItemDefaults itemDefaults) {
+        super(itemDefaults);
+    }
 
     @Override
     protected Event createEvent() {

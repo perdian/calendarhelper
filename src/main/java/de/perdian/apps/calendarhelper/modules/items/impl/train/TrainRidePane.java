@@ -3,32 +3,35 @@ package de.perdian.apps.calendarhelper.modules.items.impl.train;
 import de.perdian.apps.calendarhelper.support.fx.components.DateField;
 import de.perdian.apps.calendarhelper.support.fx.components.TimeField;
 import javafx.beans.binding.Bindings;
+import javafx.collections.FXCollections;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignT;
 
+import java.time.ZoneId;
+
 public class TrainRidePane extends GridPane {
 
     TrainRidePane(TrainRideItem trainRideItem, TrainJourneyItem trainJourneyItem) {
 
         Label trainLabel = new Label("Train");
+        trainLabel.setPadding(new Insets(0, 5, 0, 0));
         TextField typeField = new TextField();
         typeField.setPromptText("XX");
         typeField.textProperty().bindBidirectional(trainRideItem.typeProperty());
-        typeField.setPrefWidth(40);
+        typeField.setPrefWidth(50);
         TextField numberField = new TextField();
         numberField.setPromptText("0000");
-        numberField.setPrefWidth(55);
+        numberField.setPrefWidth(60);
         numberField.textProperty().bindBidirectional(trainRideItem.numberProperty());
         trainLabel.setLabelFor(typeField);
 
         Label departureStationLabel = new Label("Departure");
+        departureStationLabel.setPadding(new Insets(0, 5, 0, 0));
         TextField departureStationField = new TextField();
         departureStationField.textProperty().bindBidirectional(trainRideItem.departureStationProperty());
         departureStationField.setPrefWidth(125);
@@ -36,8 +39,13 @@ public class TrainRidePane extends GridPane {
         DateField departureDateField = new DateField(trainRideItem.startDateProperty());
         TimeField departureTimeField = new TimeField(trainRideItem.startTimeProperty());
         GridPane.setMargin(departureStationLabel, new Insets(0, 0, 0, 10));
+        ComboBox<ZoneId> departureZoneBox = new ComboBox<>(FXCollections.observableArrayList(ZoneId.getAvailableZoneIds().stream().sorted().map(ZoneId::of).toList()));
+        departureZoneBox.setPrefWidth(150);
+        departureZoneBox.valueProperty().bindBidirectional(trainRideItem.startZoneIdProperty());
+        departureZoneBox.setFocusTraversable(false);
 
         Label arrivalStationLabel = new Label("Arrival");
+        arrivalStationLabel.setPadding(new Insets(0, 5, 0, 0));
         TextField arrivalStationField = new TextField();
         arrivalStationField.textProperty().bindBidirectional(trainRideItem.arrivalStationProperty());
         arrivalStationField.setPrefWidth(125);
@@ -45,8 +53,13 @@ public class TrainRidePane extends GridPane {
         DateField arrivalDateField = new DateField(trainRideItem.endDateProperty());
         TimeField arrivalTimeField = new TimeField(trainRideItem.endTimeProperty());
         GridPane.setMargin(arrivalStationLabel, new Insets(0, 0, 0, 10));
+        ComboBox<ZoneId> arrivalZoneBox = new ComboBox<>(FXCollections.observableArrayList(ZoneId.getAvailableZoneIds().stream().sorted().map(ZoneId::of).toList()));
+        arrivalZoneBox.setPrefWidth(150);
+        arrivalZoneBox.valueProperty().bindBidirectional(trainRideItem.endZoneIdProperty());
+        arrivalZoneBox.setFocusTraversable(false);
 
         Label reservationLabel = new Label("Reservation");
+        reservationLabel.setPadding(new Insets(0, 5, 0, 0));
         TextField reservationWagonField = new TextField();
         reservationWagonField.setPromptText("Wagon");
         reservationWagonField.textProperty().bindBidirectional(trainRideItem.reservedWagonProperty());
@@ -56,13 +69,15 @@ public class TrainRidePane extends GridPane {
         reservationSeatsField.textProperty().bindBidirectional(trainRideItem.reservedSeatsProperty());
         reservationSeatsField.setPrefWidth(55);
         reservationLabel.setLabelFor(reservationWagonField);
-        GridPane.setMargin(reservationLabel, new Insets(0, 0, 0, 10));
 
         Label commentLabel = new Label("Comment");
-        TextField commentField = new TextField();
-        commentField.setPrefWidth(0);
-        commentField.textProperty().bindBidirectional(trainRideItem.commentProperty());
-        GridPane.setHgrow(commentField, Priority.ALWAYS);
+        commentLabel.setPadding(new Insets(0, 5, 0, 0));
+        TextArea commentArea = new TextArea();
+        commentArea.setPrefWidth(0);
+        commentArea.setPrefHeight(0);
+        commentArea.textProperty().bindBidirectional(trainRideItem.commentProperty());
+        GridPane.setHgrow(commentArea, Priority.ALWAYS);
+        GridPane.setVgrow(commentArea, Priority.ALWAYS);
         GridPane.setMargin(commentLabel, new Insets(0, 0, 0, 10));
 
         Button removeButton = new Button("", new FontIcon(MaterialDesignT.TRASH_CAN));
@@ -76,22 +91,29 @@ public class TrainRidePane extends GridPane {
         this.add(trainLabel, 0, 0, 1, 1);
         this.add(typeField, 1, 0, 1, 1);
         this.add(numberField, 2, 0, 1, 1);
+
         this.add(departureStationLabel, 3, 0, 1, 1);
         this.add(departureStationField, 4, 0, 1, 1);
         this.add(departureDateField, 5, 0, 1, 1);
         this.add(departureTimeField, 6, 0, 1, 1);
-        this.add(arrivalStationLabel, 7, 0, 1, 1);
-        this.add(arrivalStationField, 8, 0, 1, 1);
-        this.add(arrivalDateField, 9, 0, 1, 1);
-        this.add(arrivalTimeField, 10, 0, 1, 1);
-        this.add(reservationLabel, 11, 0, 1, 1);
-        this.add(reservationWagonField, 12, 0, 1, 1);
-        this.add(reservationSeatsField, 13, 0, 1, 1);
-        this.add(commentLabel, 14, 0, 1, 1);
-        this.add(commentField, 15, 0, 1, 1);
-        this.add(buttonBox, 16, 0, 1, 1);
+        this.add(departureZoneBox, 7, 0, 1, 1);
+
+        this.add(reservationLabel, 0, 1, 1, 1);
+        this.add(reservationWagonField, 1, 1, 1, 1);
+        this.add(reservationSeatsField, 2, 1, 1, 1);
+
+        this.add(arrivalStationLabel, 3, 1, 1, 1);
+        this.add(arrivalStationField, 4, 1, 1, 1);
+        this.add(arrivalDateField, 5, 1, 1, 1);
+        this.add(arrivalTimeField, 6, 1, 1, 1);
+        this.add(arrivalZoneBox, 7, 1, 1, 1);
+
+        this.add(commentLabel, 8, 0, 1, 1);
+        this.add(commentArea, 9, 0, 1, 2);
+        this.add(buttonBox, 10, 0, 1, 1);
 
         this.setHgap(5);
+        this.setVgap(2);
 
     }
 

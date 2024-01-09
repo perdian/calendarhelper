@@ -1,11 +1,12 @@
 package de.perdian.apps.calendarhelper.modules.items.impl.train;
 
-import de.perdian.apps.calendarhelper.modules.items.support.AbstractParentItemTemplate;
+import de.perdian.apps.calendarhelper.modules.items.ItemDefaults;
+import de.perdian.apps.calendarhelper.modules.items.ItemTemplate;
 import javafx.scene.layout.Pane;
 import org.kordamp.ikonli.Ikon;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignT;
 
-public class TrainJourneyTemplate extends AbstractParentItemTemplate<TrainJourneyItem, TrainRideItem> {
+public class TrainJourneyTemplate implements ItemTemplate<TrainJourneyItem> {
 
     @Override
     public String createTitle() {
@@ -18,26 +19,13 @@ public class TrainJourneyTemplate extends AbstractParentItemTemplate<TrainJourne
     }
 
     @Override
-    public TrainJourneyItem createItem() {
-        TrainJourneyItem trainJourneyItem = new TrainJourneyItem();
-        trainJourneyItem.getChildren().setAll(this.createChildItem(trainJourneyItem));
-        return trainJourneyItem;
+    public TrainJourneyItem createItem(ItemDefaults itemDefaults) {
+        return new TrainJourneyItem(itemDefaults);
     }
 
     @Override
     public Pane createItemPane(TrainJourneyItem item) {
         return new TrainJourneyPane(item);
-    }
-
-    @Override
-    protected TrainRideItem createChildItem(TrainJourneyItem parentItem) {
-        TrainRideItem childItem = new TrainRideItem();
-        if (!parentItem.getChildren().isEmpty()) {
-            TrainRideItem previousItem = parentItem.getChildren().get(parentItem.getChildren().size() - 1);
-            childItem.departureStationProperty().setValue(previousItem.arrivalStationProperty().getValue());
-            childItem.startDateProperty().setValue(previousItem.endDateProperty().getValue());
-        }
-        return childItem;
     }
 
 }
