@@ -140,7 +140,7 @@ public class AirtravelFlightItem extends AbstractSingleItem {
     }
 
     private void afterAirportCodeUpdated(String newAirportCode, ObjectProperty<ZoneId> zoneIdProperty, StringProperty airportNameProperty) {
-        Airport airport = AirportRepository.getInstance().loadAirportByCode(newAirportCode);
+        Airport airport = StringUtils.isEmpty(newAirportCode) ? null : AirportRepository.getInstance().loadAirportByCode(newAirportCode);
         zoneIdProperty.setValue(airport == null ? null : airport.getTimezoneId());
         airportNameProperty.setValue(airport == null ? null : airport.getName());
     }
