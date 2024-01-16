@@ -82,7 +82,7 @@ class StorageServiceImpl implements StorageService {
             if (newPersistencePropertyValue == null) {
                 Files.deleteIfExists(propertyPath);
             } else {
-                if (!Files.exists(propertyPath.getParent())) {
+                if (propertyPath.getParent() != null && !Files.exists(propertyPath.getParent())) {
                     log.trace("Creating parent directory for property at: {}", propertyPath.getParent());
                     Files.createDirectories(propertyPath.getParent());
                 }

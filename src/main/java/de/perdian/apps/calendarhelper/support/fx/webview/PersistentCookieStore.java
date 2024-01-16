@@ -95,7 +95,7 @@ public class PersistentCookieStore implements CookieStore {
         Collection<PersistentCookie> allCookies = this.getCookiesByKey().values();
         log.trace("Storing {} persistent cookies into path at: {}", allCookies.size(), this.getStoragePath());
         try {
-            if (!Files.exists(this.getStoragePath().getParent())) {
+            if (this.getStoragePath() != null && !Files.exists(this.getStoragePath().getParent())) {
                 log.debug("Creating parent directory for cookie store at: {}", this.getStoragePath().getParent());
                 Files.createDirectories(this.getStoragePath().getParent());
             }

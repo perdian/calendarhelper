@@ -20,7 +20,9 @@ class GoogleRefreshTokenStore {
 
     void updateRefreshToken(GoogleRefreshToken token) {
         Path tokenPath = this.resolveTokenPath();
-        if (token == null || StringUtils.isEmpty(token.getValue())) {
+        if (tokenPath == null) {
+            log.warn("Cannot compute token storage path");
+        } else if (token == null || StringUtils.isEmpty(token.getValue())) {
             if (Files.exists(tokenPath)) {
                 try {
                     Files.delete(tokenPath);
@@ -30,7 +32,7 @@ class GoogleRefreshTokenStore {
             }
         } else {
             try {
-                if (!Files.exists(tokenPath.getParent())) {
+                if (tokenPath.getParent() != null && !Files.exists(tokenPath.getParent())) {
                     log.debug("Creating parent directory for refresh token store at: {}", tokenPath.getParent());
                     Files.createDirectories(tokenPath.getParent());
                 }

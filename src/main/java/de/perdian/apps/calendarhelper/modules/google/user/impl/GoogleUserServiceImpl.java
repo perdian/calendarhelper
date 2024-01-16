@@ -62,9 +62,6 @@ class GoogleUserServiceImpl implements GoogleUserService {
     public GoogleUser loginNewUser(GoogleApiCredentials apiCredentials) throws GoogleApiException {
         try {
 
-            NetHttpTransport googleHttpTransport = GoogleNetHttpTransport.newTrustedTransport();
-            JsonFactory googleJsonFactory = GsonFactory.getDefaultInstance();
-
             return CompletableFuture.supplyAsync(() -> this.createAuthorizationCode(apiCredentials))
                 .thenApply(authorizationCode -> this.createRefreshTokenFromAuthorizationCode(authorizationCode))
                 .thenApply(refreshToken -> this.lookupUserFromRefreshToken(refreshToken, apiCredentials))
