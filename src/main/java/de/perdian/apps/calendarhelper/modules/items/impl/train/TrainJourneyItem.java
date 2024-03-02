@@ -1,13 +1,9 @@
 package de.perdian.apps.calendarhelper.modules.items.impl.train;
 
 import de.perdian.apps.calendarhelper.modules.items.ItemDefaults;
-import de.perdian.apps.calendarhelper.modules.items.support.AbstractParentItem;
+import de.perdian.apps.calendarhelper.modules.items.support.AbstractJourneyItem;
 
-public class TrainJourneyItem extends AbstractParentItem<TrainRideItem> {
-
-    public TrainJourneyItem(ItemDefaults itemDefaults) {
-        this.appendChild(itemDefaults);
-    }
+public class TrainJourneyItem extends AbstractJourneyItem<TrainRideItem> {
 
     @Override
     protected TrainRideItem createChildInstance(ItemDefaults itemDefaults) {
@@ -18,6 +14,15 @@ public class TrainJourneyItem extends AbstractParentItem<TrainRideItem> {
             childItem.startDateProperty().setValue(previousItem.endDateProperty().getValue());
         }
         return childItem;
+    }
+
+    @Override
+    protected String createJourneyEventSummary() {
+        return "Trip 🚊 "
+            + this.getChildren().getFirst().departureStationProperty().getValue()
+            + " » "
+            + this.getChildren().getLast().arrivalStationProperty().getValue()
+            ;
     }
 
 }

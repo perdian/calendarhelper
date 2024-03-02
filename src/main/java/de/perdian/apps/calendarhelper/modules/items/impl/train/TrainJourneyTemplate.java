@@ -20,7 +20,9 @@ public class TrainJourneyTemplate implements ItemTemplate<TrainJourneyItem> {
 
     @Override
     public TrainJourneyItem createItem(ItemDefaults itemDefaults) {
-        return new TrainJourneyItem(itemDefaults);
+        TrainJourneyItem newJourneyItem = new TrainJourneyItem();
+        newJourneyItem.appendChild(itemDefaults);
+        return newJourneyItem;
     }
 
     @Override

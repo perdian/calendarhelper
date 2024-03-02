@@ -6,6 +6,7 @@ import de.perdian.apps.calendarhelper.modules.items.ItemDefaults;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AbstractParentItem<C extends Item> implements Item {
@@ -14,9 +15,9 @@ public abstract class AbstractParentItem<C extends Item> implements Item {
 
     @Override
     public List<Event> createEvents() {
-        return this.getChildren().stream()
-                .flatMap(child -> child.createEvents().stream())
-                .toList();
+        List<Event> allEvents = new ArrayList<>();
+        this.getChildren().forEach(childItem -> allEvents.addAll(childItem.createEvents()));
+        return allEvents;
     }
 
     public C appendChild(ItemDefaults itemDefaults) {

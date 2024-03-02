@@ -15,6 +15,7 @@ public class FocusTraversalKeyHandler implements EventHandler<KeyEvent> {
         this.setPreviousControl(previousControl);
         this.setNextControl(nextControl);
     }
+
     @Override
     public void handle(KeyEvent event) {
         if (KeyCode.TAB.equals(event.getCode())) {

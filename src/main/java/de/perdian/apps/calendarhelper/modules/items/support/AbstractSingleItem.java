@@ -139,6 +139,10 @@ public abstract class AbstractSingleItem implements Item {
         return this.startZoneOffset;
     }
 
+    public ZonedDateTime toStartZonedDateTime() {
+        return this.startDateProperty().getValue().atTime(this.startTimeProperty().getValue()).atZone(this.startZoneIdProperty().getValue());
+    }
+
     public ObjectProperty<LocalDate> endDateProperty() {
         return this.endDate;
     }
@@ -153,6 +157,10 @@ public abstract class AbstractSingleItem implements Item {
 
     public ObjectProperty<ZoneOffset> endZoneOffsetProperty() {
         return this.endZoneOffset;
+    }
+
+    public ZonedDateTime toEndZonedDateTime() {
+        return this.endDateProperty().getValue().atTime(this.endTimeProperty().getValue()).atZone(this.endZoneIdProperty().getValue());
     }
 
 }

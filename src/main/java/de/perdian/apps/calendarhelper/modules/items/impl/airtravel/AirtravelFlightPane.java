@@ -150,7 +150,7 @@ public class AirtravelFlightPane extends GridPane {
         this.setHgap(5);
         this.setVgap(2);
 
-        commentsArea.addEventFilter(KeyEvent.KEY_PRESSED, new FocusTraversalKeyHandler(seatsField, airplaneField));
+        commentsArea.addEventFilter(KeyEvent.KEY_PRESSED, new FocusTraversalKeyHandler(null, airplaneField));
 
     }
 

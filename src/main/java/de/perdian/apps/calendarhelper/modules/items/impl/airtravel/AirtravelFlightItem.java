@@ -73,12 +73,11 @@ public class AirtravelFlightItem extends AbstractSingleItem {
 
     private String createEventDescription() {
 
-        StringBuilder eventDescription = new StringBuilder();
-
+        ZonedDateTime departureDateTime = this.toStartZonedDateTime();
+        ZonedDateTime arrivalDateTime = this.toEndZonedDateTime();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("EEE dd.MM.yyyy HH:mm ZZZZ").withLocale(Locale.GERMANY);
-        ZonedDateTime departureDateTime = this.startDateProperty().getValue().atTime(this.startTimeProperty().getValue()).atZone(this.startZoneIdProperty().getValue());
-        ZonedDateTime arrivalDateTime = this.endDateProperty().getValue().atTime(this.endTimeProperty().getValue()).atZone(this.endZoneIdProperty().getValue());
 
+        StringBuilder eventDescription = new StringBuilder();
         eventDescription.append("<strong>Flug</strong>\n");
         eventDescription.append(this.airlineCodeProperty().getValue()).append(" ").append(this.flightNumberProperty().getValue());
         Airline airline = AirlineRepository.getInstance().loadAirlineByCode(this.airlineCodeProperty().getValue());

@@ -20,7 +20,9 @@ public class AirtravelJourneyTemplate implements ItemTemplate<AirtravelJourneyIt
 
     @Override
     public AirtravelJourneyItem createItem(ItemDefaults itemDefaults) {
-        return new AirtravelJourneyItem(itemDefaults);
+        AirtravelJourneyItem newJourneyItem = new AirtravelJourneyItem();
+        newJourneyItem.appendChild(itemDefaults);
+        return newJourneyItem;
     }
 
     @Override

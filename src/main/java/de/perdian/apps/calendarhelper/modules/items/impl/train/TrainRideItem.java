@@ -19,6 +19,11 @@ public class TrainRideItem extends AbstractSingleItem {
 
     public TrainRideItem(ItemDefaults itemDefaults) {
         super(itemDefaults);
+        this.startDateProperty().addListener((o, oldValue, newValue) -> {
+            if (newValue != null && this.endDateProperty().getValue() == null) {
+                this.endDateProperty().setValue(newValue);
+            }
+        });
     }
 
     @Override

@@ -1,13 +1,9 @@
 package de.perdian.apps.calendarhelper.modules.items.impl.airtravel;
 
 import de.perdian.apps.calendarhelper.modules.items.ItemDefaults;
-import de.perdian.apps.calendarhelper.modules.items.support.AbstractParentItem;
+import de.perdian.apps.calendarhelper.modules.items.support.AbstractJourneyItem;
 
-public class AirtravelJourneyItem extends AbstractParentItem<AirtravelFlightItem> {
-
-    AirtravelJourneyItem(ItemDefaults itemDefaults) {
-        this.appendChild(itemDefaults);
-    }
+public class AirtravelJourneyItem extends AbstractJourneyItem<AirtravelFlightItem> {
 
     @Override
     protected AirtravelFlightItem createChildInstance(ItemDefaults itemDefaults) {
@@ -19,6 +15,15 @@ public class AirtravelJourneyItem extends AbstractParentItem<AirtravelFlightItem
             childItem.bookingCodeProperty().setValue(previousItem.bookingCodeProperty().getValue());
         }
         return childItem;
+    }
+
+    @Override
+    protected String createJourneyEventSummary() {
+        return "Trip  ✈️ "
+            + this.getChildren().getFirst().departureAirportCodeProperty().getValue()
+            + " » "
+            + this.getChildren().getLast().arrivalAirportCodeProperty().getValue()
+        ;
     }
 
 }
