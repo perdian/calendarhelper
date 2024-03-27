@@ -12,6 +12,7 @@ public class TrainJourneyItem extends AbstractJourneyItem<TrainRideItem> {
             TrainRideItem previousItem = this.getChildren().get(this.getChildren().size() - 1);
             childItem.departureStationProperty().setValue(previousItem.arrivalStationProperty().getValue());
             childItem.startDateProperty().setValue(previousItem.endDateProperty().getValue());
+            childItem.bookingCodeProperty().setValue(previousItem.bookingCodeProperty().getValue());
         }
         return childItem;
     }
