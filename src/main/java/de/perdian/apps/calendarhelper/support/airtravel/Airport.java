@@ -35,6 +35,19 @@ public class Airport implements Serializable {
         return airport;
     }
 
+    public static Integer computeDistanceInKilometers(Airport airportA, Airport airportB) {
+        if (airportA == null || airportA.getLatitude() == null || airportA.getLongitude() == null || airportB == null || airportB.getLatitude() == null || airportB.getLongitude() == null) {
+            return null;
+        } else {
+            double earthRadius = 6371000; // Meters
+            double dLat = Math.toRadians(airportB.getLatitude() - airportA.getLatitude());
+            double dLng = Math.toRadians(airportB.getLongitude() - airportA.getLongitude());
+            double a = Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(Math.toRadians(airportA.getLatitude())) * Math.cos(Math.toRadians(airportB.getLatitude())) * Math.sin(dLng/2) * Math.sin(dLng/2);
+            double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            return (int)((earthRadius * c) / 1000);
+        }
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {

@@ -35,6 +35,21 @@ public class AirtravelFlightItem extends AbstractSingleItem {
         super(itemDefaults);
         this.departureAirportCodeProperty().addListener((o, oldValue, newValue) -> this.afterAirportCodeUpdated(newValue, this.startZoneIdProperty(), this.departureAirportNameProperty()));
         this.arrivalAirportCodeProperty().addListener((o, oldValue, newValue) -> this.afterAirportCodeUpdated(newValue, this.endZoneIdProperty(), this.arrivalAirportNameProperty()));
+        this.arrivalAirportCodeProperty().addListener((o, oldValue, newValue) -> {
+            ZonedDateTime startDateTime = this.toStartZonedDateTime();
+            if (startDateTime != null && this.endDateProperty().getValue() == null) {
+                // Guess the average flight duration to estimate if the end if the flight will be at the next day
+                String departureAirportCode = this.departureAirportCodeProperty().getValue();
+                Airport departureAirport = StringUtils.isEmpty(departureAirportCode) ? null : AirportRepository.getInstance().loadAirportByCode(departureAirportCode);
+                Airport arrivalAirport = StringUtils.isEmpty(newValue) ? null : AirportRepository.getInstance().loadAirportByCode(newValue);
+                Integer distanceInKilometers = Airport.computeDistanceInKilometers(departureAirport, arrivalAirport);
+                if (distanceInKilometers != null) {
+                    int hoursForDistance = (int)Math.floor(distanceInKilometers / 800d);
+                    ZonedDateTime estimatedArrivalDateTime = startDateTime.plusHours(hoursForDistance).withZoneSameInstant(departureAirport.getTimezoneId());
+                    this.endDateProperty().setValue(estimatedArrivalDateTime.toLocalDate());
+                }
+            }
+        });
         this.startZoneIdProperty().setValue(null);
         this.endZoneIdProperty().setValue(null);
     }

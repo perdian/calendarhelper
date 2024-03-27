@@ -1,5 +1,7 @@
 package de.perdian.apps.calendarhelper.modules.items.impl.airtravel;
 
+import de.perdian.apps.calendarhelper.support.airtravel.AircraftType;
+import de.perdian.apps.calendarhelper.support.airtravel.AircraftTypeRepository;
 import de.perdian.apps.calendarhelper.support.fx.components.DateField;
 import de.perdian.apps.calendarhelper.support.fx.components.TimeField;
 import de.perdian.apps.calendarhelper.support.fx.converters.ToUppercaseStringConverter;
@@ -11,6 +13,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.util.StringConverter;
+import org.apache.commons.lang3.StringUtils;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignT;
 
@@ -64,8 +68,10 @@ public class AirtravelFlightPane extends GridPane {
         GridPane.setMargin(arrivalLabel, new Insets(0, 0, 0, 10));
 
         Label seatsLabel = new Label("Seats");
+        TextFormatter<String> seatsFormatter = new TextFormatter<>(new ToUppercaseStringConverter());
+        seatsFormatter.valueProperty().bindBidirectional(airtravelFlightItem.seatsProperty());
         TextField seatsField = new TextField();
-        seatsField.textProperty().bindBidirectional(airtravelFlightItem.seatsProperty());
+        seatsField.setTextFormatter(seatsFormatter);
         seatsField.setPromptText("00A");
         seatsField.setPrefWidth(50);
         seatsLabel.setLabelFor(seatsField);
@@ -81,10 +87,12 @@ public class AirtravelFlightPane extends GridPane {
         GridPane.setMargin(commentsLabel, new Insets(0, 0, 0, 10));
 
         Label airplaneLabel = new Label("Airplane");
+        TextFormatter<String> airplaneFormatter = new TextFormatter<>(new AircraftTypeCodeToAircraftTypeNameConverter());
+        airplaneFormatter.valueProperty().bindBidirectional(airtravelFlightItem.airplaneTypeProperty());
         TextField airplaneField = new TextField();
+        airplaneField.setTextFormatter(airplaneFormatter);
         airplaneField.setPrefWidth(0);
         airplaneField.setMaxWidth(Double.MAX_VALUE);
-        airplaneField.textProperty().bindBidirectional(airtravelFlightItem.airplaneTypeProperty());
         airplaneLabel.setLabelFor(airplaneField);
 
         Label departureAirportNameLabel = new Label("Airport");
@@ -151,6 +159,25 @@ public class AirtravelFlightPane extends GridPane {
         this.setVgap(2);
 
         commentsArea.addEventFilter(KeyEvent.KEY_PRESSED, new FocusTraversalKeyHandler(null, airplaneField));
+
+    }
+
+    private static class AircraftTypeCodeToAircraftTypeNameConverter extends StringConverter<String> {
+
+        @Override
+        public String toString(String string) {
+            return string;
+        }
+
+        @Override
+        public String fromString(String aircraftTypeString) {
+            if (StringUtils.isEmpty(aircraftTypeString)) {
+                return null;
+            } else {
+                AircraftType aircraftType = AircraftTypeRepository.getInstance().loadAircraftTypeByCode(aircraftTypeString);
+                return aircraftType == null ? aircraftTypeString : aircraftType.getName();
+            }
+        }
 
     }
 

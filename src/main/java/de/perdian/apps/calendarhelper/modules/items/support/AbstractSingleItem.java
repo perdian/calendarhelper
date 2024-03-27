@@ -140,7 +140,7 @@ public abstract class AbstractSingleItem implements Item {
     }
 
     public ZonedDateTime toStartZonedDateTime() {
-        return this.startDateProperty().getValue().atTime(this.startTimeProperty().getValue()).atZone(this.startZoneIdProperty().getValue());
+        return this.startDateProperty().getValue() == null || this.startTimeProperty().getValue() == null ? null : this.startDateProperty().getValue().atTime(this.startTimeProperty().getValue()).atZone(this.startZoneIdProperty().getValue());
     }
 
     public ObjectProperty<LocalDate> endDateProperty() {
@@ -160,7 +160,7 @@ public abstract class AbstractSingleItem implements Item {
     }
 
     public ZonedDateTime toEndZonedDateTime() {
-        return this.endDateProperty().getValue().atTime(this.endTimeProperty().getValue()).atZone(this.endZoneIdProperty().getValue());
+        return this.endDateProperty().getValue() == null || this.endTimeProperty().getValue() == null ? null : this.endDateProperty().getValue().atTime(this.endTimeProperty().getValue()).atZone(this.endZoneIdProperty().getValue());
     }
 
 }
