@@ -19,7 +19,7 @@ public class AirtravelJourneyItem extends AbstractJourneyItem<AirtravelFlightIte
 
     @Override
     protected String createJourneyEventSummary() {
-        return "Trip  ✈️ "
+        return "Trip ✈️ "
             + this.getChildren().getFirst().departureAirportCodeProperty().getValue()
             + " » "
             + this.getChildren().getLast().arrivalAirportCodeProperty().getValue()
