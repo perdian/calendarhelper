@@ -31,7 +31,7 @@ class CalendarHelperMainPane extends GridPane {
         userPane.setPadding(new Insets(10, 10, 10, 10));
         userPane.setPrefWidth(400);
         TitledPane userTitledPane = new TitledPane("Google User", userPane);
-        userTitledPane.setGraphic(new FontIcon(MaterialDesignF.FACE));
+        userTitledPane.setGraphic(new FontIcon(MaterialDesignF.FACE_MAN));
         userTitledPane.setCollapsible(false);
 
         ItemDefaultsPane itemDefaultsPane = new ItemDefaultsPane(selection.getItemDefaults());
