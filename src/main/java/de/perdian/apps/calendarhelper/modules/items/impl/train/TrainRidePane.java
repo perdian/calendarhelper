@@ -32,15 +32,15 @@ public class TrainRidePane extends GridPane {
         trainLabel.setPadding(new Insets(0, 5, 0, 0));
         trainLabel.setLabelFor(typeField);
 
+        Label departureLabel = new Label("Departure");
+        departureLabel.setPadding(new Insets(0, 5, 0, 0));
+        GridPane.setMargin(departureLabel, new Insets(0, 0, 0, 10));
         TextField departureStationField = new TextField();
+        departureStationField.setPromptText("Station");
         departureStationField.textProperty().bindBidirectional(trainRideItem.departureStationProperty());
-        departureStationField.setPrefWidth(125);
-        Label departureStationLabel = new Label("Departure");
-        departureStationLabel.setPadding(new Insets(0, 5, 0, 0));
-        departureStationLabel.setLabelFor(departureStationField);
+        departureStationField.setPrefWidth(150);
         DateField departureDateField = new DateField(trainRideItem.startDateProperty());
         TimeField departureTimeField = new TimeField(trainRideItem.startTimeProperty());
-        GridPane.setMargin(departureStationLabel, new Insets(0, 0, 0, 10));
         ComboBox<ZoneId> departureZoneBox = new ComboBox<>(FXCollections.observableArrayList(ZoneId.getAvailableZoneIds().stream().sorted().map(ZoneId::of).toList()));
         departureZoneBox.setPrefWidth(125);
         departureZoneBox.valueProperty().bindBidirectional(trainRideItem.startZoneIdProperty());
@@ -50,15 +50,15 @@ public class TrainRidePane extends GridPane {
         departureTrackField.textProperty().bindBidirectional(trainRideItem.departureTrackProperty());
         departureTrackField.setPrefWidth(50);
 
+        Label arrivalLabel = new Label("Arrival");
+        arrivalLabel.setPadding(new Insets(0, 5, 0, 0));
+        GridPane.setMargin(arrivalLabel, new Insets(0, 0, 0, 10));
         TextField arrivalStationField = new TextField();
+        arrivalStationField.setPromptText("Station");
         arrivalStationField.textProperty().bindBidirectional(trainRideItem.arrivalStationProperty());
-        arrivalStationField.setPrefWidth(125);
-        Label arrivalStationLabel = new Label("Arrival");
-        arrivalStationLabel.setPadding(new Insets(0, 5, 0, 0));
-        arrivalStationLabel.setLabelFor(departureStationField);
+        arrivalStationField.setPrefWidth(150);
         DateField arrivalDateField = new DateField(trainRideItem.endDateProperty());
         TimeField arrivalTimeField = new TimeField(trainRideItem.endTimeProperty());
-        GridPane.setMargin(arrivalStationLabel, new Insets(0, 0, 0, 10));
         ComboBox<ZoneId> arrivalZoneBox = new ComboBox<>(FXCollections.observableArrayList(ZoneId.getAvailableZoneIds().stream().sorted().map(ZoneId::of).toList()));
         arrivalZoneBox.setPrefWidth(125);
         arrivalZoneBox.valueProperty().bindBidirectional(trainRideItem.endZoneIdProperty());
@@ -80,6 +80,14 @@ public class TrainRidePane extends GridPane {
         reservationLabel.setPadding(new Insets(0, 5, 0, 0));
         reservationLabel.setLabelFor(reservationWagonField);
 
+        TextField bookingCodeField = new TextField();
+        bookingCodeField.textProperty().bindBidirectional(trainRideItem.bookingCodeProperty());
+        bookingCodeField.setPrefWidth(100);
+        Label bookingCodeLabel = new Label("Code");
+        bookingCodeLabel.setPadding(new Insets(0, 5, 0, 0));
+        bookingCodeLabel.setLabelFor(bookingCodeField);
+        GridPane.setMargin(bookingCodeLabel, new Insets(0, 0, 0, 10));
+
         TextArea commentsArea = new TextArea();
         commentsArea.setPrefWidth(0);
         commentsArea.setPrefHeight(0);
@@ -90,14 +98,6 @@ public class TrainRidePane extends GridPane {
         commentsLabel.setPadding(new Insets(0, 5, 0, 0));
         commentsLabel.setLabelFor(commentsArea);
         GridPane.setMargin(commentsLabel, new Insets(0, 0, 0, 10));
-
-        TextField bookingCodeField = new TextField();
-        bookingCodeField.textProperty().bindBidirectional(trainRideItem.bookingCodeProperty());
-        bookingCodeField.setPrefWidth(75);
-        Label bookingCodeLabel = new Label("Code");
-        bookingCodeLabel.setPadding(new Insets(0, 5, 0, 0));
-        bookingCodeLabel.setLabelFor(bookingCodeField);
-        GridPane.setMargin(bookingCodeLabel, new Insets(0, 0, 0, 10));
 
         Button removeButton = new Button("", new FontIcon(MaterialDesignT.TRASH_CAN));
         removeButton.disableProperty().bind(Bindings.size(trainJourneyItem.getChildren()).lessThanOrEqualTo(1));
@@ -111,11 +111,11 @@ public class TrainRidePane extends GridPane {
         this.add(typeField, 1, 0, 1, 1);
         this.add(numberField, 2, 0, 1, 1);
 
-        this.add(departureStationLabel, 3, 0, 1, 1);
-        this.add(departureStationField, 4, 0, 1, 1);
-        this.add(departureDateField, 5, 0, 1, 1);
-        this.add(departureTimeField, 6, 0, 1, 1);
-        this.add(departureZoneBox, 7, 0, 1, 1);
+        this.add(departureLabel, 3, 0, 1, 1);
+        this.add(departureDateField, 4, 0, 1, 1);
+        this.add(departureTimeField, 5, 0, 1, 1);
+        this.add(departureZoneBox, 6, 0, 1, 1);
+        this.add(departureStationField, 7, 0, 1, 1);
         this.add(departureTrackField, 8, 0, 1, 1);
         this.add(bookingCodeLabel, 9, 0, 1, 1);
         this.add(bookingCodeField, 10, 0, 1, 1);
@@ -126,11 +126,11 @@ public class TrainRidePane extends GridPane {
         this.add(reservationWagonField, 1, 1, 1, 1);
         this.add(reservationSeatsField, 2, 1, 1, 1);
 
-        this.add(arrivalStationLabel, 3, 1, 1, 1);
-        this.add(arrivalStationField, 4, 1, 1, 1);
-        this.add(arrivalDateField, 5, 1, 1, 1);
-        this.add(arrivalTimeField, 6, 1, 1, 1);
-        this.add(arrivalZoneBox, 7, 1, 1, 1);
+        this.add(arrivalLabel, 3, 1, 1, 1);
+        this.add(arrivalDateField, 4, 1, 1, 1);
+        this.add(arrivalTimeField, 5, 1, 1, 1);
+        this.add(arrivalZoneBox, 6, 1, 1, 1);
+        this.add(arrivalStationField, 7, 1, 1, 1);
         this.add(arrivalTrackField, 8, 1, 1, 1);
 
         this.add(buttonBox, 13, 0, 1, 1);
