@@ -1,11 +1,11 @@
 package de.perdian.apps.calendarhelper.modules.items.impl.airtravel;
 
-import de.perdian.apps.calendarhelper.modules.items.support.AbstractParentPane;
+import de.perdian.apps.calendarhelper.modules.items.support.AbstractContainerPane;
 import javafx.scene.layout.Pane;
 
-public class AirtravelJourneyPane extends AbstractParentPane<AirtravelJourneyItem, AirtravelFlightItem> {
+class AirtravelJourneyPane extends AbstractContainerPane<AirtravelJourneyItem, AirtravelFlightItem> {
 
-    public AirtravelJourneyPane(AirtravelJourneyItem parentItem) {
+    AirtravelJourneyPane(AirtravelJourneyItem parentItem) {
         super(parentItem);
     }
 

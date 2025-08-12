@@ -6,27 +6,30 @@ import de.perdian.apps.calendarhelper.modules.items.ItemDefaults;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractParentItem<C extends Item> implements Item {
+public abstract class AbstractContainerItem<C extends Item> extends Item {
 
     private final ObservableList<C> children = FXCollections.observableArrayList();
 
-    @Override
-    public List<Event> createEvents() {
-        List<Event> allEvents = new ArrayList<>();
-        this.getChildren().forEach(childItem -> allEvents.addAll(childItem.createEvents()));
-        return allEvents;
+    protected AbstractContainerItem(ItemDefaults defaults) {
+        super(defaults);
     }
 
-    public C appendChild(ItemDefaults itemDefaults) {
-        C childInstance = this.createChildInstance(itemDefaults);
+    @Override
+    public List<Event> createEvents() {
+        return this.getChildren()
+            .stream().flatMap(child -> child.createEvents().stream())
+            .toList();
+    }
+
+    public C appendChildItem(ItemDefaults itemDefaults) {
+        C childInstance = this.createChildItem(itemDefaults);
         this.getChildren().add(childInstance);
         return childInstance;
     }
 
-    protected abstract C createChildInstance(ItemDefaults itemDefaults);
+    protected abstract C createChildItem(ItemDefaults itemDefaults);
 
     public ObservableList<C> getChildren() {
         return this.children;

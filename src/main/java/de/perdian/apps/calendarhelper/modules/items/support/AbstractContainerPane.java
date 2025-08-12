@@ -1,5 +1,6 @@
 package de.perdian.apps.calendarhelper.modules.items.support;
 
+import de.perdian.apps.calendarhelper.modules.items.Item;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.scene.layout.BorderPane;
@@ -9,11 +10,11 @@ import javafx.scene.layout.VBox;
 import java.util.HashMap;
 import java.util.Map;
 
-public abstract class AbstractParentPane<P extends AbstractParentItem<C>, C extends AbstractSingleItem> extends BorderPane {
+public abstract class AbstractContainerPane<P extends AbstractContainerItem<C>, C extends Item> extends BorderPane {
 
     private final Map<C, Pane> childToPaneMap = new HashMap<>();
 
-    public AbstractParentPane(P parentItem) {
+    protected AbstractContainerPane(P parentItem) {
 
         VBox childrenParentPane = new VBox();
         childrenParentPane.setSpacing(10);

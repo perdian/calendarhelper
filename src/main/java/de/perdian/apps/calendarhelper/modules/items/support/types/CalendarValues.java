@@ -1,26 +1,22 @@
-package de.perdian.apps.calendarhelper.modules.items.support;
+package de.perdian.apps.calendarhelper.modules.items.support.types;
 
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventAttendee;
 import com.google.api.services.calendar.model.EventDateTime;
-import de.perdian.apps.calendarhelper.modules.items.Item;
 import de.perdian.apps.calendarhelper.modules.items.ItemDefaults;
-import de.perdian.apps.calendarhelper.modules.items.support.types.Availability;
 import javafx.beans.property.*;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.time.*;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
-public abstract class AbstractSingleItem implements Item {
+public class CalendarValues {
 
-    private final ObjectProperty<Availability> availability = new SimpleObjectProperty<>(Availability.BLOCKED);
-    private final StringProperty id = new SimpleStringProperty();
+    private final ObjectProperty<CalendarAvailability> calendarAvailability = new SimpleObjectProperty<>(CalendarAvailability.BLOCKED);
     private final StringProperty attendees = new SimpleStringProperty();
     private final BooleanProperty fullDay = new SimpleBooleanProperty(false);
     private final ObjectProperty<LocalDate> startDate = new SimpleObjectProperty<>();
@@ -32,8 +28,7 @@ public abstract class AbstractSingleItem implements Item {
     private final ObjectProperty<ZoneId> endZoneId = new SimpleObjectProperty<>();
     private final ObjectProperty<ZoneOffset> endZoneOffset = new SimpleObjectProperty<>();
 
-    public AbstractSingleItem(ItemDefaults itemDefaults) {
-        this.attendeesProperty().bind(itemDefaults.attendeesProperty());
+    public CalendarValues(ItemDefaults itemDefaults) {
         this.fullDayProperty().addListener((o, oldValue, newValue) -> {
             if (Boolean.TRUE.equals(newValue)) {
                 this.startTimeProperty().setValue(null);
@@ -43,33 +38,24 @@ public abstract class AbstractSingleItem implements Item {
         this.startDateProperty().addListener((o, oldValue, newValue) -> this.recomputeZoneOffset(this.startZoneOffsetProperty(), newValue, this.startTimeProperty().getValue(), this.startZoneIdProperty().getValue()));
         this.startTimeProperty().addListener((o, oldValue, newValue) -> this.recomputeZoneOffset(this.startZoneOffsetProperty(), this.startDateProperty().getValue(), newValue, this.startZoneIdProperty().getValue()));
         this.startZoneIdProperty().addListener((o, oldValue, newValue) -> this.recomputeZoneOffset(this.startZoneOffsetProperty(), this.startDateProperty().getValue(), this.startTimeProperty().getValue(), newValue));
-        this.startZoneIdProperty().setValue(itemDefaults.timezoneProperty().getValue());
         this.endDateProperty().addListener((o, oldValue, newValue) -> this.recomputeZoneOffset(this.endZoneOffsetProperty(), newValue, this.endTimeProperty().getValue(), this.endZoneIdProperty().getValue()));
         this.endTimeProperty().addListener((o, oldValue, newValue) -> this.recomputeZoneOffset(this.endZoneOffsetProperty(), this.endDateProperty().getValue(), newValue, this.endZoneIdProperty().getValue()));
         this.endZoneIdProperty().addListener((o, oldValue, newValue) -> this.recomputeZoneOffset(this.endZoneOffsetProperty(), this.endDateProperty().getValue(), this.endTimeProperty().getValue(), newValue));
-        this.endZoneIdProperty().setValue(itemDefaults.timezoneProperty().getValue());
+        if (itemDefaults != null) {
+            this.attendeesProperty().bind(itemDefaults.attendeesProperty());
+            this.startZoneIdProperty().setValue(itemDefaults.timezoneProperty().getValue());
+            this.endZoneIdProperty().setValue(itemDefaults.timezoneProperty().getValue());
+        }
     }
 
-    @Override
-    public final List<Event> createEvents() {
-        return Collections.singletonList(this.createEvent());
-    }
-
-    protected Event createEvent() {
+    public Event createEvent() {
         Event event = new Event();
-        event.setId(DigestUtils.md5Hex(this.createEventId()));
-        event.setTransparency(this.availabilityProperty().getValue().getApiValue());
+        event.setId(DigestUtils.md5Hex("calendarHelper-" + UUID.randomUUID()));
+        event.setTransparency(this.calendarAvailabilityProperty().getValue().getGoogleApiValue());
         event.setAttendees(this.createEventAttendees());
         event.setStart(this.createEventDateTime(this.startDateProperty(), null, this.startTimeProperty(), this.startZoneIdProperty()));
         event.setEnd(this.createEventDateTime(this.endDateProperty(), this.startDateProperty().getValue(), this.endTimeProperty(), this.endZoneIdProperty()));
         return event;
-    }
-
-    protected String createEventId() {
-        if (StringUtils.isEmpty(this.idProperty().getValue())) {
-            this.idProperty().setValue("calendarHelper-" + UUID.randomUUID());
-        }
-        return this.idProperty().getValue();
     }
 
     protected List<EventAttendee> createEventAttendees() {
@@ -107,16 +93,12 @@ public abstract class AbstractSingleItem implements Item {
         }
     }
 
-    public ObjectProperty<Availability> availabilityProperty() {
-        return this.availability;
+    public ObjectProperty<CalendarAvailability> calendarAvailabilityProperty() {
+        return this.calendarAvailability;
     }
 
     public StringProperty attendeesProperty() {
         return this.attendees;
-    }
-
-    private StringProperty idProperty() {
-        return this.id;
     }
 
     public BooleanProperty fullDayProperty() {

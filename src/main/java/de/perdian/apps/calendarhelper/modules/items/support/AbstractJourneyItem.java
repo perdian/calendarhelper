@@ -2,15 +2,23 @@ package de.perdian.apps.calendarhelper.modules.items.support;
 
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventOutOfOfficeProperties;
+import de.perdian.apps.calendarhelper.modules.items.Item;
+import de.perdian.apps.calendarhelper.modules.items.ItemDefaults;
 import org.apache.commons.codec.digest.DigestUtils;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
-public abstract class AbstractJourneyItem<C extends AbstractSingleItem> extends AbstractParentItem<C> {
+public abstract class AbstractJourneyItem<C extends Item> extends AbstractContainerItem<C> {
+
+    protected AbstractJourneyItem(ItemDefaults defaults) {
+        super(defaults);
+    }
 
     @Override
     public List<Event> createEvents() {
-        List<Event> allEvents = super.createEvents();
+        List<Event> allEvents = new ArrayList<>(super.createEvents());
         Event journeyEvent = this.createJourneyEvent();
         if (journeyEvent != null) {
             allEvents.add(journeyEvent);
@@ -24,16 +32,12 @@ public abstract class AbstractJourneyItem<C extends AbstractSingleItem> extends 
         } else {
 
             C firstItem = this.getChildren().getFirst();
-            Event firstItemEvent = firstItem.createEvent();
+            Event firstItemEvent = firstItem.createEvents().getFirst();
             C lastItem = this.getChildren().getLast();
-            Event lastItemEvent = lastItem.createEvent();
-
-            StringBuilder overallEventId = new StringBuilder("calendarHelper-overall");
-            overallEventId.append("-").append(firstItem.createEventId());
-            overallEventId.append("-").append(lastItem.createEventId());
+            Event lastItemEvent = lastItem.createEvents().getLast();
 
             Event overallEvent = new Event();
-            overallEvent.setId(DigestUtils.md5Hex(overallEventId.toString()));
+            overallEvent.setId(DigestUtils.md5Hex(UUID.randomUUID().toString()));
             overallEvent.setStart(firstItemEvent.getStart());
             overallEvent.setEnd(lastItemEvent.getEnd());
             overallEvent.setEventType("outOfOffice");

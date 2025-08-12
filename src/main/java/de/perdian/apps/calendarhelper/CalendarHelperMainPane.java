@@ -5,7 +5,7 @@ import de.perdian.apps.calendarhelper.modules.google.apicredentials.GoogleApiCre
 import de.perdian.apps.calendarhelper.modules.google.user.GoogleUserPane;
 import de.perdian.apps.calendarhelper.modules.google.user.GoogleUserService;
 import de.perdian.apps.calendarhelper.modules.items.ItemDefaultsPane;
-import de.perdian.apps.calendarhelper.modules.items.ItemsPane;
+import de.perdian.apps.calendarhelper.modules.items.ItemsContainerPane;
 import javafx.geometry.Insets;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.GridPane;
@@ -52,8 +52,8 @@ class CalendarHelperMainPane extends GridPane {
         GridPane.setHgrow(executionTitledPane, Priority.ALWAYS);
         GridPane.setFillHeight(executionTitledPane, true);
 
-        ItemsPane itemsPane = new ItemsPane(selection.getActiveItems(), selection.getItemDefaults());
-        TitledPane itemsTitledPane = new TitledPane("Items", itemsPane);
+        ItemsContainerPane itemsContainerPane = new ItemsContainerPane(selection.getActiveItems(), selection.getItemDefaults());
+        TitledPane itemsTitledPane = new TitledPane("Items", itemsContainerPane);
         itemsTitledPane.setGraphic(new FontIcon(MaterialDesignF.FORMAT_LIST_BULLETED));
         itemsTitledPane.setCollapsible(false);
         itemsTitledPane.setMaxHeight(Double.MAX_VALUE);

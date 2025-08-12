@@ -1,0 +1,11 @@
+categories:
+- name: Trains
+  items:
+    - type: TRAIN
+      details:
+        x: X
+- name: Trains
+  items:
+    - type: TRAIN
+      details:
+        x: X

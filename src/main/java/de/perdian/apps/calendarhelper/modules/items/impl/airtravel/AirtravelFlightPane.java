@@ -18,7 +18,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.kordamp.ikonli.javafx.FontIcon;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignT;
 
-public class AirtravelFlightPane extends GridPane {
+class AirtravelFlightPane extends GridPane {
 
     AirtravelFlightPane(AirtravelFlightItem airtravelFlightItem, AirtravelJourneyItem airtravelJourneyItem) {
 
@@ -43,10 +43,10 @@ public class AirtravelFlightPane extends GridPane {
         departureAirportCodeField.setPromptText("ABC");
         departureAirportCodeField.setPrefWidth(50);
         departureLabel.setLabelFor(departureAirportCodeField);
-        DateField departureDateField = new DateField(airtravelFlightItem.startDateProperty());
-        TimeField departureTimeField = new TimeField(airtravelFlightItem.startTimeProperty());
+        DateField departureDateField = new DateField(airtravelFlightItem.getCalendarValues().startDateProperty());
+        TimeField departureTimeField = new TimeField(airtravelFlightItem.getCalendarValues().startTimeProperty());
         TextField departureOffsetField = new TextField();
-        departureOffsetField.textProperty().bind(airtravelFlightItem.startZoneOffsetProperty().map(offset -> offset == null ? "" : offset.toString()));
+        departureOffsetField.textProperty().bind(airtravelFlightItem.getCalendarValues().startZoneOffsetProperty().map(offset -> offset == null ? "" : offset.toString()));
         departureOffsetField.setDisable(true);
         departureOffsetField.setPrefWidth(60);
         GridPane.setMargin(departureLabel, new Insets(0, 0, 0, 10));
@@ -59,10 +59,10 @@ public class AirtravelFlightPane extends GridPane {
         arrivalAirportCodeField.setPromptText("ABC");
         arrivalAirportCodeField.setPrefWidth(50);
         arrivalLabel.setLabelFor(arrivalAirportCodeField);
-        DateField arrivalDateField = new DateField(airtravelFlightItem.endDateProperty());
-        TimeField arrivalTimeField = new TimeField(airtravelFlightItem.endTimeProperty());
+        DateField arrivalDateField = new DateField(airtravelFlightItem.getCalendarValues().endDateProperty());
+        TimeField arrivalTimeField = new TimeField(airtravelFlightItem.getCalendarValues().endTimeProperty());
         TextField arrivalOffsetField = new TextField();
-        arrivalOffsetField.textProperty().bind(airtravelFlightItem.endZoneOffsetProperty().map(offset -> offset == null ? "" : offset.toString()));
+        arrivalOffsetField.textProperty().bind(airtravelFlightItem.getCalendarValues().endZoneOffsetProperty().map(offset -> offset == null ? "" : offset.toString()));
         arrivalOffsetField.setDisable(true);
         arrivalOffsetField.setPrefWidth(60);
         GridPane.setMargin(arrivalLabel, new Insets(0, 0, 0, 10));

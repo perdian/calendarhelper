@@ -1,15 +1,17 @@
 package de.perdian.apps.calendarhelper.modules.items.impl.generic;
 
 import com.google.api.services.calendar.model.Event;
+import de.perdian.apps.calendarhelper.modules.items.Item;
 import de.perdian.apps.calendarhelper.modules.items.ItemDefaults;
-import de.perdian.apps.calendarhelper.modules.items.support.AbstractSingleItem;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import org.apache.commons.lang3.StringUtils;
 
-public class GenericItem extends AbstractSingleItem {
+import java.util.List;
+
+public class GenericItem extends Item {
 
     private final StringProperty summary = new SimpleStringProperty();
     private final StringProperty location = new SimpleStringProperty();
@@ -21,12 +23,12 @@ public class GenericItem extends AbstractSingleItem {
     }
 
     @Override
-    protected Event createEvent() {
-        Event event = super.createEvent();
+    public List<Event> createEvents() {
+        Event event = this.getCalendarValues().createEvent();
         event.setSummary(this.createSummary());
         event.setLocation(this.locationProperty().getValue());
         event.setDescription(this.descriptionProperty().getValue());
-        return event;
+        return List.of(event);
     }
 
     private String createSummary() {

@@ -1,16 +1,16 @@
 package de.perdian.apps.calendarhelper.modules.items.support.types;
 
-public enum Availability {
+public enum CalendarAvailability {
 
     AVAILABLE("Available", "transparent"),
     BLOCKED("Blocked", "opaque");
 
     private String title = null;
-    private String apiValue = null;
+    private String googleApiValue = null;
 
-    Availability(String title, String apiValue) {
+    CalendarAvailability(String title, String googleApiValue) {
         this.setTitle(title);
-        this.setApiValue(apiValue);
+        this.setGoogleApiValue(googleApiValue);
     }
 
     @Override
@@ -25,11 +25,11 @@ public enum Availability {
         this.title = title;
     }
 
-    public String getApiValue() {
-        return this.apiValue;
+    public String getGoogleApiValue() {
+        return this.googleApiValue;
     }
-    private void setApiValue(String apiValue) {
-        this.apiValue = apiValue;
+    private void setGoogleApiValue(String googleApiValue) {
+        this.googleApiValue = googleApiValue;
     }
 
 }

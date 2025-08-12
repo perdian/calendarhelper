@@ -1,6 +1,6 @@
 package de.perdian.apps.calendarhelper.modules.items.impl.generic;
 
-import de.perdian.apps.calendarhelper.modules.items.support.types.Availability;
+import de.perdian.apps.calendarhelper.modules.items.support.types.CalendarAvailability;
 import de.perdian.apps.calendarhelper.support.fx.components.DateField;
 import de.perdian.apps.calendarhelper.support.fx.components.TimeField;
 import javafx.collections.FXCollections;
@@ -24,28 +24,28 @@ public class GenericPane extends GridPane {
         typeBox.setMaxWidth(Double.MAX_VALUE);
 
         Label startLabel = new Label("Start");
-        DateField startDateField = new DateField(item.startDateProperty());
+        DateField startDateField = new DateField(item.getCalendarValues().startDateProperty());
         startLabel.setLabelFor(startDateField);
-        TimeField startTimeField = new TimeField(item.startTimeProperty());
-        startTimeField.disableProperty().bind(item.fullDayProperty());
+        TimeField startTimeField = new TimeField(item.getCalendarValues().startTimeProperty());
+        startTimeField.disableProperty().bind(item.getCalendarValues().fullDayProperty());
         ComboBox<ZoneId> startZoneBox = new ComboBox<>(FXCollections.observableArrayList(ZoneId.getAvailableZoneIds().stream().sorted().map(ZoneId::of).toList()));
         startZoneBox.setPrefWidth(150);
-        startZoneBox.valueProperty().bindBidirectional(item.startZoneIdProperty());
-        startZoneBox.disableProperty().bind(item.fullDayProperty());
+        startZoneBox.valueProperty().bindBidirectional(item.getCalendarValues().startZoneIdProperty());
+        startZoneBox.disableProperty().bind(item.getCalendarValues().fullDayProperty());
 
         CheckBox fullDayBox = new CheckBox("Full day");
-        fullDayBox.selectedProperty().bindBidirectional(item.fullDayProperty());
+        fullDayBox.selectedProperty().bindBidirectional(item.getCalendarValues().fullDayProperty());
         GridPane.setMargin(fullDayBox, new Insets(0, 0, 0, 10));
 
         Label endLabel = new Label("End");
-        DateField endDateField = new DateField(item.endDateProperty());
+        DateField endDateField = new DateField(item.getCalendarValues().endDateProperty());
         endLabel.setLabelFor(endDateField);
-        TimeField endTimeField = new TimeField(item.endTimeProperty());
-        endTimeField.disableProperty().bind(item.fullDayProperty());
+        TimeField endTimeField = new TimeField(item.getCalendarValues().endTimeProperty());
+        endTimeField.disableProperty().bind(item.getCalendarValues().fullDayProperty());
         ComboBox<ZoneId> endZoneBox = new ComboBox<>(FXCollections.observableArrayList(ZoneId.getAvailableZoneIds().stream().sorted().map(ZoneId::of).toList()));
         endZoneBox.setPrefWidth(150);
-        endZoneBox.valueProperty().bindBidirectional(item.endZoneIdProperty());
-        endZoneBox.disableProperty().bind(item.fullDayProperty());
+        endZoneBox.valueProperty().bindBidirectional(item.getCalendarValues().endZoneIdProperty());
+        endZoneBox.disableProperty().bind(item.getCalendarValues().fullDayProperty());
 
         Label summaryLabel = new Label("Summary");
         TextField summaryField = new TextField();
@@ -62,8 +62,8 @@ public class GenericPane extends GridPane {
         GridPane.setHgrow(locationField, Priority.ALWAYS);
 
         Label availabilityLabel = new Label("Availability");
-        ComboBox<Availability> availabilityBox = new ComboBox<>(FXCollections.observableArrayList(Availability.values()));
-        availabilityBox.valueProperty().bindBidirectional(item.availabilityProperty());
+        ComboBox<CalendarAvailability> availabilityBox = new ComboBox<>(FXCollections.observableArrayList(CalendarAvailability.values()));
+        availabilityBox.valueProperty().bindBidirectional(item.getCalendarValues().calendarAvailabilityProperty());
         availabilityBox.setMaxWidth(Double.MAX_VALUE);
         availabilityLabel.setLabelFor(availabilityBox);
 

@@ -1,8 +1,8 @@
 package de.perdian.apps.calendarhelper.modules.items.impl.airtravel;
 
 import com.google.api.services.calendar.model.Event;
+import de.perdian.apps.calendarhelper.modules.items.Item;
 import de.perdian.apps.calendarhelper.modules.items.ItemDefaults;
-import de.perdian.apps.calendarhelper.modules.items.support.AbstractSingleItem;
 import de.perdian.apps.calendarhelper.support.airtravel.Airline;
 import de.perdian.apps.calendarhelper.support.airtravel.AirlineRepository;
 import de.perdian.apps.calendarhelper.support.airtravel.Airport;
@@ -16,9 +16,10 @@ import java.time.Duration;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Locale;
 
-public class AirtravelFlightItem extends AbstractSingleItem {
+public class AirtravelFlightItem extends Item {
 
     private final StringProperty airlineCode = new SimpleStringProperty();
     private final StringProperty flightNumber = new SimpleStringProperty();
@@ -33,11 +34,11 @@ public class AirtravelFlightItem extends AbstractSingleItem {
 
     public AirtravelFlightItem(ItemDefaults itemDefaults) {
         super(itemDefaults);
-        this.departureAirportCodeProperty().addListener((o, oldValue, newValue) -> this.afterAirportCodeUpdated(newValue, this.startZoneIdProperty(), this.departureAirportNameProperty()));
-        this.arrivalAirportCodeProperty().addListener((o, oldValue, newValue) -> this.afterAirportCodeUpdated(newValue, this.endZoneIdProperty(), this.arrivalAirportNameProperty()));
+        this.departureAirportCodeProperty().addListener((o, oldValue, newValue) -> this.afterAirportCodeUpdated(newValue, this.getCalendarValues().startZoneIdProperty(), this.departureAirportNameProperty()));
+        this.arrivalAirportCodeProperty().addListener((o, oldValue, newValue) -> this.afterAirportCodeUpdated(newValue, this.getCalendarValues().endZoneIdProperty(), this.arrivalAirportNameProperty()));
         this.arrivalAirportCodeProperty().addListener((o, oldValue, newValue) -> {
-            ZonedDateTime startDateTime = this.toStartZonedDateTime();
-            if (startDateTime != null && this.endDateProperty().getValue() == null) {
+            ZonedDateTime startDateTime = this.getCalendarValues().toStartZonedDateTime();
+            if (startDateTime != null && this.getCalendarValues().endDateProperty().getValue() == null) {
                 // Guess the average flight duration to estimate if the end if the flight will be at the next day
                 String departureAirportCode = this.departureAirportCodeProperty().getValue();
                 Airport departureAirport = StringUtils.isEmpty(departureAirportCode) ? null : AirportRepository.getInstance().loadAirportByCode(departureAirportCode);
@@ -46,34 +47,21 @@ public class AirtravelFlightItem extends AbstractSingleItem {
                 if (distanceInKilometers != null) {
                     int hoursForDistance = (int)Math.floor(distanceInKilometers / 800d);
                     ZonedDateTime estimatedArrivalDateTime = startDateTime.plusHours(hoursForDistance).withZoneSameInstant(departureAirport.getTimezoneId());
-                    this.endDateProperty().setValue(estimatedArrivalDateTime.toLocalDate());
+                    this.getCalendarValues().endDateProperty().setValue(estimatedArrivalDateTime.toLocalDate());
                 }
             }
         });
-        this.startZoneIdProperty().setValue(null);
-        this.endZoneIdProperty().setValue(null);
+        this.getCalendarValues().startZoneIdProperty().setValue(null);
+        this.getCalendarValues().endZoneIdProperty().setValue(null);
     }
 
     @Override
-    protected Event createEvent() {
-        Event event = super.createEvent();
+    public List<Event> createEvents() {
+        Event event = this.getCalendarValues().createEvent();
         event.setSummary(this.createEventSummary());
         event.setLocation(this.createEventLocation());
         event.setDescription(this.createEventDescription());
-        return event;
-    }
-
-    @Override
-    protected String createEventId() {
-        StringBuilder eventId = new StringBuilder();
-        eventId.append(this.startDateProperty().getValue());
-        eventId.append(this.startTimeProperty().getValue());
-        eventId.append(this.startZoneIdProperty().getValue());
-        eventId.append("-");
-        eventId.append(this.endDateProperty().getValue());
-        eventId.append(this.endTimeProperty().getValue());
-        eventId.append(this.endZoneIdProperty().getValue());
-        return eventId.toString();
+        return List.of(event);
     }
 
     private String createEventSummary() {
@@ -88,8 +76,8 @@ public class AirtravelFlightItem extends AbstractSingleItem {
 
     private String createEventDescription() {
 
-        ZonedDateTime departureDateTime = this.toStartZonedDateTime();
-        ZonedDateTime arrivalDateTime = this.toEndZonedDateTime();
+        ZonedDateTime departureDateTime = this.getCalendarValues().toStartZonedDateTime();
+        ZonedDateTime arrivalDateTime = this.getCalendarValues().toEndZonedDateTime();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("EEE dd.MM.yyyy HH:mm ZZZZ").withLocale(Locale.GERMANY);
 
         StringBuilder eventDescription = new StringBuilder();

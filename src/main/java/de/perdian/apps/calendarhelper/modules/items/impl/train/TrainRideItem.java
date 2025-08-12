@@ -1,8 +1,8 @@
 package de.perdian.apps.calendarhelper.modules.items.impl.train;
 
 import com.google.api.services.calendar.model.Event;
+import de.perdian.apps.calendarhelper.modules.items.Item;
 import de.perdian.apps.calendarhelper.modules.items.ItemDefaults;
-import de.perdian.apps.calendarhelper.modules.items.support.AbstractSingleItem;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import org.apache.commons.lang3.StringUtils;
@@ -11,9 +11,10 @@ import java.time.Duration;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.Locale;
 
-public class TrainRideItem extends AbstractSingleItem {
+public class TrainRideItem extends Item {
 
     private final StringProperty type = new SimpleStringProperty();
     private final StringProperty number = new SimpleStringProperty();
@@ -28,20 +29,20 @@ public class TrainRideItem extends AbstractSingleItem {
 
     public TrainRideItem(ItemDefaults itemDefaults) {
         super(itemDefaults);
-        this.startDateProperty().addListener((o, oldValue, newValue) -> {
-            if (newValue != null && this.endDateProperty().getValue() == null) {
-                this.endDateProperty().setValue(newValue);
+        this.getCalendarValues().startDateProperty().addListener((o, oldValue, newValue) -> {
+            if (newValue != null && this.getCalendarValues().endDateProperty().getValue() == null) {
+                this.getCalendarValues().endDateProperty().setValue(newValue);
             }
         });
     }
 
     @Override
-    protected Event createEvent() {
-        Event event = super.createEvent();
+    public List<Event> createEvents() {
+        Event event = this.getCalendarValues().createEvent();
         event.setSummary(this.createEventSummary());
         event.setLocation(this.createEventLocation());
         event.setDescription(this.createEventDescription());
-        return event;
+        return List.of(event);
     }
 
     private String createEventSummary() {
@@ -83,8 +84,8 @@ public class TrainRideItem extends AbstractSingleItem {
 
     private String createEventDescription() {
 
-        ZonedDateTime departureDateTime = this.toStartZonedDateTime();
-        ZonedDateTime arrivalDateTime = this.toEndZonedDateTime();
+        ZonedDateTime departureDateTime = this.getCalendarValues().toStartZonedDateTime();
+        ZonedDateTime arrivalDateTime = this.getCalendarValues().toEndZonedDateTime();
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm").withLocale(Locale.GERMANY);
 
         StringBuilder eventDescription = new StringBuilder();

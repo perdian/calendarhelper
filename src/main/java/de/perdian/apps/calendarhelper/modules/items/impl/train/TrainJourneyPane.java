@@ -1,11 +1,11 @@
 package de.perdian.apps.calendarhelper.modules.items.impl.train;
 
-import de.perdian.apps.calendarhelper.modules.items.support.AbstractParentPane;
+import de.perdian.apps.calendarhelper.modules.items.support.AbstractContainerPane;
 import javafx.scene.layout.Pane;
 
-public class TrainJourneyPane extends AbstractParentPane<TrainJourneyItem, TrainRideItem> {
+class TrainJourneyPane extends AbstractContainerPane<TrainJourneyItem, TrainRideItem> {
 
-    public TrainJourneyPane(TrainJourneyItem trainJourneyItem) {
+    TrainJourneyPane(TrainJourneyItem trainJourneyItem) {
         super(trainJourneyItem);
     }
 

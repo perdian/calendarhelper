@@ -16,7 +16,7 @@ import org.kordamp.ikonli.materialdesign2.MaterialDesignT;
 
 import java.time.ZoneId;
 
-public class TrainRidePane extends GridPane {
+class TrainRidePane extends GridPane {
 
     TrainRidePane(TrainRideItem trainRideItem, TrainJourneyItem trainJourneyItem) {
 
@@ -39,11 +39,11 @@ public class TrainRidePane extends GridPane {
         departureStationField.setPromptText("Station");
         departureStationField.textProperty().bindBidirectional(trainRideItem.departureStationProperty());
         departureStationField.setPrefWidth(150);
-        DateField departureDateField = new DateField(trainRideItem.startDateProperty());
-        TimeField departureTimeField = new TimeField(trainRideItem.startTimeProperty());
+        DateField departureDateField = new DateField(trainRideItem.getCalendarValues().startDateProperty());
+        TimeField departureTimeField = new TimeField(trainRideItem.getCalendarValues().startTimeProperty());
         ComboBox<ZoneId> departureZoneBox = new ComboBox<>(FXCollections.observableArrayList(ZoneId.getAvailableZoneIds().stream().sorted().map(ZoneId::of).toList()));
         departureZoneBox.setPrefWidth(125);
-        departureZoneBox.valueProperty().bindBidirectional(trainRideItem.startZoneIdProperty());
+        departureZoneBox.valueProperty().bindBidirectional(trainRideItem.getCalendarValues().startZoneIdProperty());
         departureZoneBox.setFocusTraversable(false);
         TextField departureTrackField = new TextField();
         departureTrackField.setPromptText("Track");
@@ -57,11 +57,11 @@ public class TrainRidePane extends GridPane {
         arrivalStationField.setPromptText("Station");
         arrivalStationField.textProperty().bindBidirectional(trainRideItem.arrivalStationProperty());
         arrivalStationField.setPrefWidth(150);
-        DateField arrivalDateField = new DateField(trainRideItem.endDateProperty());
-        TimeField arrivalTimeField = new TimeField(trainRideItem.endTimeProperty());
+        DateField arrivalDateField = new DateField(trainRideItem.getCalendarValues().endDateProperty());
+        TimeField arrivalTimeField = new TimeField(trainRideItem.getCalendarValues().endTimeProperty());
         ComboBox<ZoneId> arrivalZoneBox = new ComboBox<>(FXCollections.observableArrayList(ZoneId.getAvailableZoneIds().stream().sorted().map(ZoneId::of).toList()));
         arrivalZoneBox.setPrefWidth(125);
-        arrivalZoneBox.valueProperty().bindBidirectional(trainRideItem.endZoneIdProperty());
+        arrivalZoneBox.valueProperty().bindBidirectional(trainRideItem.getCalendarValues().endZoneIdProperty());
         arrivalZoneBox.setFocusTraversable(false);
         TextField arrivalTrackField = new TextField();
         arrivalTrackField.setPromptText("Track");
