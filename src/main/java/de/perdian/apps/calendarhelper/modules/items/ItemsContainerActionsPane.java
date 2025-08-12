@@ -19,14 +19,14 @@ import java.util.List;
 
 class ItemsContainerActionsPane extends BorderPane {
 
-    ItemsContainerActionsPane(ObservableList<Item> items, ItemDefaults itemDefaults) {
+    ItemsContainerActionsPane(ObservableList<Item> items, ItemDefaults defaults) {
 
         List<Button> actionButtons = new ArrayList<>();
         for (ItemsEditor<?> itemsEditor : ItemsEditorRegistry.resolveAllEditors()) {
             Button actionButton = new Button(itemsEditor.getTitle(), new FontIcon(itemsEditor.getIcon()));
             actionButton.setOnAction(event -> {
                 try {
-                    Item createdItem = itemsEditor.createItem(itemDefaults);
+                    Item createdItem = itemsEditor.createItem(defaults);
                     items.add(createdItem);
                 } catch (Exception e) {
                     CalendarHelperDialogs.showErrorDialog("Cannot execute action", "Cannot execute action", e);
@@ -35,7 +35,7 @@ class ItemsContainerActionsPane extends BorderPane {
             actionButtons.add(actionButton);
         }
         Button showTemplatesAction = new Button("From Templates", new FontIcon(MaterialDesignZ.ZIP_DISK));
-        showTemplatesAction.setOnAction(new ShowItemTemplatesDialogAction(items));
+        showTemplatesAction.setOnAction(new ShowItemTemplatesDialogAction(items, defaults));
         actionButtons.add(showTemplatesAction);
 
         Label newItemTitleLabel = new Label("New item");

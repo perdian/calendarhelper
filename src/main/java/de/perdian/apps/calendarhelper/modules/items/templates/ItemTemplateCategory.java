@@ -2,7 +2,7 @@ package de.perdian.apps.calendarhelper.modules.items.templates;
 
 import java.util.List;
 
-public class TemplatesRepositoryCategory {
+public class ItemTemplateCategory {
 
     private String name = null;
     private List<ItemTemplate> items = null;

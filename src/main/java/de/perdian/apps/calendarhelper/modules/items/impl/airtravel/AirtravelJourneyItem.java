@@ -3,7 +3,7 @@ package de.perdian.apps.calendarhelper.modules.items.impl.airtravel;
 import de.perdian.apps.calendarhelper.modules.items.ItemDefaults;
 import de.perdian.apps.calendarhelper.modules.items.support.AbstractJourneyItem;
 
-class AirtravelJourneyItem extends AbstractJourneyItem<AirtravelFlightItem> {
+public class AirtravelJourneyItem extends AbstractJourneyItem<AirtravelFlightItem> {
 
     public AirtravelJourneyItem(ItemDefaults defaults) {
         super(defaults);

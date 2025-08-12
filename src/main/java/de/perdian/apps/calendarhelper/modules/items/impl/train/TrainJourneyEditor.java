@@ -7,7 +7,7 @@ import javafx.scene.layout.Pane;
 import org.kordamp.ikonli.Ikon;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignT;
 
-class TrainJourneyItemsEditor implements ItemsEditor<TrainJourneyItem> {
+public class TrainJourneyEditor implements ItemsEditor<TrainJourneyItem> {
 
     @Override
     public String getTitle() {

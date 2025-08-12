@@ -10,17 +10,17 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class TemplatesRepository {
+public class ItemTemplateRepository {
 
-    private static final String ITEM_TEMPLATES_FILE_LOCATION = "classpath:META-INF/resources/preconstructed/item-templates.yaml";
+    private static final String ITEM_TEMPLATES_FILE_LOCATION = "classpath:META-INF/resources/templates/templates.yaml";
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper(new YAMLFactory());
 
-    public static TemplatesRepositoryContent loadStoredItems() {
+    public static ItemTemplateRepositoryContent loadContent() {
         try {
             ResourceLoader resourceLoader = new DefaultResourceLoader();
-            Resource itemTemplatesResource = resourceLoader.getResource(TemplatesRepository.ITEM_TEMPLATES_FILE_LOCATION);
+            Resource itemTemplatesResource = resourceLoader.getResource(ItemTemplateRepository.ITEM_TEMPLATES_FILE_LOCATION);
             try (InputStream itemTemplatesStream = new BufferedInputStream(itemTemplatesResource.getInputStream())) {
-                return OBJECT_MAPPER.readValue(itemTemplatesStream, TemplatesRepositoryContent.class);
+                return OBJECT_MAPPER.readValue(itemTemplatesStream, ItemTemplateRepositoryContent.class);
             }
         } catch (IOException e) {
             throw new RuntimeException("Canot load preconstructed item templates", e);
