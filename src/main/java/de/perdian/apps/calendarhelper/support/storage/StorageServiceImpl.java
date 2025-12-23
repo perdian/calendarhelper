@@ -3,9 +3,9 @@ package de.perdian.apps.calendarhelper.support.storage;
 import javafx.beans.property.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,15 +18,15 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 @Service
-class StorageServiceImpl implements StorageService {
+class StorageServiceImpl implements StorageService, InitializingBean {
 
     private static final Logger log = LoggerFactory.getLogger(StorageServiceImpl.class);
 
     private Path rootPath = null;
     private Map<String, Property<?>> properties = null;
 
-    @PostConstruct
-    void initialize() {
+    @Override
+    public void afterPropertiesSet() throws Exception {
         Path rootPath = Paths.get(System.getProperty("user.home"), ".calendarhelper/");
         if (Files.exists(rootPath)) {
             log.debug("Using storage root path: {}", rootPath);
