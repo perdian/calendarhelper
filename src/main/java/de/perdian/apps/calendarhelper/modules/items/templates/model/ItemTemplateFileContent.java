@@ -1,9 +1,9 @@
-package de.perdian.apps.calendarhelper.modules.items.templates;
+package de.perdian.apps.calendarhelper.modules.items.templates.model;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ItemTemplateRepositoryContent {
+public class ItemTemplateFileContent {
 
     private List<ItemTemplateCategory> categories = new ArrayList<>();
 

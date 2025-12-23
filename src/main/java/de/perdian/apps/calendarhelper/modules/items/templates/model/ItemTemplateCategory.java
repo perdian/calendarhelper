@@ -1,4 +1,4 @@
-package de.perdian.apps.calendarhelper.modules.items.templates;
+package de.perdian.apps.calendarhelper.modules.items.templates.model;
 
 import java.util.List;
 

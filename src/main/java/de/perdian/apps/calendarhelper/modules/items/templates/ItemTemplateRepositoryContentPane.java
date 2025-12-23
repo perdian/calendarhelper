@@ -4,6 +4,9 @@ import de.perdian.apps.calendarhelper.modules.items.Item;
 import de.perdian.apps.calendarhelper.modules.items.ItemDefaults;
 import de.perdian.apps.calendarhelper.modules.items.ItemsEditor;
 import de.perdian.apps.calendarhelper.modules.items.ItemsEditorRegistry;
+import de.perdian.apps.calendarhelper.modules.items.templates.model.ItemTemplate;
+import de.perdian.apps.calendarhelper.modules.items.templates.model.ItemTemplateCategory;
+import de.perdian.apps.calendarhelper.modules.items.templates.model.ItemTemplateFileContent;
 import de.perdian.apps.calendarhelper.support.fx.components.ComponentFactory;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -25,7 +28,7 @@ import java.util.function.Consumer;
 
 class ItemTemplateRepositoryContentPane extends VBox {
 
-    public ItemTemplateRepositoryContentPane(ItemTemplateRepositoryContent repositoryContent, Consumer<List<Item>> targetItemsConsumer, ItemDefaults defaults, ComponentFactory componentFactory) {
+    public ItemTemplateRepositoryContentPane(ItemTemplateFileContent repositoryContent, Consumer<List<Item>> targetItemsConsumer, ItemDefaults defaults, ComponentFactory componentFactory) {
 
         List<ItemTemplatePane> itemTemplatePanes = new ArrayList<>();
 
@@ -53,16 +56,15 @@ class ItemTemplateRepositoryContentPane extends VBox {
             VBox categoryPane = new VBox();
             categoryPane.setSpacing(10);
             for (ItemTemplate itemTemplate : category.getItems()) {
-                List<Item> items = itemTemplate.toItems(defaults);
-                for (Item item : items) {
-                    ItemsEditor<Item> itemEditor = ItemsEditorRegistry.resolveEditorForItem(item);
-                    Pane itemEditorPane = itemEditor.createItemEditorPane(item, componentFactory);
-                    ItemTemplatePane itemTemplatePane = new ItemTemplatePane(item, itemEditorPane, i -> targetItemsConsumer.accept(List.of(i)), componentFactory);
-                    categoryPane.getChildren().add(itemTemplatePane);
-                    itemTemplatePanes.add(itemTemplatePane);
-                }
+                Item item = itemTemplate.createItem(defaults);
+                ItemsEditor<Item> itemEditor = ItemsEditorRegistry.resolveEditorForItem(item);
+                Pane itemEditorPane = itemEditor.createItemEditorPane(item, componentFactory);
+                ItemTemplatePane itemTemplatePane = new ItemTemplatePane(item, itemEditorPane, i -> targetItemsConsumer.accept(List.of(i)), componentFactory);
+                categoryPane.getChildren().add(itemTemplatePane);
+                itemTemplatePanes.add(itemTemplatePane);
             }
             TitledPane categoryTitledPane = new TitledPane(category.getName(), categoryPane);
+            categoryTitledPane.setExpanded(false);
             itemsPane.getChildren().add(categoryTitledPane);
         }
 

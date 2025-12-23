@@ -1,18 +1,16 @@
-package de.perdian.apps.calendarhelper.modules.items.templates;
+package de.perdian.apps.calendarhelper.modules.items.templates.model;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import de.perdian.apps.calendarhelper.modules.items.Item;
 import de.perdian.apps.calendarhelper.modules.items.ItemDefaults;
-
-import java.util.List;
 
 public class ItemTemplate {
 
     private ItemTemplateType type = null;
     private JsonNode details = null;
 
-    public List<Item> toItems(ItemDefaults defaults) {
-        return this.getType().toItems(defaults, this.getDetails());
+    public Item createItem(ItemDefaults defaults) {
+        return this.getType().getItemParser().parseItemDetails(this.getDetails(), defaults);
     }
 
     ItemTemplateType getType() {

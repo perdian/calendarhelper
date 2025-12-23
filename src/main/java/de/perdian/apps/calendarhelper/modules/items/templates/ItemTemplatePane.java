@@ -9,6 +9,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import org.kordamp.ikonli.javafx.FontIcon;
+import org.kordamp.ikonli.materialdesign2.MaterialDesignP;
+import org.kordamp.ikonli.materialdesign2.MaterialDesignS;
 
 import java.util.function.Consumer;
 
@@ -21,10 +24,10 @@ class ItemTemplatePane extends GridPane {
     public ItemTemplatePane(Item item, Pane itemEditorPane, Consumer<Item> itemConsumer, ComponentFactory componentFactory) {
         this.setItem(item);
 
-        ToggleButton selectButton = componentFactory.createToggleButton("Select", this.selectedProperty());
+        ToggleButton selectButton = componentFactory.createToggleButton("Select", this.selectedProperty(), new FontIcon(MaterialDesignS.SELECT));
         selectButton.setMaxWidth(Double.MAX_VALUE);
         GridPane.setHgrow(selectButton, Priority.ALWAYS);
-        Button createItemsButton = componentFactory.createButton("Create Item");
+        Button createItemsButton = componentFactory.createButton("Create Item", new FontIcon(MaterialDesignP.PLAY_CIRCLE));
         createItemsButton.setOnAction(_ -> itemConsumer.accept(item));
         createItemsButton.setMaxWidth(Double.MAX_VALUE);
         GridPane.setHgrow(createItemsButton, Priority.ALWAYS);

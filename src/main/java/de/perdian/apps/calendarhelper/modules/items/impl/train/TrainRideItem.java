@@ -29,6 +29,8 @@ public class TrainRideItem extends Item {
 
     public TrainRideItem(ItemDefaults itemDefaults) {
         super(itemDefaults);
+        this.getCalendarValues().startZoneIdProperty().setValue(ZoneId.systemDefault());
+        this.getCalendarValues().endZoneIdProperty().setValue(ZoneId.systemDefault());
         this.getCalendarValues().startDateProperty().addListener((o, oldValue, newValue) -> {
             if (newValue != null && this.getCalendarValues().endDateProperty().getValue() == null) {
                 this.getCalendarValues().endDateProperty().setValue(newValue);

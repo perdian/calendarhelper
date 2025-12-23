@@ -1,5 +1,7 @@
 package de.perdian.apps.calendarhelper.support.datetime;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -34,14 +36,18 @@ public class DateTimeHelper {
     }
 
     private static <T extends TemporalAccessor> T parse(String input, BiFunction<String, DateTimeFormatter, T> parserFunction, Collection<DateTimeFormatter> formatters) {
-        for (DateTimeFormatter formatter : formatters) {
-            try {
-                return parserFunction.apply(input, formatter);
-            } catch (DateTimeParseException e) {
-                // Ignore here and move on to next formatter
+        if (StringUtils.isEmpty(input)) {
+            return null;
+        } else {
+            for (DateTimeFormatter formatter : formatters) {
+                try {
+                    return parserFunction.apply(input, formatter);
+                } catch (DateTimeParseException e) {
+                    // Ignore here and move on to next formatter
+                }
             }
+            throw new DateTimeException("Invalid date time value: " + input);
         }
-        throw new DateTimeException("Invalid date time value: " + input);
     }
 
 }

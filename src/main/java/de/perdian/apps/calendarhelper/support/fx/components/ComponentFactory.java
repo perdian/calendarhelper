@@ -99,7 +99,11 @@ public class ComponentFactory {
     }
 
     public ToggleButton createToggleButton(String title, Property<Boolean> selectedProperty) {
-        ToggleButton toggleButton = new ToggleButton(title);
+        return this.createToggleButton(title, selectedProperty, null);
+    }
+
+    public ToggleButton createToggleButton(String title, Property<Boolean> selectedProperty, Node graphic) {
+        ToggleButton toggleButton = new ToggleButton(title, graphic);
         toggleButton.selectedProperty().bindBidirectional(selectedProperty);
         return this.customizeNode(toggleButton);
     }

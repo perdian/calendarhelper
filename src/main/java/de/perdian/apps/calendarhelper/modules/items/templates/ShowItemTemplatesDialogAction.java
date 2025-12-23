@@ -2,13 +2,16 @@ package de.perdian.apps.calendarhelper.modules.items.templates;
 
 import de.perdian.apps.calendarhelper.modules.items.Item;
 import de.perdian.apps.calendarhelper.modules.items.ItemDefaults;
+import de.perdian.apps.calendarhelper.modules.items.templates.model.ItemTemplateFileContent;
 import de.perdian.apps.calendarhelper.support.fx.components.ComponentFactory;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.stage.Modality;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.util.List;
@@ -37,7 +40,7 @@ public class ShowItemTemplatesDialogAction implements EventHandler<ActionEvent> 
             repositoryDialogStage.close();
         };
 
-        ItemTemplateRepositoryContent repositoryContent = ItemTemplateRepository.loadContent();
+        ItemTemplateFileContent repositoryContent = ItemTemplateRepository.loadContent();
         ItemTemplateRepositoryContentPane repositoryContentPane = new ItemTemplateRepositoryContentPane(repositoryContent, itemsConsumer, this.getDefaults(), componentFactory);
 
         Scene repositoryDialogScene = new Scene(repositoryContentPane);
@@ -47,18 +50,25 @@ public class ShowItemTemplatesDialogAction implements EventHandler<ActionEvent> 
             }
         });
 
+        Rectangle2D screenBounds = Screen.getPrimary().getBounds();
+        double screenMaxHeight = screenBounds.getHeight() - 200;
+        double screenMaxWidth = screenBounds.getWidth() - 200;
+
         repositoryDialogStage.initModality(Modality.APPLICATION_MODAL);
         repositoryDialogStage.setResizable(false);
         repositoryDialogStage.setScene(repositoryDialogScene);
         repositoryDialogStage.setTitle("Select item(s) from template(s)");
+        repositoryDialogStage.setHeight(Math.min(screenMaxHeight, screenBounds.getHeight() - 400));
         repositoryDialogStage.setMinWidth(1400);
         repositoryDialogStage.setMinHeight(800);
+        repositoryDialogStage.setMaxWidth(screenMaxWidth);
+        repositoryDialogStage.setMaxHeight(screenMaxHeight);
         repositoryDialogStage.centerOnScreen();
         repositoryDialogStage.show();
 
     }
 
-    private ObservableList<Item> getItems() {
+    public ObservableList<Item> getItems() {
         return this.items;
     }
     private void setItems(ObservableList<Item> items) {
