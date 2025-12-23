@@ -1,5 +1,6 @@
 package de.perdian.apps.calendarhelper.support.storage;
 
+import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.StringProperty;
 
@@ -15,6 +16,12 @@ public interface StorageService {
     }
 
     StringProperty getPersistentStringProperty(String propertyName, String defaultValue);
+
+    default BooleanProperty getPersistentBooleanProperty(String propertyName) {
+        return this.getPersistentBooleanProperty(propertyName, false);
+    }
+
+    BooleanProperty getPersistentBooleanProperty(String propertyName, boolean defaultValue);
 
     default <T extends Serializable> ObjectProperty<T> getPersistentObjectProperty(String propertyName) {
         return this.getPersistentObjectProperty(propertyName, null);

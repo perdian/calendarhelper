@@ -4,6 +4,7 @@ import de.perdian.apps.calendarhelper.support.fx.components.ComponentFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -28,10 +29,14 @@ public class ItemDefaultsPane extends GridPane {
         timezoneBox.setMaxWidth(Double.MAX_VALUE);
         GridPane.setHgrow(timezoneBox, Priority.ALWAYS);
 
+        CheckBox createJourneyEventCheckBox = componentFactory.createCheckBox("Create journey event", itemDefaults.createJourneyEventProperty());
+        createJourneyEventCheckBox.setPadding(new Insets(10, 0, 0, 0));
+
         this.add(attendeesLabel, 0, 0, 1, 1);
         this.add(attendeesField, 0, 1, 1, 1);
         this.add(timezoneLabel, 0, 2, 1, 1);
         this.add(timezoneBox, 0, 3, 1, 1);
+        this.add(createJourneyEventCheckBox, 0, 4, 1, 1);
 
         this.setPadding(new Insets(10, 10, 10, 10));
         this.setVgap(2);

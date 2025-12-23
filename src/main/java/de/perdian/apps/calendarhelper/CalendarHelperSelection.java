@@ -36,6 +36,7 @@ public class CalendarHelperSelection {
         this.apiCredentialsProperty().bindBidirectional(storageService.getPersistentObjectProperty("CalendarHelperSelection.apiCredentials"));
         this.apiCredentialsProperty().addListener((_, oldCredentials, newCredentials) -> this.onCredentialsChanged(oldCredentials, newCredentials));
         this.getItemDefaults().attendeesProperty().bindBidirectional(storageService.getPersistentStringProperty("CalendarHelperSelection.itemDefaults.attendees"));
+        this.getItemDefaults().createJourneyEventProperty().bindBidirectional(storageService.getPersistentBooleanProperty("CalendarHelperSelection.itemDefaults.createJourneyEvent", true));
         this.activeUserProperty().addListener((_, oldUser, newUser) -> this.onActiveUserChanged(oldUser, newUser));
         this.getAvailableCalendars().addListener((ListChangeListener.Change<? extends GoogleCalendar> change) -> this.onAvailableCalendarsChanged(change.getList()));
         this.setApplicationContext(applicationContext);

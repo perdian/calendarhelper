@@ -52,6 +52,11 @@ class StorageServiceImpl implements StorageService {
         return this.getPersistentProperty(propertyName, defaultValue, SimpleObjectProperty::new);
     }
 
+    @Override
+    public BooleanProperty getPersistentBooleanProperty(String propertyName, boolean defaultValue) {
+        return this.getPersistentProperty(propertyName, defaultValue, SimpleBooleanProperty::new);
+    }
+
     private <T extends Serializable, P extends Property<T>> P getPersistentProperty(String propertyName, T defaultValue, Supplier<P> newPropertySupplier) {
         return (P)this.getProperties().computeIfAbsent(propertyName.toLowerCase(), internalPropertyName -> this.createPersistentProperty(propertyName, defaultValue, newPropertySupplier));
     }

@@ -12,8 +12,11 @@ import java.util.UUID;
 
 public abstract class AbstractJourneyItem<C extends Item> extends AbstractContainerItem<C> {
 
+    private ItemDefaults defaults = null;
+
     protected AbstractJourneyItem(ItemDefaults defaults) {
         super(defaults);
+        this.setDefaults(defaults);
     }
 
     @Override
@@ -27,9 +30,7 @@ public abstract class AbstractJourneyItem<C extends Item> extends AbstractContai
     }
 
     protected Event createJourneyEvent() {
-        if (this.getChildren().size() <= 1) {
-            return null;
-        } else {
+        if (this.getChildren().size() > 1 && this.getDefaults().createJourneyEventProperty().get()) {
 
             C firstItem = this.getChildren().getFirst();
             Event firstItemEvent = firstItem.createEvents().getFirst();
@@ -46,9 +47,18 @@ public abstract class AbstractJourneyItem<C extends Item> extends AbstractContai
             overallEvent.setSummary(this.createJourneyEventSummary());
             return overallEvent;
 
+        } else {
+            return null;
         }
     }
 
     protected abstract String createJourneyEventSummary();
+
+    private ItemDefaults getDefaults() {
+        return this.defaults;
+    }
+    private void setDefaults(ItemDefaults defaults) {
+        this.defaults = defaults;
+    }
 
 }
