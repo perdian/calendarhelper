@@ -92,6 +92,12 @@ public class GenericPane extends GridPane {
         this.setHgap(5);
         this.setVgap(5);
 
+        this.focusedProperty().addListener((_, oldValue, newValue) -> {
+            if (!oldValue && newValue) {
+                typeBox.requestFocus();
+            }
+        });
+
     }
 
 }

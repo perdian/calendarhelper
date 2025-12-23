@@ -140,6 +140,12 @@ class AirtravelFlightPane extends GridPane {
 
         commentsArea.addEventFilter(KeyEvent.KEY_PRESSED, new FocusTraversalKeyHandler(null, airplaneField));
 
+        this.focusedProperty().addListener((_, oldValue, newValue) -> {
+            if (!oldValue && newValue) {
+                airlineField.requestFocus();
+            }
+        });
+
     }
 
     private static class AircraftTypeCodeToAircraftTypeNameConverter extends StringConverter<String> {

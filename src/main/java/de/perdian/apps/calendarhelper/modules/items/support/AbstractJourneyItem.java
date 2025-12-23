@@ -12,11 +12,8 @@ import java.util.UUID;
 
 public abstract class AbstractJourneyItem<C extends Item> extends AbstractContainerItem<C> {
 
-    private ItemDefaults defaults = null;
-
     protected AbstractJourneyItem(ItemDefaults defaults) {
         super(defaults);
-        this.setDefaults(defaults);
     }
 
     @Override
@@ -53,12 +50,5 @@ public abstract class AbstractJourneyItem<C extends Item> extends AbstractContai
     }
 
     protected abstract String createJourneyEventSummary();
-
-    private ItemDefaults getDefaults() {
-        return this.defaults;
-    }
-    private void setDefaults(ItemDefaults defaults) {
-        this.defaults = defaults;
-    }
 
 }

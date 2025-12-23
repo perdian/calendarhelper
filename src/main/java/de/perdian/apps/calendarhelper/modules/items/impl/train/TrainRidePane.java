@@ -90,7 +90,7 @@ class TrainRidePane extends GridPane {
 
         Button removeButton = componentFactory.createButton(new FontIcon(MaterialDesignT.TRASH_CAN));
         removeButton.disableProperty().bind(Bindings.size(trainJourneyItem.getChildren()).lessThanOrEqualTo(1));
-        removeButton.setOnAction(event -> trainJourneyItem.getChildren().remove(trainRideItem));
+        removeButton.setOnAction(_ -> trainJourneyItem.getChildren().remove(trainRideItem));
         removeButton.setFocusTraversable(false);
         HBox buttonBox = new HBox(2);
         buttonBox.getChildren().add(removeButton);
@@ -128,6 +128,12 @@ class TrainRidePane extends GridPane {
         this.setVgap(2);
 
         commentsArea.addEventFilter(KeyEvent.KEY_PRESSED, new FocusTraversalKeyHandler(null, reservationWagonField));
+
+        this.focusedProperty().addListener((_, oldValue, newValue) -> {
+           if (!oldValue && newValue) {
+               typeField.requestFocus();
+           }
+        });
 
     }
 

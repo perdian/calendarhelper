@@ -4,6 +4,8 @@ import de.perdian.apps.calendarhelper.modules.items.Item;
 import de.perdian.apps.calendarhelper.support.fx.components.ComponentFactory;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -15,17 +17,24 @@ public abstract class AbstractContainerPane<P extends AbstractContainerItem<C>, 
 
     private final Map<C, Pane> childToPaneMap = new HashMap<>();
 
-    protected AbstractContainerPane(P parentItem, ComponentFactory componentFactory) {
+    protected AbstractContainerPane(P parentItem, ComponentFactory parentComponentFactory) {
+
+        ComponentFactory containerComponentFactory = parentComponentFactory.createChild();
+        containerComponentFactory.addEventHandler(KeyEvent.KEY_PRESSED, keyEvent -> {
+            if (KeyCode.PLUS.equals(keyEvent.getCode()) && keyEvent.isMetaDown()) {
+                parentItem.getChildren().add(parentItem.createChildItem(parentItem.getDefaults()));
+            }
+        });
 
         VBox childrenParentPane = new VBox();
         childrenParentPane.setSpacing(10);
-        parentItem.getChildren().forEach(childItem -> this.addChildItem(childItem, parentItem, childrenParentPane, componentFactory));
+        parentItem.getChildren().forEach(childItem -> this.addChildItem(childItem, parentItem, childrenParentPane, containerComponentFactory));
         this.setCenter(childrenParentPane);
 
         parentItem.getChildren().addListener((ListChangeListener.Change<? extends C> change) -> {
             while (change.next()) {
                 change.getRemoved().forEach(childItem -> this.removeChildItem(childItem, childrenParentPane));
-                change.getAddedSubList().forEach(childItem -> this.addChildItem(childItem, parentItem, childrenParentPane, componentFactory));
+                change.getAddedSubList().forEach(childItem -> this.addChildItem(childItem, parentItem, childrenParentPane, containerComponentFactory));
             }
         });
 
