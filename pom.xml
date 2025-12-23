@@ -176,7 +176,7 @@
                         <version>1.21.1</version>
                         <configuration>
                             <plist>
-                                <CFBundleIconFile>src/bundle/macos/resources/calendar-regular.icns</CFBundleIconFile>
+                                <CFBundleIconFile>src/bundle/macos/resources/calendar.icns</CFBundleIconFile>
                                 <JVMMainClassName>de.perdian.apps.calendarhelper.CalendarHelperLauncher</JVMMainClassName>
                                 <JVMVersion>${java.version}+</JVMVersion>
                                 <JVMOptions>
