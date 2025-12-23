@@ -2,6 +2,7 @@ package de.perdian.apps.calendarhelper.modules.execution;
 
 import de.perdian.apps.calendarhelper.CalendarHelperSelection;
 import de.perdian.apps.calendarhelper.modules.execution.handlers.ExecutionActionEventHandler;
+import de.perdian.apps.calendarhelper.support.fx.components.ComponentFactory;
 import javafx.beans.binding.Bindings;
 import javafx.beans.binding.BooleanBinding;
 import javafx.geometry.Insets;
@@ -18,9 +19,9 @@ public class ExecutionPane extends GridPane {
 
     private final ExecutionProgress progress = new ExecutionProgress();
 
-    public ExecutionPane(CalendarHelperSelection selection, ApplicationContext applicationContext) {
+    public ExecutionPane(CalendarHelperSelection selection, ApplicationContext applicationContext, ComponentFactory componentFactory) {
 
-        Label progressTitleLabel = new Label("Progress");
+        Label progressTitleLabel = componentFactory.createLabel("Progress");
         ProgressBar progressBar = new ProgressBar();
         progressBar.disableProperty().bind(this.getProgress().busyProperty());
         progressBar.progressProperty().bind(this.getProgress().progressProperty());
@@ -34,7 +35,7 @@ public class ExecutionPane extends GridPane {
                 .or(selection.activeUserProperty().isNull())
                 .or(selection.apiCredentialsProperty().isNull());
 
-        Button generateCalendarEntriesButton = new Button("Generate calendar entries", new FontIcon(MaterialDesignC.CREATION));
+        Button generateCalendarEntriesButton = componentFactory.createButton("Generate calendar entries", new FontIcon(MaterialDesignC.CREATION));
         generateCalendarEntriesButton.setOnAction(new ExecutionActionEventHandler(selection, this.getProgress(), applicationContext));
         generateCalendarEntriesButton.setMaxHeight(Double.MAX_VALUE);
         generateCalendarEntriesButton.disableProperty().bind(executionDisabled);

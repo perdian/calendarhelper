@@ -1,6 +1,7 @@
 package de.perdian.apps.calendarhelper.modules.items.support;
 
 import de.perdian.apps.calendarhelper.modules.items.Item;
+import de.perdian.apps.calendarhelper.support.fx.components.ComponentFactory;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.scene.layout.BorderPane;
@@ -14,24 +15,24 @@ public abstract class AbstractContainerPane<P extends AbstractContainerItem<C>, 
 
     private final Map<C, Pane> childToPaneMap = new HashMap<>();
 
-    protected AbstractContainerPane(P parentItem) {
+    protected AbstractContainerPane(P parentItem, ComponentFactory componentFactory) {
 
         VBox childrenParentPane = new VBox();
         childrenParentPane.setSpacing(10);
-        parentItem.getChildren().forEach(childItem -> this.addChildItem(childItem, parentItem, childrenParentPane));
+        parentItem.getChildren().forEach(childItem -> this.addChildItem(childItem, parentItem, childrenParentPane, componentFactory));
         this.setCenter(childrenParentPane);
 
         parentItem.getChildren().addListener((ListChangeListener.Change<? extends C> change) -> {
             while (change.next()) {
                 change.getRemoved().forEach(childItem -> this.removeChildItem(childItem, childrenParentPane));
-                change.getAddedSubList().forEach(childItem -> this.addChildItem(childItem, parentItem, childrenParentPane));
+                change.getAddedSubList().forEach(childItem -> this.addChildItem(childItem, parentItem, childrenParentPane, componentFactory));
             }
         });
 
     }
 
-    private void addChildItem(C childItem, P parentItem, VBox parentPane) {
-        Pane childPane = this.createChildPane(childItem, parentItem);
+    private void addChildItem(C childItem, P parentItem, VBox parentPane, ComponentFactory componentFactory) {
+        Pane childPane = this.createChildPane(childItem, parentItem, componentFactory);
         BorderPane childWrapperPane = new BorderPane(childPane);
         this.getChildToPaneMap().put(childItem, childWrapperPane);
         Platform.runLater(() -> {
@@ -47,7 +48,7 @@ public abstract class AbstractContainerPane<P extends AbstractContainerItem<C>, 
         }
     }
 
-    protected abstract Pane createChildPane(C childItem, P parentItem);
+    protected abstract Pane createChildPane(C childItem, P parentItem, ComponentFactory componentFactory);
 
     private Map<C, Pane> getChildToPaneMap() {
         return this.childToPaneMap;

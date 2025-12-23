@@ -1,7 +1,7 @@
 package de.perdian.apps.calendarhelper.support.fx.components;
 
 import de.perdian.apps.calendarhelper.support.datetime.DateTimeHelper;
-import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.Property;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.layout.BorderPane;
@@ -12,7 +12,7 @@ import java.time.LocalTime;
 
 public class TimeField extends BorderPane {
 
-    public TimeField(ObjectProperty<LocalTime> timeProperty) {
+    public TimeField(Property<LocalTime> timeProperty) {
 
         TextFormatter<LocalTime> timeFormatter = new TextFormatter<>(new TimeStringConverter());
         timeFormatter.valueProperty().bindBidirectional(timeProperty);

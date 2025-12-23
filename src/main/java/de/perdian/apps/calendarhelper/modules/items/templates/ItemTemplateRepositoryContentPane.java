@@ -4,6 +4,7 @@ import de.perdian.apps.calendarhelper.modules.items.Item;
 import de.perdian.apps.calendarhelper.modules.items.ItemDefaults;
 import de.perdian.apps.calendarhelper.modules.items.ItemsEditor;
 import de.perdian.apps.calendarhelper.modules.items.ItemsEditorRegistry;
+import de.perdian.apps.calendarhelper.support.fx.components.ComponentFactory;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -24,11 +25,11 @@ import java.util.function.Consumer;
 
 class ItemTemplateRepositoryContentPane extends VBox {
 
-    public ItemTemplateRepositoryContentPane(ItemTemplateRepositoryContent repositoryContent, Consumer<List<Item>> targetItemsConsumer, ItemDefaults defaults) {
+    public ItemTemplateRepositoryContentPane(ItemTemplateRepositoryContent repositoryContent, Consumer<List<Item>> targetItemsConsumer, ItemDefaults defaults, ComponentFactory componentFactory) {
 
         List<ItemTemplatePane> itemTemplatePanes = new ArrayList<>();
 
-        Button createItemsButton = new Button("Create items", new FontIcon(MaterialDesignC.CREATION));
+        Button createItemsButton = componentFactory.createButton("Create items", new FontIcon(MaterialDesignC.CREATION));
         createItemsButton.setOnAction(_ -> {
             List<Item> itemsToCreate = new ArrayList<>();
             for (ItemTemplatePane itemTemplatePane : itemTemplatePanes) {
@@ -38,7 +39,7 @@ class ItemTemplateRepositoryContentPane extends VBox {
             }
             targetItemsConsumer.accept(itemsToCreate);
         });
-        Button cancelButton = new Button("Cancel", new FontIcon(MaterialDesignC.CANCEL));
+        Button cancelButton = componentFactory.createButton("Cancel", new FontIcon(MaterialDesignC.CANCEL));
         cancelButton.setOnAction(_ -> targetItemsConsumer.accept(Collections.emptyList()));
         HBox buttonBox = new HBox();
         buttonBox.setAlignment(Pos.CENTER);
@@ -55,8 +56,8 @@ class ItemTemplateRepositoryContentPane extends VBox {
                 List<Item> items = itemTemplate.toItems(defaults);
                 for (Item item : items) {
                     ItemsEditor<Item> itemEditor = ItemsEditorRegistry.resolveEditorForItem(item);
-                    Pane itemEditorPane = itemEditor.createItemEditorPane(item);
-                    ItemTemplatePane itemTemplatePane = new ItemTemplatePane(item, itemEditorPane, i -> targetItemsConsumer.accept(List.of(i)));
+                    Pane itemEditorPane = itemEditor.createItemEditorPane(item, componentFactory);
+                    ItemTemplatePane itemTemplatePane = new ItemTemplatePane(item, itemEditorPane, i -> targetItemsConsumer.accept(List.of(i)), componentFactory);
                     categoryPane.getChildren().add(itemTemplatePane);
                     itemTemplatePanes.add(itemTemplatePane);
                 }

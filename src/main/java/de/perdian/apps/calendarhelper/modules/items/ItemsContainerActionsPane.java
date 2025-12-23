@@ -2,6 +2,7 @@ package de.perdian.apps.calendarhelper.modules.items;
 
 import de.perdian.apps.calendarhelper.modules.items.templates.ShowItemTemplatesDialogAction;
 import de.perdian.apps.calendarhelper.support.fx.CalendarHelperDialogs;
+import de.perdian.apps.calendarhelper.support.fx.components.ComponentFactory;
 import javafx.beans.binding.Bindings;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -19,7 +20,7 @@ import java.util.List;
 
 class ItemsContainerActionsPane extends BorderPane {
 
-    ItemsContainerActionsPane(ObservableList<Item> items, ItemDefaults defaults) {
+    ItemsContainerActionsPane(ObservableList<Item> items, ItemDefaults defaults, ComponentFactory componentFactory) {
 
         List<Button> actionButtons = new ArrayList<>();
         for (ItemsEditor<?> itemsEditor : ItemsEditorRegistry.resolveAllEditors()) {
@@ -34,11 +35,11 @@ class ItemsContainerActionsPane extends BorderPane {
             });
             actionButtons.add(actionButton);
         }
-        Button showTemplatesAction = new Button("From Templates", new FontIcon(MaterialDesignZ.ZIP_DISK));
-        showTemplatesAction.setOnAction(new ShowItemTemplatesDialogAction(items, defaults));
+        Button showTemplatesAction = componentFactory.createButton("From Templates", new FontIcon(MaterialDesignZ.ZIP_DISK));
+        showTemplatesAction.setOnAction(new ShowItemTemplatesDialogAction(items, defaults, componentFactory));
         actionButtons.add(showTemplatesAction);
 
-        Label newItemTitleLabel = new Label("New item");
+        Label newItemTitleLabel = componentFactory.createLabel("New item");
         newItemTitleLabel.setMaxHeight(Double.MAX_VALUE);
         newItemTitleLabel.setAlignment(Pos.CENTER);
         newItemTitleLabel.setPadding(new Insets(0, 10, 0, 4));
@@ -46,7 +47,7 @@ class ItemsContainerActionsPane extends BorderPane {
         leftButtonsPane.getChildren().add(newItemTitleLabel);
         leftButtonsPane.getChildren().addAll(actionButtons);
 
-        Button removeAllItemsButton = new Button("Remove all items", new FontIcon(MaterialDesignD.DELETE_EMPTY));
+        Button removeAllItemsButton = componentFactory.createButton("Remove all items", new FontIcon(MaterialDesignD.DELETE_EMPTY));
         removeAllItemsButton.disableProperty().bind(Bindings.isEmpty(items));
         removeAllItemsButton.setOnAction(event -> items.clear());
         removeAllItemsButton.setFocusTraversable(false);

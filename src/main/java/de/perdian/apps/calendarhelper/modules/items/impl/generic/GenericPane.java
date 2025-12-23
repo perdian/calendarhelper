@@ -1,6 +1,7 @@
 package de.perdian.apps.calendarhelper.modules.items.impl.generic;
 
 import de.perdian.apps.calendarhelper.modules.items.support.types.CalendarAvailability;
+import de.perdian.apps.calendarhelper.support.fx.components.ComponentFactory;
 import de.perdian.apps.calendarhelper.support.fx.components.DateField;
 import de.perdian.apps.calendarhelper.support.fx.components.TimeField;
 import javafx.collections.FXCollections;
@@ -14,62 +15,54 @@ import java.time.ZoneId;
 
 public class GenericPane extends GridPane {
 
-    public GenericPane(GenericItem item) {
+    public GenericPane(GenericItem item, ComponentFactory componentFactory) {
 
         ObservableList<GenericType> typeValues = FXCollections.observableArrayList(GenericType.values());
         typeValues.add(0, null);
-        Label typeLabel = new Label("Type");
-        ComboBox<GenericType> typeBox = new ComboBox<>(typeValues);
-        typeBox.valueProperty().bindBidirectional(item.typeProperty());
+        Label typeLabel = componentFactory.createLabel("Type");
+        ComboBox<GenericType> typeBox = componentFactory.createComboBox(item.typeProperty(), typeValues);
         typeBox.setMaxWidth(Double.MAX_VALUE);
 
-        Label startLabel = new Label("Start");
-        DateField startDateField = new DateField(item.getCalendarValues().startDateProperty());
+        Label startLabel = componentFactory.createLabel("Start");
+        DateField startDateField = componentFactory.createDateField(item.getCalendarValues().startDateProperty());
         startLabel.setLabelFor(startDateField);
-        TimeField startTimeField = new TimeField(item.getCalendarValues().startTimeProperty());
+        TimeField startTimeField = componentFactory.createTimeField(item.getCalendarValues().startTimeProperty());
         startTimeField.disableProperty().bind(item.getCalendarValues().fullDayProperty());
-        ComboBox<ZoneId> startZoneBox = new ComboBox<>(FXCollections.observableArrayList(ZoneId.getAvailableZoneIds().stream().sorted().map(ZoneId::of).toList()));
+        ComboBox<ZoneId> startZoneBox = componentFactory.createComboBox(item.getCalendarValues().startZoneIdProperty(), FXCollections.observableArrayList(ZoneId.getAvailableZoneIds().stream().sorted().map(ZoneId::of).toList()));
         startZoneBox.setPrefWidth(150);
-        startZoneBox.valueProperty().bindBidirectional(item.getCalendarValues().startZoneIdProperty());
         startZoneBox.disableProperty().bind(item.getCalendarValues().fullDayProperty());
 
-        CheckBox fullDayBox = new CheckBox("Full day");
-        fullDayBox.selectedProperty().bindBidirectional(item.getCalendarValues().fullDayProperty());
+        CheckBox fullDayBox = componentFactory.createCheckBox("Full day", item.getCalendarValues().fullDayProperty());
         GridPane.setMargin(fullDayBox, new Insets(0, 0, 0, 10));
 
-        Label endLabel = new Label("End");
-        DateField endDateField = new DateField(item.getCalendarValues().endDateProperty());
+        Label endLabel = componentFactory.createLabel("End");
+        DateField endDateField = componentFactory.createDateField(item.getCalendarValues().endDateProperty());
         endLabel.setLabelFor(endDateField);
-        TimeField endTimeField = new TimeField(item.getCalendarValues().endTimeProperty());
+        TimeField endTimeField = componentFactory.createTimeField(item.getCalendarValues().endTimeProperty());
         endTimeField.disableProperty().bind(item.getCalendarValues().fullDayProperty());
-        ComboBox<ZoneId> endZoneBox = new ComboBox<>(FXCollections.observableArrayList(ZoneId.getAvailableZoneIds().stream().sorted().map(ZoneId::of).toList()));
+        ComboBox<ZoneId> endZoneBox = componentFactory.createComboBox(item.getCalendarValues().endZoneIdProperty(), FXCollections.observableArrayList(ZoneId.getAvailableZoneIds().stream().sorted().map(ZoneId::of).toList()));
         endZoneBox.setPrefWidth(150);
-        endZoneBox.valueProperty().bindBidirectional(item.getCalendarValues().endZoneIdProperty());
         endZoneBox.disableProperty().bind(item.getCalendarValues().fullDayProperty());
 
-        Label summaryLabel = new Label("Summary");
-        TextField summaryField = new TextField();
-        summaryField.textProperty().bindBidirectional(item.summaryProperty());
+        Label summaryLabel = componentFactory.createLabel("Summary");
+        TextField summaryField = componentFactory.createTextField(item.summaryProperty());
         summaryLabel.setLabelFor(summaryField);
         GridPane.setMargin(summaryLabel, new Insets(0, 0, 0, 20));
         GridPane.setHgrow(summaryField, Priority.ALWAYS);
 
-        Label locationLabel = new Label("Location");
-        TextField locationField = new TextField();
-        locationField.textProperty().bindBidirectional(item.locationProperty());
+        Label locationLabel = componentFactory.createLabel("Location");
+        TextField locationField = componentFactory.createTextField(item.locationProperty());
         locationLabel.setLabelFor(locationField);
         GridPane.setMargin(locationLabel, new Insets(0, 0, 0, 20));
         GridPane.setHgrow(locationField, Priority.ALWAYS);
 
-        Label availabilityLabel = new Label("Availability");
-        ComboBox<CalendarAvailability> availabilityBox = new ComboBox<>(FXCollections.observableArrayList(CalendarAvailability.values()));
-        availabilityBox.valueProperty().bindBidirectional(item.getCalendarValues().calendarAvailabilityProperty());
+        Label availabilityLabel = componentFactory.createLabel("Availability");
+        ComboBox<CalendarAvailability> availabilityBox = componentFactory.createComboBox(item.getCalendarValues().calendarAvailabilityProperty(), FXCollections.observableArrayList(CalendarAvailability.values()));
         availabilityBox.setMaxWidth(Double.MAX_VALUE);
         availabilityLabel.setLabelFor(availabilityBox);
 
-        Label descriptionLabel = new Label("Description");
-        TextArea descriptionArea = new TextArea();
-        descriptionArea.textProperty().bindBidirectional(item.descriptionProperty());
+        Label descriptionLabel = componentFactory.createLabel("Description");
+        TextArea descriptionArea = componentFactory.createTextArea(item.descriptionProperty());
         descriptionArea.setPrefHeight(60);
         descriptionLabel.setLabelFor(descriptionArea);
         GridPane.setMargin(descriptionLabel, new Insets(0, 0, 0, 20));

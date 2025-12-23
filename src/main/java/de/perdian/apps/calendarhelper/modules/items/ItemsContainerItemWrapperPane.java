@@ -1,6 +1,7 @@
 package de.perdian.apps.calendarhelper.modules.items;
 
 import de.perdian.apps.calendarhelper.modules.items.support.AbstractContainerItem;
+import de.perdian.apps.calendarhelper.support.fx.components.ComponentFactory;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -20,18 +21,18 @@ import java.util.List;
 
 class ItemsContainerItemWrapperPane extends BorderPane {
 
-    public <T extends Item> ItemsContainerItemWrapperPane(T item, ObservableList<Item> allItems, ItemDefaults itemDefaults) {
+    public <T extends Item> ItemsContainerItemWrapperPane(T item, ObservableList<Item> allItems, ItemDefaults itemDefaults, ComponentFactory componentFactory) {
 
         ItemsEditor<T> itemsEditor = ItemsEditorRegistry.resolveEditorForItem(item);
 
-        Button removeItemButton = new Button("", new FontIcon(MaterialDesignD.DELETE));
+        Button removeItemButton = componentFactory.createButton(new FontIcon(MaterialDesignD.DELETE));
         removeItemButton.setTooltip(new Tooltip("Remove item"));
         removeItemButton.setOnAction(event -> allItems.remove(item));
         removeItemButton.setFocusTraversable(false);
 
         List<Button> additionalButtonList = new ArrayList<>();
         if (item instanceof AbstractContainerItem<?> parentItem) {
-            Button newChildButton = new Button("", new FontIcon(MaterialDesignP.PLUS));
+            Button newChildButton = componentFactory.createButton(new FontIcon(MaterialDesignP.PLUS));
             newChildButton.setTooltip(new Tooltip("New child"));
             newChildButton.setOnAction(event -> parentItem.appendChildItem(itemDefaults));
             newChildButton.setFocusTraversable(false);
@@ -45,7 +46,7 @@ class ItemsContainerItemWrapperPane extends BorderPane {
             titleButtonsPane.getChildren().add(separator);
         }
         titleButtonsPane.getChildren().add(removeItemButton);
-        Label titleLabel = new Label(itemsEditor.getTitle(), new FontIcon(itemsEditor.getIcon()));
+        Label titleLabel = componentFactory.createLabel(itemsEditor.getTitle(), new FontIcon(itemsEditor.getIcon()));
         titleLabel.setAlignment(Pos.CENTER_LEFT);
         titleLabel.setMaxHeight(Double.MAX_VALUE);
         BorderPane titlePane = new BorderPane();
@@ -53,7 +54,7 @@ class ItemsContainerItemWrapperPane extends BorderPane {
         titlePane.setLeft(titleLabel);
         titlePane.setRight(titleButtonsPane);
 
-        Pane itemEditorPane = itemsEditor.createItemEditorPane(item);
+        Pane itemEditorPane = itemsEditor.createItemEditorPane(item, componentFactory);
 
         this.setBorder(new Border(new BorderStroke(Color.LIGHTGRAY, BorderStrokeStyle.SOLID, CornerRadii.EMPTY, BorderWidths.DEFAULT)));
         this.setPadding(new Insets(5, 10, 5, 10));

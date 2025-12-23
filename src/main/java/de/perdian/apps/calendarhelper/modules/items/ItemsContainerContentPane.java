@@ -1,5 +1,6 @@
 package de.perdian.apps.calendarhelper.modules.items;
 
+import de.perdian.apps.calendarhelper.support.fx.components.ComponentFactory;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -14,7 +15,7 @@ import java.util.Map;
 
 class ItemsContainerContentPane extends BorderPane {
 
-    ItemsContainerContentPane(ObservableList<Item> items, ItemDefaults itemDefaults) {
+    ItemsContainerContentPane(ObservableList<Item> items, ItemDefaults itemDefaults, ComponentFactory componentFactory) {
 
         VBox itemsContainer = new VBox(5);
         itemsContainer.setPadding(new Insets(5, 5, 5, 5));
@@ -29,7 +30,7 @@ class ItemsContainerContentPane extends BorderPane {
         items.addListener((ListChangeListener.Change<? extends Item> changeEvent) -> {
             while (changeEvent.next()) {
                 for (Item newItem : changeEvent.getAddedSubList()) {
-                    ItemsContainerItemWrapperPane wrapperPane = new ItemsContainerItemWrapperPane(newItem, items, itemDefaults);
+                    ItemsContainerItemWrapperPane wrapperPane = new ItemsContainerItemWrapperPane(newItem, items, itemDefaults, componentFactory);
                     itemsContainer.getChildren().add(wrapperPane);
                     wrapperPanesByItems.put(newItem, wrapperPane);
                 }

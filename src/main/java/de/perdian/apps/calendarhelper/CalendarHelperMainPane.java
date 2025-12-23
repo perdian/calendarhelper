@@ -6,6 +6,7 @@ import de.perdian.apps.calendarhelper.modules.google.user.GoogleUserPane;
 import de.perdian.apps.calendarhelper.modules.google.user.GoogleUserService;
 import de.perdian.apps.calendarhelper.modules.items.ItemDefaultsPane;
 import de.perdian.apps.calendarhelper.modules.items.ItemsContainerPane;
+import de.perdian.apps.calendarhelper.support.fx.components.ComponentFactory;
 import javafx.geometry.Insets;
 import javafx.scene.control.TitledPane;
 import javafx.scene.layout.GridPane;
@@ -19,6 +20,8 @@ import org.springframework.context.ApplicationContext;
 class CalendarHelperMainPane extends GridPane {
 
     CalendarHelperMainPane(CalendarHelperSelection selection, ApplicationContext applicationContext) {
+
+        ComponentFactory componentFactory = new ComponentFactory();
 
         GoogleApiCredentialsPane apiCredentialsPane = new GoogleApiCredentialsPane(selection.apiCredentialsProperty());
         apiCredentialsPane.setPadding(new Insets(10, 10, 10, 10));
@@ -34,7 +37,7 @@ class CalendarHelperMainPane extends GridPane {
         userTitledPane.setGraphic(new FontIcon(MaterialDesignF.FACE_MAN));
         userTitledPane.setCollapsible(false);
 
-        ItemDefaultsPane itemDefaultsPane = new ItemDefaultsPane(selection.getItemDefaults());
+        ItemDefaultsPane itemDefaultsPane = new ItemDefaultsPane(selection.getItemDefaults(), componentFactory);
         itemDefaultsPane.setPadding(new Insets(10, 10, 10, 10));
         itemDefaultsPane.setPrefWidth(400);
         itemDefaultsPane.disableProperty().bind(selection.busyProperty());
@@ -44,7 +47,7 @@ class CalendarHelperMainPane extends GridPane {
         itemDefaultsTitledPane.setMaxHeight(Double.MAX_VALUE);
         GridPane.setFillHeight(itemDefaultsTitledPane, true);
 
-        ExecutionPane executionPane = new ExecutionPane(selection, applicationContext);
+        ExecutionPane executionPane = new ExecutionPane(selection, applicationContext, componentFactory);
         TitledPane executionTitledPane = new TitledPane("Execute", executionPane);
         executionTitledPane.setGraphic(new FontIcon(MaterialDesignP.PLAY_BOX));
         executionTitledPane.setCollapsible(false);
@@ -52,7 +55,7 @@ class CalendarHelperMainPane extends GridPane {
         GridPane.setHgrow(executionTitledPane, Priority.ALWAYS);
         GridPane.setFillHeight(executionTitledPane, true);
 
-        ItemsContainerPane itemsContainerPane = new ItemsContainerPane(selection.getActiveItems(), selection.getItemDefaults());
+        ItemsContainerPane itemsContainerPane = new ItemsContainerPane(selection.getActiveItems(), selection.getItemDefaults(), componentFactory);
         TitledPane itemsTitledPane = new TitledPane("Items", itemsContainerPane);
         itemsTitledPane.setGraphic(new FontIcon(MaterialDesignF.FORMAT_LIST_BULLETED));
         itemsTitledPane.setCollapsible(false);

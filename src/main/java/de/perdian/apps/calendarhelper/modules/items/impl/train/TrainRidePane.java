@@ -1,5 +1,6 @@
 package de.perdian.apps.calendarhelper.modules.items.impl.train;
 
+import de.perdian.apps.calendarhelper.support.fx.components.ComponentFactory;
 import de.perdian.apps.calendarhelper.support.fx.components.DateField;
 import de.perdian.apps.calendarhelper.support.fx.components.TimeField;
 import de.perdian.apps.calendarhelper.support.fx.eventhandlers.keys.FocusTraversalKeyHandler;
@@ -18,88 +19,76 @@ import java.time.ZoneId;
 
 class TrainRidePane extends GridPane {
 
-    TrainRidePane(TrainRideItem trainRideItem, TrainJourneyItem trainJourneyItem) {
+    TrainRidePane(TrainRideItem trainRideItem, TrainJourneyItem trainJourneyItem, ComponentFactory componentFactory) {
 
-        TextField typeField = new TextField();
+        Label trainLabel = componentFactory.createLabel("Train");
+        trainLabel.setPadding(new Insets(0, 5, 0, 0));
+        TextField typeField = componentFactory.createTextField(trainRideItem.typeProperty());
         typeField.setPromptText("XX");
-        typeField.textProperty().bindBidirectional(trainRideItem.typeProperty());
         typeField.setPrefWidth(50);
-        TextField numberField = new TextField();
+        TextField numberField = componentFactory.createTextField(trainRideItem.numberProperty());
         numberField.setPromptText("0000");
         numberField.setPrefWidth(60);
-        numberField.textProperty().bindBidirectional(trainRideItem.numberProperty());
-        Label trainLabel = new Label("Train");
-        trainLabel.setPadding(new Insets(0, 5, 0, 0));
         trainLabel.setLabelFor(typeField);
 
-        Label departureLabel = new Label("Departure");
+        Label departureLabel = componentFactory.createLabel("Departure");
         departureLabel.setPadding(new Insets(0, 5, 0, 0));
         GridPane.setMargin(departureLabel, new Insets(0, 0, 0, 10));
-        TextField departureStationField = new TextField();
+        TextField departureStationField = componentFactory.createTextField(trainRideItem.departureStationProperty());
         departureStationField.setPromptText("Station");
-        departureStationField.textProperty().bindBidirectional(trainRideItem.departureStationProperty());
         departureStationField.setPrefWidth(150);
-        DateField departureDateField = new DateField(trainRideItem.getCalendarValues().startDateProperty());
-        TimeField departureTimeField = new TimeField(trainRideItem.getCalendarValues().startTimeProperty());
-        ComboBox<ZoneId> departureZoneBox = new ComboBox<>(FXCollections.observableArrayList(ZoneId.getAvailableZoneIds().stream().sorted().map(ZoneId::of).toList()));
+        DateField departureDateField = componentFactory.createDateField(trainRideItem.getCalendarValues().startDateProperty());
+        TimeField departureTimeField = componentFactory.createTimeField(trainRideItem.getCalendarValues().startTimeProperty());
+        ComboBox<ZoneId> departureZoneBox = componentFactory.createComboBox(trainRideItem.getCalendarValues().startZoneIdProperty(), FXCollections.observableArrayList(ZoneId.getAvailableZoneIds().stream().sorted().map(ZoneId::of).toList()));
         departureZoneBox.setPrefWidth(125);
-        departureZoneBox.valueProperty().bindBidirectional(trainRideItem.getCalendarValues().startZoneIdProperty());
         departureZoneBox.setFocusTraversable(false);
-        TextField departureTrackField = new TextField();
+        TextField departureTrackField = componentFactory.createTextField(trainRideItem.departureTrackProperty());
         departureTrackField.setPromptText("Track");
-        departureTrackField.textProperty().bindBidirectional(trainRideItem.departureTrackProperty());
         departureTrackField.setPrefWidth(50);
 
-        Label arrivalLabel = new Label("Arrival");
+        Label arrivalLabel = componentFactory.createLabel("Arrival");
         arrivalLabel.setPadding(new Insets(0, 5, 0, 0));
         GridPane.setMargin(arrivalLabel, new Insets(0, 0, 0, 10));
-        TextField arrivalStationField = new TextField();
+        TextField arrivalStationField = componentFactory.createTextField(trainRideItem.arrivalStationProperty());
         arrivalStationField.setPromptText("Station");
-        arrivalStationField.textProperty().bindBidirectional(trainRideItem.arrivalStationProperty());
         arrivalStationField.setPrefWidth(150);
-        DateField arrivalDateField = new DateField(trainRideItem.getCalendarValues().endDateProperty());
-        TimeField arrivalTimeField = new TimeField(trainRideItem.getCalendarValues().endTimeProperty());
-        ComboBox<ZoneId> arrivalZoneBox = new ComboBox<>(FXCollections.observableArrayList(ZoneId.getAvailableZoneIds().stream().sorted().map(ZoneId::of).toList()));
+        DateField arrivalDateField = componentFactory.createDateField(trainRideItem.getCalendarValues().endDateProperty());
+        TimeField arrivalTimeField = componentFactory.createTimeField(trainRideItem.getCalendarValues().endTimeProperty());
+        ComboBox<ZoneId> arrivalZoneBox = componentFactory.createComboBox(trainRideItem.getCalendarValues().endZoneIdProperty(), FXCollections.observableArrayList(ZoneId.getAvailableZoneIds().stream().sorted().map(ZoneId::of).toList()));
         arrivalZoneBox.setPrefWidth(125);
-        arrivalZoneBox.valueProperty().bindBidirectional(trainRideItem.getCalendarValues().endZoneIdProperty());
         arrivalZoneBox.setFocusTraversable(false);
-        TextField arrivalTrackField = new TextField();
+        TextField arrivalTrackField = componentFactory.createTextField(trainRideItem.arrivalTrackProperty());
         arrivalTrackField.setPromptText("Track");
-        arrivalTrackField.textProperty().bindBidirectional(trainRideItem.arrivalTrackProperty());
         arrivalTrackField.setPrefWidth(50);
 
-        TextField reservationWagonField = new TextField();
+        TextField reservationWagonField = componentFactory.createTextField(trainRideItem.reservedWagonProperty());
         reservationWagonField.setPromptText("Wagon");
-        reservationWagonField.textProperty().bindBidirectional(trainRideItem.reservedWagonProperty());
         reservationWagonField.setPrefWidth(55);
-        TextField reservationSeatsField = new TextField();
+        TextField reservationSeatsField = componentFactory.createTextField(trainRideItem.reservedSeatsProperty());
         reservationSeatsField.setPromptText("Seat(s)");
-        reservationSeatsField.textProperty().bindBidirectional(trainRideItem.reservedSeatsProperty());
         reservationSeatsField.setPrefWidth(55);
-        Label reservationLabel = new Label("Reservation");
+        Label reservationLabel = componentFactory.createLabel("Reservation");
         reservationLabel.setPadding(new Insets(0, 5, 0, 0));
         reservationLabel.setLabelFor(reservationWagonField);
 
-        TextField bookingCodeField = new TextField();
-        bookingCodeField.textProperty().bindBidirectional(trainRideItem.bookingCodeProperty());
+        TextField bookingCodeField = componentFactory.createTextField(trainRideItem.bookingCodeProperty());
         bookingCodeField.setPrefWidth(100);
-        Label bookingCodeLabel = new Label("Code");
+        Label bookingCodeLabel = componentFactory.createLabel("Code");
         bookingCodeLabel.setPadding(new Insets(0, 5, 0, 0));
         bookingCodeLabel.setLabelFor(bookingCodeField);
         GridPane.setMargin(bookingCodeLabel, new Insets(0, 0, 0, 10));
 
-        TextArea commentsArea = new TextArea();
+        TextArea commentsArea = componentFactory.createTextArea(trainRideItem.commentsProperty());
         commentsArea.setPrefWidth(0);
         commentsArea.setPrefHeight(0);
-        commentsArea.textProperty().bindBidirectional(trainRideItem.commentsProperty());
         GridPane.setHgrow(commentsArea, Priority.ALWAYS);
         GridPane.setVgrow(commentsArea, Priority.ALWAYS);
-        Label commentsLabel = new Label("Comments");
+        Label commentsLabel = componentFactory.createLabel("Comments");
         commentsLabel.setPadding(new Insets(0, 5, 0, 0));
         commentsLabel.setLabelFor(commentsArea);
         GridPane.setMargin(commentsLabel, new Insets(0, 0, 0, 10));
 
-        Button removeButton = new Button("", new FontIcon(MaterialDesignT.TRASH_CAN));
+        Button removeButton = componentFactory.createButton(new FontIcon(MaterialDesignT.TRASH_CAN));
         removeButton.disableProperty().bind(Bindings.size(trainJourneyItem.getChildren()).lessThanOrEqualTo(1));
         removeButton.setOnAction(event -> trainJourneyItem.getChildren().remove(trainRideItem));
         removeButton.setFocusTraversable(false);

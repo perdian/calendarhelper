@@ -1,5 +1,6 @@
 package de.perdian.apps.calendarhelper.modules.items;
 
+import de.perdian.apps.calendarhelper.support.fx.components.ComponentFactory;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -13,19 +14,17 @@ import java.time.ZoneId;
 
 public class ItemDefaultsPane extends GridPane {
 
-    public ItemDefaultsPane(ItemDefaults itemDefaults) {
+    public ItemDefaultsPane(ItemDefaults itemDefaults, ComponentFactory componentFactory) {
 
-        Label attendeesLabel = new Label("Attendees");
-        TextField attendeesField = new TextField();
-        attendeesField.textProperty().bindBidirectional(itemDefaults.attendeesProperty());
+        Label attendeesLabel = componentFactory.createLabel("Attendees");
+        TextField attendeesField = componentFactory.createTextField(itemDefaults.attendeesProperty());
         attendeesLabel.setLabelFor(attendeesField);
         GridPane.setHgrow(attendeesField, Priority.ALWAYS);
 
         ObservableList<ZoneId> availableTimezones = FXCollections.observableArrayList(ZoneId.getAvailableZoneIds().stream().sorted().map(ZoneId::of).toList());
-        Label timezoneLabel = new Label("Timezone");
+        Label timezoneLabel = componentFactory.createLabel("Timezone");
         timezoneLabel.setPadding(new Insets(5, 0, 0, 0));
-        ComboBox<ZoneId> timezoneBox = new ComboBox<>(availableTimezones);
-        timezoneBox.valueProperty().bindBidirectional(itemDefaults.timezoneProperty());
+        ComboBox<ZoneId> timezoneBox = componentFactory.createComboBox(itemDefaults.timezoneProperty(), availableTimezones);
         timezoneBox.setMaxWidth(Double.MAX_VALUE);
         GridPane.setHgrow(timezoneBox, Priority.ALWAYS);
 

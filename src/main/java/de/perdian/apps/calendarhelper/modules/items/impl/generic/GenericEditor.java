@@ -3,6 +3,7 @@ package de.perdian.apps.calendarhelper.modules.items.impl.generic;
 import de.perdian.apps.calendarhelper.modules.items.Item;
 import de.perdian.apps.calendarhelper.modules.items.ItemDefaults;
 import de.perdian.apps.calendarhelper.modules.items.ItemsEditor;
+import de.perdian.apps.calendarhelper.support.fx.components.ComponentFactory;
 import javafx.scene.layout.Pane;
 import org.kordamp.ikonli.Ikon;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignC;
@@ -30,8 +31,8 @@ public class GenericEditor implements ItemsEditor<GenericItem> {
     }
 
     @Override
-    public Pane createItemEditorPane(GenericItem item) {
-        return new GenericPane(item);
+    public Pane createItemEditorPane(GenericItem item, ComponentFactory componentFactory) {
+        return new GenericPane(item, componentFactory);
     }
 
 }

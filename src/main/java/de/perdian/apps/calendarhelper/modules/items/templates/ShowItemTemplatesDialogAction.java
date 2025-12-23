@@ -2,6 +2,7 @@ package de.perdian.apps.calendarhelper.modules.items.templates;
 
 import de.perdian.apps.calendarhelper.modules.items.Item;
 import de.perdian.apps.calendarhelper.modules.items.ItemDefaults;
+import de.perdian.apps.calendarhelper.support.fx.components.ComponentFactory;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -17,9 +18,12 @@ public class ShowItemTemplatesDialogAction implements EventHandler<ActionEvent> 
 
     private ObservableList<Item> items = null;
     private ItemDefaults defaults = null;
+    private ComponentFactory componentFactory = null;
 
-    public ShowItemTemplatesDialogAction(ObservableList<Item> items, ItemDefaults defaults) {
+    public ShowItemTemplatesDialogAction(ObservableList<Item> items, ItemDefaults defaults, ComponentFactory componentFactory) {
         this.setItems(items);
+        this.setDefaults(defaults);
+        this.setComponentFactory(componentFactory);
     }
 
     @Override
@@ -34,7 +38,7 @@ public class ShowItemTemplatesDialogAction implements EventHandler<ActionEvent> 
         };
 
         ItemTemplateRepositoryContent repositoryContent = ItemTemplateRepository.loadContent();
-        ItemTemplateRepositoryContentPane repositoryContentPane = new ItemTemplateRepositoryContentPane(repositoryContent, itemsConsumer, this.getDefaults());
+        ItemTemplateRepositoryContentPane repositoryContentPane = new ItemTemplateRepositoryContentPane(repositoryContent, itemsConsumer, this.getDefaults(), componentFactory);
 
         Scene repositoryDialogScene = new Scene(repositoryContentPane);
         repositoryDialogScene.setOnKeyPressed(keyEvent -> {
@@ -66,6 +70,13 @@ public class ShowItemTemplatesDialogAction implements EventHandler<ActionEvent> 
     }
     private void setDefaults(ItemDefaults defaults) {
         this.defaults = defaults;
+    }
+
+    private ComponentFactory getComponentFactory() {
+        return this.componentFactory;
+    }
+    private void setComponentFactory(ComponentFactory componentFactory) {
+        this.componentFactory = componentFactory;
     }
 
 }

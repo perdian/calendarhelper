@@ -3,6 +3,7 @@ package de.perdian.apps.calendarhelper.modules.items.impl.airtravel;
 import de.perdian.apps.calendarhelper.modules.items.Item;
 import de.perdian.apps.calendarhelper.modules.items.ItemDefaults;
 import de.perdian.apps.calendarhelper.modules.items.ItemsEditor;
+import de.perdian.apps.calendarhelper.support.fx.components.ComponentFactory;
 import javafx.scene.layout.Pane;
 import org.kordamp.ikonli.Ikon;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignA;
@@ -32,8 +33,8 @@ public class AirtravelJourneyEditor implements ItemsEditor<AirtravelJourneyItem>
     }
 
     @Override
-    public Pane createItemEditorPane(AirtravelJourneyItem item) {
-        return new AirtravelJourneyPane(item);
+    public Pane createItemEditorPane(AirtravelJourneyItem item, ComponentFactory componentFactory) {
+        return new AirtravelJourneyPane(item, componentFactory);
     }
 
 }

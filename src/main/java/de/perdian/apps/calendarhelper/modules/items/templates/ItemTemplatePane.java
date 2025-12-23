@@ -1,6 +1,7 @@
 package de.perdian.apps.calendarhelper.modules.items.templates;
 
 import de.perdian.apps.calendarhelper.modules.items.Item;
+import de.perdian.apps.calendarhelper.support.fx.components.ComponentFactory;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Insets;
@@ -17,14 +18,13 @@ class ItemTemplatePane extends GridPane {
 
     private Item item = null;
 
-    public ItemTemplatePane(Item item, Pane itemEditorPane, Consumer<Item> itemConsumer) {
+    public ItemTemplatePane(Item item, Pane itemEditorPane, Consumer<Item> itemConsumer, ComponentFactory componentFactory) {
         this.setItem(item);
 
-        ToggleButton selectButton = new ToggleButton("Select");
-        selectButton.selectedProperty().bindBidirectional(this.selectedProperty());
+        ToggleButton selectButton = componentFactory.createToggleButton("Select", this.selectedProperty());
         selectButton.setMaxWidth(Double.MAX_VALUE);
         GridPane.setHgrow(selectButton, Priority.ALWAYS);
-        Button createItemsButton = new Button("Create Item");
+        Button createItemsButton = componentFactory.createButton("Create Item");
         createItemsButton.setOnAction(_ -> itemConsumer.accept(item));
         createItemsButton.setMaxWidth(Double.MAX_VALUE);
         GridPane.setHgrow(createItemsButton, Priority.ALWAYS);

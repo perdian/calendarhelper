@@ -3,6 +3,7 @@ package de.perdian.apps.calendarhelper.modules.items.impl.train;
 import de.perdian.apps.calendarhelper.modules.items.Item;
 import de.perdian.apps.calendarhelper.modules.items.ItemDefaults;
 import de.perdian.apps.calendarhelper.modules.items.ItemsEditor;
+import de.perdian.apps.calendarhelper.support.fx.components.ComponentFactory;
 import javafx.scene.layout.Pane;
 import org.kordamp.ikonli.Ikon;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignT;
@@ -32,8 +33,8 @@ public class TrainJourneyEditor implements ItemsEditor<TrainJourneyItem> {
     }
 
     @Override
-    public Pane createItemEditorPane(TrainJourneyItem item) {
-        return new TrainJourneyPane(item);
+    public Pane createItemEditorPane(TrainJourneyItem item, ComponentFactory componentFactory) {
+        return new TrainJourneyPane(item, componentFactory);
     }
 
 }
