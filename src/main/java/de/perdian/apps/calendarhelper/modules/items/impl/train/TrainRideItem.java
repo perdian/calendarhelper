@@ -59,12 +59,26 @@ public class TrainRideItem extends Item {
             if (StringUtils.isNotEmpty(this.numberProperty().getValue())) {
                 eventSummary.append(this.numberProperty().getValue());
             }
-            eventSummary.append(" 🚊 ");
+            eventSummary.append(" ").append(this.createEventSummaryIcon()).append(" ");
         }
         eventSummary.append(this.departureStationProperty().getValue());
         eventSummary.append(" » ");
         eventSummary.append(this.arrivalStationProperty().getValue());
         return eventSummary.toString();
+    }
+
+    private String createEventSummaryIcon() {
+        if ("Bus".equalsIgnoreCase(this.typeProperty().get())) {
+            return "🚍";
+        } else if ("ICE".equalsIgnoreCase(this.typeProperty().get())) {
+            return "🚆";
+        } else if ("STR".equalsIgnoreCase(this.typeProperty().get())) {
+            return "🚃";
+        } else if ("U".equalsIgnoreCase(this.typeProperty().get())) {
+            return "🚇";
+        } else {
+            return "🚊";
+        }
     }
 
     private String createEventLocation() {
