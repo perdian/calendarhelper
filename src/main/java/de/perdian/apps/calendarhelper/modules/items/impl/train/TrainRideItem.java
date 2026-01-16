@@ -70,7 +70,7 @@ public class TrainRideItem extends Item {
     private String createEventSummaryIcon() {
         if ("Bus".equalsIgnoreCase(this.typeProperty().get())) {
             return "🚍";
-        } else if ("ICE".equalsIgnoreCase(this.typeProperty().get())) {
+        } else if ("ICE".equalsIgnoreCase(this.typeProperty().get()) || "ECE".equalsIgnoreCase(this.typeProperty().get())) {
             return "🚆";
         } else if ("STR".equalsIgnoreCase(this.typeProperty().get())) {
             return "🚃";
