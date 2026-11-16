@@ -36,7 +36,6 @@ public class DateField extends BorderPane {
     }
 
     private static void adjustDate(TextFormatter<LocalDate> dateFormatter, int direction) {
-        System.err.println("ADJUST: " + dateFormatter.getValue() + " >> " + direction);
         LocalDate currentDate = dateFormatter.getValue();
         if (currentDate != null) {
             dateFormatter.setValue(currentDate.plusDays(direction));

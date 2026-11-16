@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import org.slf4j.Logger;
@@ -24,9 +25,12 @@ public class CalendarBuddyApplication extends Application {
         CalendarBuddyApplicationPane applicationPane = new CalendarBuddyApplicationPane(applicationContext);
         Scene applicationScene = new Scene(applicationPane);
 
-//        CalendarBuddyModelFactory modelFactory = applicationContext.getBean(CalendarBuddyModelFactory.class);
-//        CalendarBuddyModel model = modelFactory.createModel();
-//        CalendarBuddyMainPane mainPane = new CalendarBuddyMainPane(model, applicationContext);
+        applicationScene.focusOwnerProperty().addListener((observable, oldValue, newValue) -> {
+            System.err.println("NEW FOCUS: " + newValue);
+        });
+
+        CalendarBuddyKeyRegistry keyRegistry = applicationContext.getBean(CalendarBuddyKeyRegistry.class);
+        applicationScene.addEventFilter(KeyEvent.KEY_PRESSED, keyEvent -> keyRegistry.onKeyPressed(keyEvent));
 
         log.debug("Opening main application window");
         Rectangle2D screenBounds = Screen.getPrimary().getBounds();

@@ -10,6 +10,7 @@ import de.perdian.apps.calendarbuddy.modules.google.calendar.GoogleCalendarModel
 import de.perdian.apps.calendarbuddy.modules.google.user.GoogleUserModel;
 import de.perdian.apps.calendarbuddy.modules.items.ItemListModel;
 import de.perdian.apps.calendarbuddy.modules.items.ItemListModelPane;
+import de.perdian.apps.calendarbuddy.modules.items.ItemTypeRegistry;
 import de.perdian.apps.calendarbuddy.modules.jobs.JobExecutor;
 import de.perdian.apps.calendarbuddy.modules.upload.UploadModel;
 import de.perdian.apps.calendarbuddy.support.components.ComponentFactory;
@@ -28,6 +29,7 @@ class CalendarBuddyApplicationPane extends BorderPane {
     CalendarBuddyApplicationPane(ApplicationContext applicationContext) {
 
         ComponentFactory componentFactory = new ComponentFactory();
+        CalendarBuddyKeyRegistry keyRegistry = applicationContext.getBean(CalendarBuddyKeyRegistry.class);
 
         GoogleUserModel googleUserModel = applicationContext.getBean(GoogleUserModel.class);
         GoogleCalendarModel googleCalendarModel = applicationContext.getBean(GoogleCalendarModel.class);
@@ -55,8 +57,9 @@ class CalendarBuddyApplicationPane extends BorderPane {
         generalTitledPane.setMaxWidth(Double.MAX_VALUE);
         GridPane.setHgrow(generalTitledPane, Priority.ALWAYS);
 
+        ItemTypeRegistry itemTypeListModel = applicationContext.getBean(ItemTypeRegistry.class);
         ItemListModel itemListModel = applicationContext.getBean(ItemListModel.class);
-        ItemListModelPane itemListModelPane = new ItemListModelPane(itemListModel);
+        ItemListModelPane itemListModelPane = new ItemListModelPane(itemListModel, itemTypeListModel, keyRegistry);
         TitledPane itemListTitledPane = componentFactory.createTitledPane("Items", itemListModelPane);
         itemListTitledPane.setGraphic(new FontIcon(MaterialDesignL.LIST_BOX));
         itemListTitledPane.setMaxHeight(Double.MAX_VALUE);
