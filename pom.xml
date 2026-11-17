@@ -31,10 +31,11 @@
         <google-api-services-calendar.version>v3-rev20251207-2.0.0</google-api-services-calendar.version>
         <google-api-services-oauth2.version>v2-rev20200213-2.0.0</google-api-services-oauth2.version>
         <ikonli.version>12.4.0</ikonli.version>
-        <jackson-dataformat-yaml.version>2.20.1</jackson-dataformat-yaml.version>
+        <jackson.version>2.20.1</jackson.version>
         <jakarta-annotation.version>3.0.0</jakarta-annotation.version>
         <java.version>25</java.version>
         <javafx.version>25.0.1</javafx.version>
+        <jsonschema-generator.version>4.38.0</jsonschema-generator.version>
         <junit-jupiter.version>6.0.1</junit-jupiter.version>
         <logback.version>1.5.23</logback.version>
         <slf4j.version>2.0.17</slf4j.version>
@@ -107,7 +108,27 @@
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
             <artifactId>jackson-dataformat-yaml</artifactId>
-            <version>${jackson-dataformat-yaml.version}</version>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.victools</groupId>
+            <artifactId>jsonschema-generator</artifactId>
+            <version>${jsonschema-generator.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.victools</groupId>
+            <artifactId>jsonschema-module-jackson</artifactId>
+            <version>${jsonschema-generator.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.victools</groupId>
+            <artifactId>jsonschema-module-jakarta-validation</artifactId>
+            <version>${jsonschema-generator.version}</version>
         </dependency>
 
         <dependency>

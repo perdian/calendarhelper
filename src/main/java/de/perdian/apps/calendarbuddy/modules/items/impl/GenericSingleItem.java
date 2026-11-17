@@ -1,5 +1,7 @@
 package de.perdian.apps.calendarbuddy.modules.items.impl;
 
+import com.fasterxml.jackson.annotation.JsonClassDescription;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.google.api.services.calendar.model.Event;
 import de.perdian.apps.calendarbuddy.modules.defaults.DefaultsModel;
 import javafx.beans.property.ObjectProperty;
@@ -8,6 +10,13 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import org.apache.commons.lang3.StringUtils;
 
+@JsonTypeName("genericSingleItem")
+@JsonClassDescription("""
+    A single calendar event that is not a flight or a train ride, for example a hotel \
+    stay, a conference, an appointment or a reservation. Use it for anything with a start \
+    and an end that does not fit the other item types. Multi-day stays and events use \
+    fullDay=true with start and end dates.
+    """)
 public class GenericSingleItem extends SingleItem {
 
     private final StringProperty summary;

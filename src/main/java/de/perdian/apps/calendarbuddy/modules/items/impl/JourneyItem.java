@@ -42,5 +42,8 @@ public abstract class JourneyItem<C extends Item> extends Item {
     public ObservableList<C> getChildren() {
         return this.children;
     }
+    public void setChildren(List<C> children) {
+        this.children.setAll(children);
+    }
 
 }

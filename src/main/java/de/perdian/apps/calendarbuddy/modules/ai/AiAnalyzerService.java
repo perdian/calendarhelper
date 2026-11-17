@@ -9,4 +9,6 @@ public interface AiAnalyzerService {
 
     List<Item> parseItems(String request, List<Resource> resources);
 
+    String createDataExtractionUserPrompt();
+
 }

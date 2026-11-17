@@ -1,5 +1,7 @@
 package de.perdian.apps.calendarbuddy.modules.items.impl;
 
+import com.fasterxml.jackson.annotation.JsonClassDescription;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.google.api.services.calendar.model.Event;
 import de.perdian.apps.calendarbuddy.modules.defaults.DefaultsModel;
 import javafx.beans.property.SimpleStringProperty;
@@ -12,6 +14,12 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
+@JsonTypeName("trainSingleItem")
+@JsonClassDescription("""
+    One individual ride on a train, bus, tram or similar vehicle between two stations, \
+    with its own line or train number. Only used as an element of the 'children' of a \
+    trainJourneyItem, never as a top-level item.
+    """)
 public class TrainSingleItem extends SingleItem {
 
     private final StringProperty type;

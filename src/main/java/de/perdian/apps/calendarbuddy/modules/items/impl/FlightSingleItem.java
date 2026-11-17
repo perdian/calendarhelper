@@ -1,5 +1,7 @@
 package de.perdian.apps.calendarbuddy.modules.items.impl;
 
+import com.fasterxml.jackson.annotation.JsonClassDescription;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.google.api.services.calendar.model.Event;
 import de.perdian.apps.calendarbuddy.modules.defaults.DefaultsModel;
 import de.perdian.apps.calendarbuddy.support.airtravel.Airline;
@@ -18,6 +20,11 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
+@JsonTypeName("flightSingleItem")
+@JsonClassDescription("""
+    One individual flight from one airport to another, with its own flight number. Only \
+    used as an element of the 'children' of a flightJourneyItem, never as a top-level item.
+    """)
 public class FlightSingleItem extends SingleItem {
 
     private final StringProperty airlineCode;
