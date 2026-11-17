@@ -27,7 +27,7 @@ class StorageServiceImpl implements StorageService, InitializingBean {
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        Path rootPath = Paths.get(System.getProperty("user.home"), ".calendarhelper/");
+        Path rootPath = Paths.get(System.getProperty("user.home"), ".calendarbuddy/");
         if (Files.exists(rootPath)) {
             log.debug("Using storage root path: {}", rootPath);
         } else {

@@ -51,6 +51,7 @@ class CalendarBuddyApplicationPane extends BorderPane {
         generalPane.add(defaultsModelPane, 2, 0, 1, 1);
         generalPane.add(componentFactory.createVerticalSeparator(), 3, 0, 1, 1);
         generalPane.add(executionModelPane, 4, 0, 1, 1);
+        generalPane.disableProperty().bind(executionModel.busyProperty());
 
         TitledPane generalTitledPane = componentFactory.createTitledPane("General", generalPane);
         generalTitledPane.setGraphic(new FontIcon(MaterialDesignC.COG));
@@ -60,6 +61,7 @@ class CalendarBuddyApplicationPane extends BorderPane {
         ItemTypeRegistry itemTypeListModel = applicationContext.getBean(ItemTypeRegistry.class);
         ItemListModel itemListModel = applicationContext.getBean(ItemListModel.class);
         ItemListModelPane itemListModelPane = new ItemListModelPane(itemListModel, itemTypeListModel, keyRegistry);
+        itemListModelPane.disableProperty().bind(executionModel.busyProperty());
         TitledPane itemListTitledPane = componentFactory.createTitledPane("Items", itemListModelPane);
         itemListTitledPane.setGraphic(new FontIcon(MaterialDesignL.LIST_BOX));
         itemListTitledPane.setMaxHeight(Double.MAX_VALUE);

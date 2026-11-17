@@ -1,10 +1,8 @@
 package de.perdian.apps.calendarbuddy.modules.items;
 
-import de.perdian.apps.calendarbuddy.modules.items.impl.FlightJourneyItem;
-import de.perdian.apps.calendarbuddy.modules.items.impl.FlightJourneyItemPaneFactory;
-import de.perdian.apps.calendarbuddy.modules.items.impl.TrainJourneyItem;
-import de.perdian.apps.calendarbuddy.modules.items.impl.TrainJourneyItemPaneFactory;
+import de.perdian.apps.calendarbuddy.modules.items.impl.*;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignA;
+import org.kordamp.ikonli.materialdesign2.MaterialDesignC;
 import org.kordamp.ikonli.materialdesign2.MaterialDesignT;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,6 +24,14 @@ class ItemConfiguration {
             .withTitle("Train")
             .withItemPaneFactory(new TrainJourneyItemPaneFactory())
             .withIcon(MaterialDesignT.TRAIN);
+    }
+
+    @Bean
+    ItemType<GenericSingleItem> genericSingeItemType() {
+        return new ItemType<>(GenericSingleItem.class)
+            .withTitle("Generic")
+            .withItemPaneFactory(new GenericSingleItemPaneFactory())
+            .withIcon(MaterialDesignC.CALENDAR);
     }
 
 }

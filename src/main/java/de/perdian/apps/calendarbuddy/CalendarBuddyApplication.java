@@ -25,10 +25,6 @@ public class CalendarBuddyApplication extends Application {
         CalendarBuddyApplicationPane applicationPane = new CalendarBuddyApplicationPane(applicationContext);
         Scene applicationScene = new Scene(applicationPane);
 
-        applicationScene.focusOwnerProperty().addListener((observable, oldValue, newValue) -> {
-            System.err.println("NEW FOCUS: " + newValue);
-        });
-
         CalendarBuddyKeyRegistry keyRegistry = applicationContext.getBean(CalendarBuddyKeyRegistry.class);
         applicationScene.addEventFilter(KeyEvent.KEY_PRESSED, keyEvent -> keyRegistry.onKeyPressed(keyEvent));
 

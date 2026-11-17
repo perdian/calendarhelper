@@ -10,7 +10,7 @@ public class TrainJourneyItem extends JourneyItem<TrainSingleItem> {
     protected TrainSingleItem createChildItem() {
         TrainSingleItem childItem = new TrainSingleItem();
         if (!this.getChildren().isEmpty()) {
-            TrainSingleItem previousItem = this.getChildren().getLast();
+            TrainSingleItem previousItem = this.getChildren().get(this.getChildren().size() - 1);
             childItem.setStartDate(previousItem.getEndDate());
             childItem.setStartZoneId(previousItem.getEndZoneId());
             childItem.setDepartureStation(previousItem.getArrivalStation());

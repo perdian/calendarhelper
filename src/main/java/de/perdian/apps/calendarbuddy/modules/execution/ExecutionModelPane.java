@@ -13,6 +13,7 @@ public class ExecutionModelPane extends GridPane {
 
         ComponentFactory componentFactory = new ComponentFactory();
         Button executeButton = componentFactory.createButton("Execute", new FontIcon(MaterialDesignP.PLAY));
+        executeButton.setOnAction(_ -> executionModel.execute());
         executeButton.disableProperty().bind(executionModel.availableProperty().not());
         executeButton.setMaxWidth(Double.MAX_VALUE);
         executeButton.setMaxHeight(Double.MAX_VALUE);

@@ -19,6 +19,7 @@ class TrainSingleItemPane extends GridPane {
         ComponentFactory componentFactory = new ComponentFactory();
 
         Label trainLabel = componentFactory.createLabel("Train");
+        trainLabel.setPrefWidth(80);
         trainLabel.setPadding(new Insets(0, 5, 0, 0));
         TextField typeField = componentFactory.createTextField(trainSingleItem.typeProperty());
         typeField.setPromptText("XX");

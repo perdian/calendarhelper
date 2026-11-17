@@ -31,16 +31,16 @@ public abstract class JourneyItem<C extends Item> extends Item {
 
     protected abstract C createChildItem();
 
-    protected ObservableList<C> getChildren() {
-        return this.children;
-    }
-
     protected boolean removeChild(C childItem) {
         if (this.getChildren().size() > 1) {
             return this.getChildren().remove(childItem);
         } else {
             return false;
         }
+    }
+
+    public ObservableList<C> getChildren() {
+        return this.children;
     }
 
 }

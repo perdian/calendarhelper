@@ -36,11 +36,11 @@ public abstract class SingleItem extends Item {
         this.fullDay = new SimpleBooleanProperty(false);
         this.startDate = new SimpleObjectProperty<>();
         this.startTime = new SimpleObjectProperty<>();
-        this.startZoneId = new SimpleObjectProperty<>();
+        this.startZoneId = new SimpleObjectProperty<>(ZoneId.systemDefault());
         this.startZoneOffset = new SimpleObjectProperty<>();
         this.endDate = new SimpleObjectProperty<>();
         this.endTime = new SimpleObjectProperty<>();
-        this.endZoneId = new SimpleObjectProperty<>();
+        this.endZoneId = new SimpleObjectProperty<>(ZoneId.systemDefault());
         this.endZoneOffset = new SimpleObjectProperty<>();
 
         this.startDate.addListener((_, _, newValue) -> this.recomputeZoneOffset(this.startZoneOffset, newValue, this.startTime.getValue(), this.startZoneId.getValue()));

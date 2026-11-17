@@ -5,6 +5,8 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -32,6 +34,12 @@ public abstract class ItemPaneFactory<I extends Item> {
         GridPane.setHgrow(itemHeaderPane, Priority.ALWAYS);
 
         Pane itemContentPane = this.createItemPane(item);
+        itemContentPane.addEventFilter(KeyEvent.KEY_PRESSED, keyEvent -> {
+            if (keyEvent.isMetaDown() && keyEvent.getCode() == KeyCode.BACK_SPACE) {
+                itemListModel.getItems().remove(item);
+                keyEvent.consume();
+            }
+        });
 
         GridPane itemPane = new GridPane(5, 5);
         itemPane.setPadding(new Insets(5, 0, 5, 0));

@@ -1,6 +1,6 @@
 package de.perdian.apps.calendarbuddy.support.components;
 
-import de.perdian.apps.calendarhelper.support.datetime.DateTimeHelper;
+import de.perdian.apps.calendarbuddy.support.datetime.DateTimeHelper;
 import javafx.beans.property.Property;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;

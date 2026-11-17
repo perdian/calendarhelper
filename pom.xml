@@ -1,17 +1,17 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>de.perdian.apps.calendarhelper</groupId>
-    <artifactId>calendarhelper</artifactId>
+    <groupId>de.perdian.apps.calendarbuddy</groupId>
+    <artifactId>calendarbuddy</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
-    <name>CalendarHelper</name>
-    <url>https://github.com/perdian/calendarhelper</url>
+    <name>CalendarBuddy</name>
+    <url>https://github.com/perdian/calendarbuddy</url>
 
     <scm>
-        <url>https://github.com/perdian/calendarhelper</url>
-        <connection>scm:git:https://github.com/perdian/calendarhelper.git</connection>
-        <developerConnection>scm:git:https://github.com/perdian/calendarhelper.git</developerConnection>
+        <url>https://github.com/perdian/calendarbuddy</url>
+        <connection>scm:git:https://github.com/perdian/calendarbuddy.git</connection>
+        <developerConnection>scm:git:https://github.com/perdian/calendarbuddy.git</developerConnection>
     </scm>
 
     <developers>
@@ -32,13 +32,14 @@
         <google-api-services-oauth2.version>v2-rev20200213-2.0.0</google-api-services-oauth2.version>
         <ikonli.version>12.4.0</ikonli.version>
         <jackson-dataformat-yaml.version>2.20.1</jackson-dataformat-yaml.version>
+        <jakarta-annotation.version>3.0.0</jakarta-annotation.version>
         <java.version>25</java.version>
         <javafx.version>25.0.1</javafx.version>
         <junit-jupiter.version>6.0.1</junit-jupiter.version>
         <logback.version>1.5.23</logback.version>
         <slf4j.version>2.0.17</slf4j.version>
         <snakeyaml-engine.version>2.10</snakeyaml-engine.version>
-        <spring.version>7.0.2</spring.version>
+        <spring.version>7.0.10</spring.version>
     </properties>
 
     <dependencies>
@@ -97,6 +98,11 @@
             <artifactId>spring-context</artifactId>
             <version>${spring.version}</version>
         </dependency>
+        <dependency>
+            <groupId>jakarta.annotation</groupId>
+            <artifactId>jakarta.annotation-api</artifactId>
+            <version>${jakarta-annotation.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>com.fasterxml.jackson.dataformat</groupId>
@@ -152,7 +158,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>de.perdian.apps.calendarhelper.CalendarHelperLauncher</mainClass>
+                            <mainClass>de.perdian.apps.calendarbuddy.CalendarBuddyLauncher</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -177,7 +183,7 @@
                         <configuration>
                             <plist>
                                 <CFBundleIconFile>src/bundle/macos/resources/calendar.icns</CFBundleIconFile>
-                                <JVMMainClassName>de.perdian.apps.calendarhelper.CalendarHelperLauncher</JVMMainClassName>
+                                <JVMMainClassName>de.perdian.apps.calendarbuddy.CalendarBuddyLauncher</JVMMainClassName>
                                 <JVMVersion>${java.version}+</JVMVersion>
                                 <JVMOptions>
                                     <string>-Dapple.laf.useScreenMenuBar=true</string>
