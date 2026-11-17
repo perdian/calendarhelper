@@ -1,4 +1,4 @@
-package de.perdian.apps.calendarhelper.modules.items.support.types;
+package de.perdian.apps.calendarbuddy.support.types;
 
 public enum CalendarAvailability {
 

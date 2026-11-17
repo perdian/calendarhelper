@@ -1,14 +1,17 @@
 package de.perdian.apps.calendarbuddy.modules.items;
 
 import de.perdian.apps.calendarbuddy.CalendarBuddyKeyRegistry;
+import de.perdian.apps.calendarbuddy.support.components.ComponentFactory;
 import javafx.application.Platform;
-import javafx.collections.ListChangeListener;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -19,13 +22,29 @@ public class ItemListModelPane extends BorderPane {
 
     public ItemListModelPane(ItemListModel itemListModel, ItemTypeRegistry itemTypeRegistry, CalendarBuddyKeyRegistry keyRegistry) {
 
+        ComponentFactory componentFactory = new ComponentFactory();
+        Button clearAllItemsButton = componentFactory.createButton("", componentFactory.createKeyboardShortcutPane("⌘N", "Clear all"));
+        clearAllItemsButton.setOnAction(_ -> itemListModel.getItems().clear());
+        clearAllItemsButton.setFocusTraversable(false);
+        HBox actionsPane = new HBox(5);
+        actionsPane.getChildren().add(clearAllItemsButton);
+        this.addEventFilter(KeyEvent.KEY_PRESSED, keyEvent -> {
+            if (keyEvent.isMetaDown() && keyEvent.getCode() == KeyCode.N) {
+                clearAllItemsButton.fire();
+                keyEvent.consume();
+            }
+        });
+
         ItemTypePane itemTypePane = new ItemTypePane(itemListModel, itemTypeRegistry, keyRegistry);
-        itemTypePane.setPadding(new Insets(5, 5, 5, 5));
-        itemTypePane.setStyle("-fx-border-color: transparent  transparent  -fx-box-border transparent; -fx-border-width: 0 0 1 0;");
-        this.setTop(itemTypePane);
+        BorderPane topPane = new BorderPane();
+        topPane.setCenter(itemTypePane);
+        topPane.setRight(actionsPane);
+        topPane.setPadding(new Insets(5, 5, 5, 5));
+        topPane.setStyle("-fx-border-color: transparent  transparent  -fx-box-border transparent; -fx-border-width: 0 0 1 0;");
+        this.setTop(topPane);
 
         ListView<Item> itemListView = new ListView<>(itemListModel.getItems());
-        itemListView.setCellFactory(listView -> new ListCell<>() {
+        itemListView.setCellFactory(_ -> new ListCell<>() {
             @Override
             protected void updateItem(Item item, boolean empty) {
                 super.updateItem(item, empty);
@@ -34,7 +53,7 @@ public class ItemListModelPane extends BorderPane {
                     this.setGraphic(null);
                 } else {
                     ItemType<Item> itemType = itemTypeRegistry.resolveItemType(item);
-                    Pane itemPane = itemType.getItemPaneFactory().createItemPane(item, itemType, itemListModel);
+                    Pane itemPane = itemType.getItemPaneFactory().createItemWrapperPane(item, itemType, itemListModel);
                     this.setText(null);
                     this.setGraphic(itemPane);
                     Platform.runLater(() -> itemPane.requestFocus());
@@ -45,40 +64,6 @@ public class ItemListModelPane extends BorderPane {
         itemListView.setSelectionModel(null);
         this.setCenter(itemListView);
 
-//        VBox itemListBox = new VBox(5);
-//        itemListModel.getItems().addListener((ListChangeListener.Change<? extends Item> change) -> this.onItemListChanged(change, itemListBox, itemListModel, itemTypeRegistry));
-//        ScrollPane itemListScoller = new ScrollPane(itemListBox);
-//        itemListScoller.setStyle("-fx-background-color: transparent;");
-//        itemListScoller.setFitToWidth(true);
-//        itemListBox.getChildren().addListener((ListChangeListener.Change<? extends Node> change) -> {
-//            while (change.next()) {
-//                if (!change.getAddedSubList().isEmpty()) {
-//                    itemListScoller.setVvalue(itemListScoller.getVmax());
-//                }
-//            }
-//        });
-//        this.setCenter(itemListScoller);
-
-    }
-
-    private synchronized <I extends Item> void onItemListChanged(ListChangeListener.Change<I> change, VBox itemListBox, ItemListModel itemListModel, ItemTypeRegistry itemTypeRegistry) {
-        while (change.next()) {
-            for (Item removedItem : change.getRemoved()) {
-                Pane existingItemPane = this.getItemPanesByItem().remove(removedItem);
-                if (existingItemPane != null) {
-                    itemListBox.getChildren().remove(existingItemPane);
-                }
-            }
-            for (Item addedItem : change.getAddedSubList()) {
-                Pane itemPane = this.getItemPanesByItem().get(addedItem);
-                if (itemPane == null) {
-                    ItemType<Item> itemType = itemTypeRegistry.resolveItemType(addedItem);
-                    itemPane = itemType.getItemPaneFactory().createItemPane(addedItem, itemType, itemListModel);
-                    this.getItemPanesByItem().put(addedItem, itemPane);
-                    itemListBox.getChildren().add(itemPane);
-                }
-            }
-        }
     }
 
     private Map<Item, Pane> getItemPanesByItem() {

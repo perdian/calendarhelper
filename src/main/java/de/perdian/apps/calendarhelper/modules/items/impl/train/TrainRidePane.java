@@ -1,8 +1,8 @@
 package de.perdian.apps.calendarhelper.modules.items.impl.train;
 
+import de.perdian.apps.calendarbuddy.support.components.DateField;
+import de.perdian.apps.calendarbuddy.support.components.TimeField;
 import de.perdian.apps.calendarhelper.support.fx.components.ComponentFactory;
-import de.perdian.apps.calendarhelper.support.fx.components.DateField;
-import de.perdian.apps.calendarhelper.support.fx.components.TimeField;
 import de.perdian.apps.calendarhelper.support.fx.eventhandlers.keys.FocusTraversalKeyHandler;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;

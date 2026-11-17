@@ -22,7 +22,8 @@ class ItemTypePane extends BorderPane {
             HBox buttonTitleBox = new HBox(5);
             buttonTitleBox.setAlignment(Pos.CENTER_LEFT);
             buttonTitleBox.getChildren().add(componentFactory.createKeyboardShortcutPane("⌘" + itemKeyboardValue, itemType.getTitle()));
-            Button addItemButton = new Button("", buttonTitleBox);
+            Button addItemButton = componentFactory.createButton("", buttonTitleBox);
+            addItemButton.setFocusTraversable(false);
             addItemButton.setOnAction(_ -> this.onAddItem(itemListModel, itemType));
             hbox.getChildren().add(addItemButton);
             keyRegistry.addKeyEventHandler(keyEvent -> {

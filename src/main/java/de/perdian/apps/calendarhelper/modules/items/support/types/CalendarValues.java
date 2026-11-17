@@ -4,6 +4,7 @@ import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventAttendee;
 import com.google.api.services.calendar.model.EventDateTime;
+import de.perdian.apps.calendarbuddy.support.types.CalendarAvailability;
 import de.perdian.apps.calendarhelper.modules.items.ItemDefaults;
 import javafx.beans.property.*;
 import org.apache.commons.codec.digest.DigestUtils;

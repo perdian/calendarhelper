@@ -18,7 +18,9 @@ public abstract class JourneyItem<C extends Item> extends Item {
 
     @Override
     public List<Event> createEvents(DefaultsModel defaultsModel) {
-        throw new UnsupportedOperationException();
+        return this.getChildren().stream()
+            .flatMap(childItem -> childItem.createEvents(defaultsModel).stream())
+            .toList();
     }
 
     protected C appendChildItem() {

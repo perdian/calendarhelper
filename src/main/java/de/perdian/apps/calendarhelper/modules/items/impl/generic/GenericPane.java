@@ -1,9 +1,9 @@
 package de.perdian.apps.calendarhelper.modules.items.impl.generic;
 
-import de.perdian.apps.calendarhelper.modules.items.support.types.CalendarAvailability;
+import de.perdian.apps.calendarbuddy.support.components.DateField;
+import de.perdian.apps.calendarbuddy.support.components.TimeField;
+import de.perdian.apps.calendarbuddy.support.types.CalendarAvailability;
 import de.perdian.apps.calendarhelper.support.fx.components.ComponentFactory;
-import de.perdian.apps.calendarhelper.support.fx.components.DateField;
-import de.perdian.apps.calendarhelper.support.fx.components.TimeField;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
