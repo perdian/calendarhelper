@@ -1,6 +1,7 @@
 package de.perdian.apps.calendarbuddy.modules.items.impl;
 
 import com.fasterxml.jackson.annotation.JsonClassDescription;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.google.api.services.calendar.model.Event;
 import de.perdian.apps.calendarbuddy.modules.defaults.DefaultsModel;
@@ -189,6 +190,7 @@ public class FlightSingleItem extends SingleItem {
         this.departureAirportCode.set(departureAirportCode);
     }
 
+    @JsonIgnore
     public String getDepartureAirportName() {
         return this.departureAirportName.get();
     }
@@ -206,6 +208,7 @@ public class FlightSingleItem extends SingleItem {
         this.arrivalAirportCode.set(arrivalAirportCode);
     }
 
+    @JsonIgnore
     public String getArrivalAirportName() {
         return this.arrivalAirportName.get();
     }

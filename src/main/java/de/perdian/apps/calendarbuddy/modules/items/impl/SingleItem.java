@@ -1,5 +1,6 @@
 package de.perdian.apps.calendarbuddy.modules.items.impl;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventAttendee;
@@ -159,9 +160,11 @@ public abstract class SingleItem extends Item {
         this.startZoneId.set(startZoneId);
     }
 
+    @JsonIgnore
     public ZoneOffset getStartZoneOffset() {
         return this.startZoneOffset.get();
     }
+    @JsonIgnore
     public ReadOnlyObjectProperty<ZoneOffset> startZoneOffsetProperty() {
         return this.startZoneOffset;
     }
@@ -204,14 +207,13 @@ public abstract class SingleItem extends Item {
         return this.endDateProperty().getValue() == null || this.endTimeProperty().getValue() == null ? null : this.endDateProperty().getValue().atTime(this.endTimeProperty().getValue()).atZone(this.endZoneIdProperty().getValue());
     }
 
+    @JsonIgnore
     public ZoneOffset getEndZoneOffset() {
         return this.endZoneOffset.get();
     }
+    @JsonIgnore
     public ObjectProperty<ZoneOffset> endZoneOffsetProperty() {
         return this.endZoneOffset;
-    }
-    public void setEndZoneOffset(ZoneOffset endZoneOffset) {
-        this.endZoneOffset.set(endZoneOffset);
     }
 
 }

@@ -7,8 +7,6 @@ import java.util.List;
 
 public interface AiAnalyzerService {
 
-    List<Item> parseItems(String request, List<Resource> resources);
-
-    String createDataExtractionUserPrompt();
+    List<Item> parseItems(AiProvider aiProvider, String apiKey, List<Resource> resources);
 
 }

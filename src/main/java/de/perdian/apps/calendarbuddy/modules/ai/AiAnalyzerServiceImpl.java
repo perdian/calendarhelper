@@ -14,12 +14,19 @@ class AiAnalyzerServiceImpl implements AiAnalyzerService {
     private ItemImportService itemImportService = null;
 
     @Override
-    public List<Item> parseItems(String request, List<Resource> resources) {
-        throw new UnsupportedOperationException();
+    public List<Item> parseItems(AiProvider aiProvider, String apiKey, List<Resource> resources) {
+
+        String aiProviderPrompt = this.createDataExtractionUserPrompt(resources);
+        AiProviderRequest aiProviderRequest = new AiProviderRequest(aiProviderPrompt);
+        aiProviderRequest.setAttachedFiles(resources);
+
+        AiProviderResponse aiProviderResponse = aiProvider.getClient().sendRequest(aiProviderRequest, apiKey);
+        String aiProviderResponseString = aiProviderResponse.getMessage();
+        return this.getItemImportService().importItemsFromJsonString(aiProviderResponseString);
+
     }
 
-    @Override
-    public String createDataExtractionUserPrompt() {
+    private String createDataExtractionUserPrompt(List<Resource> resources) {
         StringBuilder promptBuilder = new StringBuilder();
         promptBuilder.append(AiAnalyzerConstants.DATA_EXTRACTION_USER_PROMPT);
         promptBuilder.append("\n");

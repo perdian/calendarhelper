@@ -78,6 +78,11 @@ public class AiAnalyzerConstants {
         seat numbers, booking codes, names or times. If a required value is truly missing, make
         the most reasonable inference from the document and leave out anything beyond that.
 
+        ## Other constraints
+
+        - For tickets from Deutsche Bahn, create only the train journeys themselves. Ignore information that needs to be placed in a genericSingleItem.
+        - An analyzed ticket with the title "ICE Fahrkarte" should never create a genericSingleItem.
+
         ## Schema
 
         The JSON you return must conform to the following schema. "rootTypes" names the root

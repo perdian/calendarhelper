@@ -1,5 +1,7 @@
 package de.perdian.apps.calendarbuddy;
 
+import de.perdian.apps.calendarbuddy.modules.ai.AiProviderModel;
+import de.perdian.apps.calendarbuddy.modules.ai.AiProviderModelPane;
 import de.perdian.apps.calendarbuddy.modules.defaults.DefaultsModel;
 import de.perdian.apps.calendarbuddy.modules.defaults.DefaultsModelPane;
 import de.perdian.apps.calendarbuddy.modules.execution.ExecutionModel;
@@ -41,6 +43,10 @@ class CalendarBuddyApplicationPane extends BorderPane {
         DefaultsModelPane defaultsModelPane = new DefaultsModelPane(defaultsModel);
         GridPane.setHgrow(defaultsModelPane, Priority.ALWAYS);
 
+        AiProviderModel aiProviderModel = applicationContext.getBean(AiProviderModel.class);
+        AiProviderModelPane aiProviderModelPane = new AiProviderModelPane(aiProviderModel);
+        GridPane.setHgrow(aiProviderModelPane, Priority.ALWAYS);
+
         ExecutionModel executionModel = applicationContext.getBean(ExecutionModel.class);
         ExecutionModelPane executionModelPane = new ExecutionModelPane(executionModel);
         GridPane.setHgrow(executionModelPane, Priority.ALWAYS);
@@ -50,7 +56,9 @@ class CalendarBuddyApplicationPane extends BorderPane {
         generalPane.add(componentFactory.createVerticalSeparator(), 1, 0, 1, 1);
         generalPane.add(defaultsModelPane, 2, 0, 1, 1);
         generalPane.add(componentFactory.createVerticalSeparator(), 3, 0, 1, 1);
-        generalPane.add(executionModelPane, 4, 0, 1, 1);
+        generalPane.add(aiProviderModelPane, 4, 0, 1, 1);
+        generalPane.add(componentFactory.createVerticalSeparator(), 5, 0, 1, 1);
+        generalPane.add(executionModelPane, 6, 0, 1, 1);
         generalPane.disableProperty().bind(executionModel.busyProperty());
 
         TitledPane generalTitledPane = componentFactory.createTitledPane("General", generalPane);
