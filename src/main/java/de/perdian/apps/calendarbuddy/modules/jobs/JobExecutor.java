@@ -58,13 +58,17 @@ public class JobExecutor {
         Platform.runLater(() -> {
             this.setCurrentJob(job);
             this.setCurrentProgressValue(ProgressBar.INDETERMINATE_PROGRESS);
-            this.setCurrentProgressMessage("");
+            this.setCurrentProgressMessage(job.getName());
         });
         JobProgressController jobProgressController = new JobProgressController() {
             @Override public void updateProgress(Double progressValue, String progressMessage) {
                 Platform.runLater(() -> {
-                    JobExecutor.this.setCurrentProgressValue(progressValue);
-                    JobExecutor.this.setCurrentProgressMessage(progressMessage);
+                    if (progressValue != null) {
+                        JobExecutor.this.setCurrentProgressValue(progressValue);
+                    }
+                    if (progressMessage != null) {
+                        JobExecutor.this.setCurrentProgressMessage(progressMessage);
+                    }
                 });
             }
             @Override public void cancel() {
@@ -84,6 +88,7 @@ public class JobExecutor {
         } catch (Exception e) {
             log.warn("Exception occurred during job execution", e);
             Platform.runLater(() -> {
+                this.setCurrentProgressValue(1d);
                 this.setCurrentProgressMessage(e.toString());
                 this.setLastException(e);
             });

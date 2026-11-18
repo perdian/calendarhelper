@@ -1,5 +1,10 @@
 package de.perdian.apps.calendarbuddy.modules.upload;
 
+import de.perdian.apps.calendarbuddy.modules.ai.AiAnalyzerService;
+import de.perdian.apps.calendarbuddy.modules.ai.AiProvider;
+import de.perdian.apps.calendarbuddy.modules.ai.AiProviderModel;
+import de.perdian.apps.calendarbuddy.modules.items.Item;
+import de.perdian.apps.calendarbuddy.modules.items.ItemListModel;
 import de.perdian.apps.calendarbuddy.modules.jobs.JobExecutor;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
@@ -7,10 +12,10 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.Node;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.TransferMode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -23,15 +28,19 @@ public class UploadModel {
     private final BooleanProperty dragOverActive;
     private final BooleanProperty dragHandlingActive;
     private final DoubleProperty progress;
-    private final UploadService uploadService;
+    private final AiAnalyzerService aiAnalyzerService;
+    private final AiProviderModel aiProviderModel;
+    private final ItemListModel itemListModel;
     private final JobExecutor jobExecutor;
 
     @Autowired
-    UploadModel(UploadService uploadService, JobExecutor jobExecutor) {
+    UploadModel(AiAnalyzerService aiAnalyzerService, AiProviderModel aiProviderModel, ItemListModel itemListModel, JobExecutor jobExecutor) {
         this.dragOverActive = new SimpleBooleanProperty(false);
         this.dragHandlingActive = new SimpleBooleanProperty(false);
         this.progress = new SimpleDoubleProperty(0);
-        this.uploadService = uploadService;
+        this.aiAnalyzerService = aiAnalyzerService;
+        this.aiProviderModel = aiProviderModel;
+        this.itemListModel = itemListModel;
         this.jobExecutor = jobExecutor;
     }
 
@@ -44,17 +53,19 @@ public class UploadModel {
 
     private void processUploadedFiles(Collection<File> files) {
         this.dragHandlingActive.setValue(true);
-        Thread.ofVirtual().start(() -> {
+        this.jobExecutor.submitJob(progressController -> {
             try {
-                Platform.runLater(() -> this.progress.setValue(ProgressBar.INDETERMINATE_PROGRESS));
-                try { Thread.sleep(2000); } catch (InterruptedException e) { }
+                List<FileSystemResource> fileResources = files.stream().map(file -> new FileSystemResource(file)).toList();
+                AiProvider aiProvider = this.aiProviderModel.getSelectedProvider();
+                String apiKey = this.aiProviderModel.getApiKey();
+                String model = this.aiProviderModel.getSelectedModel();
+                List<Item> aiParsedItems = this.aiAnalyzerService.parseItems(aiProvider, model, apiKey, fileResources);
+                Platform.runLater(() -> this.itemListModel.getItems().addAll(aiParsedItems));
+                progressController.updateProgress(1d, "Imported " + aiParsedItems + " items");
             } finally {
-                Platform.runLater(() -> {
-                    this.dragHandlingActive.setValue(false);
-                    this.progress.setValue(1);
-                });
+                this.dragHandlingActive.setValue(false);
             }
-        });
+        }, "Parsing " + files.size() + " documents");
     }
 
     private void handleOnDragEntered(DragEvent dragEvent) {

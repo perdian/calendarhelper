@@ -4,6 +4,7 @@ import de.perdian.apps.calendarbuddy.support.components.ComponentFactory;
 import de.perdian.apps.calendarbuddy.support.components.DateField;
 import de.perdian.apps.calendarbuddy.support.components.TimeField;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -11,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 
 import java.time.ZoneId;
+import java.util.Arrays;
 
 class TrainSingleItemPane extends GridPane {
 
@@ -21,13 +23,16 @@ class TrainSingleItemPane extends GridPane {
         Label trainLabel = componentFactory.createLabel("Train");
         trainLabel.setPrefWidth(80);
         trainLabel.setPadding(new Insets(0, 5, 0, 0));
-        TextField typeField = componentFactory.createTextField(trainSingleItem.typeProperty());
-        typeField.setPromptText("XX");
-        typeField.setPrefWidth(50);
+        ObservableList<String> typeValues = FXCollections.observableArrayList();
+        typeValues.add(null);
+        typeValues.addAll(Arrays.stream(TrainSingleItemType.values()).map(TrainSingleItemType::name).toList());
+        ComboBox<String> typeBox = componentFactory.createComboBox(trainSingleItem.typeProperty(), typeValues);
+        typeBox.setEditable(true);
+        typeBox.setPrefWidth(75);
         TextField numberField = componentFactory.createTextField(trainSingleItem.numberProperty());
         numberField.setPromptText("0000");
         numberField.setPrefWidth(60);
-        trainLabel.setLabelFor(typeField);
+        trainLabel.setLabelFor(typeBox);
 
         Label departureLabel = componentFactory.createLabel("Departure");
         departureLabel.setPadding(new Insets(0, 5, 0, 0));
@@ -70,14 +75,14 @@ class TrainSingleItemPane extends GridPane {
         reservationLabel.setLabelFor(reservationWagonField);
 
         TextField bookingCodeField = componentFactory.createTextField(trainSingleItem.bookingCodeProperty());
-        bookingCodeField.setPrefWidth(100);
+        bookingCodeField.setPrefWidth(125);
         Label bookingCodeLabel = componentFactory.createLabel("Code");
         bookingCodeLabel.setPadding(new Insets(0, 5, 0, 0));
         bookingCodeLabel.setLabelFor(bookingCodeField);
         GridPane.setMargin(bookingCodeLabel, new Insets(0, 0, 0, 10));
 
         this.add(trainLabel, 0, 0, 1, 1);
-        this.add(typeField, 1, 0, 1, 1);
+        this.add(typeBox, 1, 0, 1, 1);
         this.add(numberField, 2, 0, 1, 1);
 
         this.add(departureLabel, 3, 0, 1, 1);
@@ -105,7 +110,7 @@ class TrainSingleItemPane extends GridPane {
 
         this.focusedProperty().addListener((_, oldValue, newValue) -> {
             if (!oldValue && newValue) {
-                typeField.requestFocus();
+                typeBox.requestFocus();
             }
         });
 

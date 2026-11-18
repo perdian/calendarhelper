@@ -41,8 +41,9 @@ public abstract class JourneyItemPaneFactory<I extends JourneyItem<C>, C extends
     public Pane createItemWrapperPane(I item, ItemType<I> itemType, ItemListModel itemListModel) {
         Pane itemPane = super.createItemWrapperPane(item, itemType, itemListModel);
         itemPane.addEventFilter(KeyEvent.KEY_PRESSED, keyEvent -> {
-        if (keyEvent.isMetaDown() && keyEvent.getCode() == KeyCode.PLUS) {
+            if (keyEvent.isMetaDown() && keyEvent.getCode() == KeyCode.PLUS) {
                 item.appendChildItem();
+                keyEvent.consume();
             }
         });
         return itemPane;

@@ -16,16 +16,22 @@ public class AiProviderModelPane extends GridPane {
 
         Label providerLabel = componentFactory.createTitleLabel("Provider");
         ComboBox<AiProvider> providerComboBox = componentFactory.createComboBox(aiProviderModel.selectedProviderProperty(), aiProviderModel.getAvailableProviders());
+        providerComboBox.setMinWidth(100);
         GridPane.setHgrow(providerComboBox, Priority.ALWAYS);
 
         Label apiKeyLabel = componentFactory.createTitleLabel("API Key");
         TextField apiKeyField = componentFactory.createPasswordField(aiProviderModel.apiKeyProperty());
-        GridPane.setMargin(apiKeyLabel, new Insets(8, 0, 0, 0));
+
+        Label modelLabel = componentFactory.createTitleLabel("Model");
+        TextField modelField = componentFactory.createTextField(aiProviderModel.selectedModelProperty());
+        GridPane.setMargin(modelLabel, new Insets(8, 0, 0, 0));
 
         this.add(providerLabel, 0, 0, 1, 1);
         this.add(providerComboBox, 0, 1, 1, 1);
-        this.add(apiKeyLabel, 0, 2, 1, 1);
-        this.add(apiKeyField, 0, 3, 1, 1);
+        this.add(apiKeyLabel, 1, 0, 1, 1);
+        this.add(apiKeyField, 1, 1, 1, 1);
+        this.add(modelLabel, 0, 2, 2, 1);
+        this.add(modelField, 0, 3, 2, 1);
 
         this.setHgap(10);
         this.setVgap(2);

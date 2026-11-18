@@ -7,8 +7,11 @@ import java.util.List;
 public class AiProviderRequest {
 
     private String prompt = null;
-    private String model = "openai/gpt-4o-mini";
+    private String model = AiAnalyzerConstants.DEFAULT_MODEL;
     private List<Resource> attachedFiles = null;
+
+    public AiProviderRequest() {
+    }
 
     public AiProviderRequest(String prompt) {
         this.setPrompt(prompt);

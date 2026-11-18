@@ -40,7 +40,7 @@ public class ExecutionModel {
         this.googleCalendarService = googleCalendarService;
     }
 
-    void execute() {
+    public void execute() {
         this.getJobExecutor().submitJob(progress -> {
             progress.updateProgress(-1d, "Creating Calendar Items");
             List<Event> eventObjects = this.getItemListModel().getItems().stream()

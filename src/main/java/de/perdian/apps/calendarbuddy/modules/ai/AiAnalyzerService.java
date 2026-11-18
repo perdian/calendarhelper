@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface AiAnalyzerService {
 
-    List<Item> parseItems(AiProvider aiProvider, String apiKey, List<Resource> resources);
+    List<Item> parseItems(AiProvider aiProvider, String model, String apiKey, List<? extends Resource> resources);
 
 }

@@ -2,6 +2,8 @@ package de.perdian.apps.calendarbuddy.modules.ai;
 
 public class AiAnalyzerConstants {
 
+    public static final String DEFAULT_MODEL = "z-ai/glm-5.3-flash";
+
     public static final String DATA_EXTRACTION_USER_PROMPT = """
 
         You are a data extraction assistant. You will receive one or more files, such as

@@ -60,7 +60,7 @@ public class OpenRouterAiProviderClient implements AiProviderClient {
                 .header("X-Title", "CalendarBuddy")
                 .POST(HttpRequest.BodyPublishers.ofString(httpRequestPayloadString))
                 .build();
-            log.debug("Sending request to OpenRouter");
+            log.debug("Sending request to OpenRouter [using {}]", request.getModel());
 
             Instant httpRequestStartInstant = Instant.now();
             HttpResponse<String> httpResponse = this.getHttpClient().send(httpRequest, HttpResponse.BodyHandlers.ofString());

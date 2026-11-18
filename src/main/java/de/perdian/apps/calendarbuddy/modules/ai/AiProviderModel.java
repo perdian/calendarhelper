@@ -17,12 +17,14 @@ public class AiProviderModel {
 
     private final ObservableList<AiProvider> availableProviders;
     private final ObjectProperty<AiProvider> selectedProvider;
+    private final StringProperty selectedModel;
     private final StringProperty apiKey;
 
     @Autowired
     AiProviderModel(List<AiProvider> availableProviders, StorageService storageService) {
 
         this.availableProviders = FXCollections.observableArrayList(availableProviders);
+        this.selectedModel = storageService.getPersistentStringProperty("AiProviderModel.selectedModel", AiAnalyzerConstants.DEFAULT_MODEL);
         this.selectedProvider = new SimpleObjectProperty<>();
         this.apiKey = storageService.getPersistentStringProperty("AiProviderModel.apiKey");
 
@@ -48,6 +50,16 @@ public class AiProviderModel {
     }
     public void setSelectedProvider(AiProvider selectedProvider) {
         this.selectedProvider.set(selectedProvider);
+    }
+
+    public String getSelectedModel() {
+        return this.selectedModel.get();
+    }
+    public StringProperty selectedModelProperty() {
+        return this.selectedModel;
+    }
+    public void setSelectedModel(String selectedModel) {
+        this.selectedModel.set(selectedModel);
     }
 
     public String getApiKey() {
