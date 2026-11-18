@@ -3,6 +3,7 @@ package de.perdian.apps.calendarbuddy.modules.jobs;
 import jakarta.annotation.PostConstruct;
 import javafx.application.Platform;
 import javafx.beans.property.*;
+import javafx.scene.control.ProgressBar;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -16,14 +17,20 @@ public class JobExecutor {
     private static final Logger log = LoggerFactory.getLogger(JobExecutor.class);
 
     private final ObjectProperty<Job> currentJob;
+    private final ObjectProperty<Double> currentProgressValue;
+    private final StringProperty currentProgressMessage;
     private final BlockingQueue<Job> pendingJobs;
     private final BooleanProperty running;
+    private final ObjectProperty<Exception> lastException;
 
     JobExecutor() {
         this.currentJob = new SimpleObjectProperty<>();
+        this.currentProgressValue = new SimpleObjectProperty<>(0d);
+        this.currentProgressMessage = new SimpleStringProperty();
         this.pendingJobs = new LinkedBlockingQueue<>();
         this.running = new SimpleBooleanProperty(false);
         this.running.bind(this.currentJob.isNotNull());
+        this.lastException = new SimpleObjectProperty<>();
     }
 
     @PostConstruct
@@ -48,26 +55,38 @@ public class JobExecutor {
 
     private synchronized void processJob(Job job) {
         log.debug("Processing job: {}", job);
-        Platform.runLater(() -> this.setCurrentJob(job));
-        try {
-            JobProgressController jobProgressController = new JobProgressController() {
-                @Override public void updateProgress(Double progress, String progressMessage) {
-                    Platform.runLater(() -> {
-                        job.setProgress(progress);
-                        job.setProgressMessage(progressMessage);
-                    });
-                }
-                @Override public void cancel() {
-                    job.setCancelled(true);
-                }
-                @Override public boolean isCancelled() {
-                    return job.isCancelled();
-                }
-            };
-            job.getJobRunnable().run(jobProgressController);
-            if (!job.isCancelled()) {
-                jobProgressController.updateProgress(1d);
+        Platform.runLater(() -> {
+            this.setCurrentJob(job);
+            this.setCurrentProgressValue(ProgressBar.INDETERMINATE_PROGRESS);
+            this.setCurrentProgressMessage("");
+        });
+        JobProgressController jobProgressController = new JobProgressController() {
+            @Override public void updateProgress(Double progressValue, String progressMessage) {
+                Platform.runLater(() -> {
+                    JobExecutor.this.setCurrentProgressValue(progressValue);
+                    JobExecutor.this.setCurrentProgressMessage(progressMessage);
+                });
             }
+            @Override public void cancel() {
+                job.setCancelled(true);
+            }
+            @Override public boolean isCancelled() {
+                return job.isCancelled();
+            }
+        };
+        try {
+            job.getJobRunnable().run(jobProgressController);
+            Platform.runLater(() -> {
+                this.setCurrentProgressValue(1d);
+                this.setCurrentProgressMessage("");
+                this.setLastException(null);
+            });
+        } catch (Exception e) {
+            log.warn("Exception occurred during job execution", e);
+            Platform.runLater(() -> {
+                this.setCurrentProgressMessage(e.toString());
+                this.setLastException(e);
+            });
         } finally {
             Platform.runLater(() -> this.setCurrentJob(null));
         }
@@ -93,6 +112,26 @@ public class JobExecutor {
         this.currentJob.set(currentJob);
     }
 
+    public Double getCurrentProgressValue() {
+        return this.currentProgressValue.get();
+    }
+    public ReadOnlyObjectProperty<Double> currentProgressValueProperty() {
+        return this.currentProgressValue;
+    }
+    private void setCurrentProgressValue(Double currentProgressValue) {
+        this.currentProgressValue.set(currentProgressValue);
+    }
+
+    public String getCurrentProgressMessage() {
+        return this.currentProgressMessage.get();
+    }
+    public ReadOnlyStringProperty currentProgressMessageProperty() {
+        return currentProgressMessage;
+    }
+    private void setCurrentProgressMessage(String currentProgressMessage) {
+        this.currentProgressMessage.set(currentProgressMessage);
+    }
+
     private BlockingQueue<Job> getPendingJobs() {
         return this.pendingJobs;
     }
@@ -102,6 +141,16 @@ public class JobExecutor {
     }
     public ReadOnlyBooleanProperty runningProperty() {
         return this.running;
+    }
+
+    public Exception getLastException() {
+        return lastException.get();
+    }
+    public ReadOnlyObjectProperty<Exception> lastExceptionProperty() {
+        return lastException;
+    }
+    private void setLastException(Exception lastException) {
+        this.lastException.set(lastException);
     }
 
 }

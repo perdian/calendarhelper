@@ -1,13 +1,16 @@
 package de.perdian.apps.calendarbuddy.modules.jobs;
 
 import de.perdian.apps.calendarbuddy.support.components.ComponentFactory;
-import javafx.application.Platform;
+import de.perdian.apps.calendarbuddy.support.components.ExceptionDialogBuilder;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Priority;
+import org.kordamp.ikonli.javafx.FontIcon;
+import org.kordamp.ikonli.materialdesign2.MaterialDesignC;
 
 public class JobExecutorStatusPane extends GridPane {
 
@@ -19,6 +22,7 @@ public class JobExecutorStatusPane extends GridPane {
 
         ProgressBar progressBar = new ProgressBar(0d);
         progressBar.disableProperty().bind(jobExecutor.runningProperty().not());
+        progressBar.progressProperty().bind(jobExecutor.currentProgressValueProperty());
         progressBar.setMinHeight(25);
         progressBar.setMaxHeight(Double.MAX_VALUE);
         progressBar.setMinWidth(500);
@@ -33,7 +37,25 @@ public class JobExecutorStatusPane extends GridPane {
         });
         cancelButton.setDisable(true);
 
+        Button lastExceptionButton = componentFactory.createButton("", new FontIcon(MaterialDesignC.CHECKBOX_BLANK));
+        lastExceptionButton.setTooltip(new Tooltip("Show last exception"));
+        lastExceptionButton.disableProperty().bind(jobExecutor.lastExceptionProperty().isNull());
+        lastExceptionButton.setOnAction(_ -> {
+            new ExceptionDialogBuilder()
+                .withException(jobExecutor.getLastException())
+                .createDialog()
+                .show();
+        });
+        jobExecutor.lastExceptionProperty().addListener((_, _, newValue) -> {
+            if (newValue != null) {
+                lastExceptionButton.setGraphic(new FontIcon(MaterialDesignC.CHECKBOX_INTERMEDIATE));
+            } else {
+                lastExceptionButton.setGraphic(new FontIcon(MaterialDesignC.CHECKBOX_MARKED));
+            }
+        });
+
         Label messageLabel = componentFactory.createLabel("");
+        messageLabel.textProperty().bind(jobExecutor.currentProgressMessageProperty());
         messageLabel.setAlignment(Pos.CENTER_LEFT);
         GridPane.setHgrow(messageLabel, Priority.ALWAYS);
 
@@ -41,16 +63,11 @@ public class JobExecutorStatusPane extends GridPane {
         this.add(jobsLabel, 0, 0, 1, 1);
         this.add(progressBar, 1, 0, 1, 1);
         this.add(cancelButton, 2, 0, 1, 1);
-        this.add(messageLabel, 3, 0, 1, 1);
+        this.add(lastExceptionButton, 3, 0, 1, 1);
+        this.add(messageLabel, 4, 0, 1, 1);
 
         jobExecutor.currentJobProperty().addListener((_, _, newValue) -> {
             if (newValue != null) {
-                Platform.runLater(() -> {
-                    progressBar.setProgress(ProgressBar.INDETERMINATE_PROGRESS);
-                    cancelButton.setDisable(newValue.isCancelled());
-                });
-                newValue.progressProperty().addListener((_, _, progressValue) -> progressBar.setProgress(progressValue));
-                newValue.progressMessageProperty().addListener((_, _, progressMessage) -> messageLabel.setText(progressMessage));
                 newValue.cancelledProperty().addListener((_, _, cancelled) -> cancelButton.setDisable(cancelled));
             } else {
                 cancelButton.setDisable(true);
