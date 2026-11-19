@@ -25,10 +25,6 @@ import java.util.Base64;
 
 public class OpenRouterAiProviderClient implements AiProviderClient {
 
-    public static final String PDF_ENGINE_PDF_TEXT = "pdf-text";
-    public static final String PDF_ENGINE_MISTRAL_OCR = "mistral-ocr";
-    public static final String PDF_ENGINE_NATIVE = "native";
-
     private static final URI ENDPOINT = URI.create("https://openrouter.ai/api/v1/chat/completions");
     private static final String MEDIATYPE_JSON = "application/json; charset=utf-8";
 
@@ -36,7 +32,7 @@ public class OpenRouterAiProviderClient implements AiProviderClient {
 
     private final HttpClient httpClient;
     private final ObjectMapper objectMapper;
-    private String pdfEngine = OpenRouterAiProviderClient.PDF_ENGINE_NATIVE;
+
 
     public OpenRouterAiProviderClient() {
         this.httpClient = HttpClient.newBuilder()
@@ -97,8 +93,8 @@ public class OpenRouterAiProviderClient implements AiProviderClient {
     private ObjectNode createRequestPayloadNode(AiProviderRequest request) {
         ObjectNode payloadNode = this.getObjectMapper().createObjectNode();
         payloadNode.put("model", request.getModel());
-        if (StringUtils.isNotEmpty(this.getPdfEngine())) {
-            payloadNode.putArray("plugins").addObject().put("id", "file-parser").putObject("pdf").put("engine", this.getPdfEngine());
+        if (StringUtils.isNotEmpty(request.getPdfEngine())) {
+            payloadNode.putArray("plugins").addObject().put("id", "file-parser").putObject("pdf").put("engine", request.getPdfEngine());
         }
         ObjectNode messageNode = payloadNode.putArray("messages").addObject();
         messageNode.put("role", "user");
@@ -159,13 +155,6 @@ public class OpenRouterAiProviderClient implements AiProviderClient {
 
     private ObjectMapper getObjectMapper() {
         return this.objectMapper;
-    }
-
-    public String getPdfEngine() {
-        return this.pdfEngine;
-    }
-    public void setPdfEngine(String pdfEngine) {
-        this.pdfEngine = pdfEngine;
     }
 
 }

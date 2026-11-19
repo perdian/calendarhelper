@@ -59,7 +59,8 @@ public class UploadModel {
                 AiProvider aiProvider = this.aiProviderModel.getSelectedProvider();
                 String apiKey = this.aiProviderModel.getApiKey();
                 String model = this.aiProviderModel.getSelectedModel();
-                List<Item> aiParsedItems = this.aiAnalyzerService.parseItems(aiProvider, model, apiKey, fileResources);
+                String pdfEngine = this.aiProviderModel.getSelectedPdfEngine();
+                List<Item> aiParsedItems = this.aiAnalyzerService.parseItems(aiProvider, model, pdfEngine, apiKey, fileResources);
                 Platform.runLater(() -> this.itemListModel.getItems().addAll(aiParsedItems));
                 progressController.updateProgress(1d, "Imported " + aiParsedItems + " items");
             } finally {

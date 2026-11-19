@@ -8,6 +8,7 @@ public class AiProviderRequest {
 
     private String prompt = null;
     private String model = AiAnalyzerConstants.DEFAULT_MODEL;
+    private String pdfEngine = AiAnalyzerConstants.DEFAULT_PDF_ENGINE;
     private List<Resource> attachedFiles = null;
 
     public AiProviderRequest() {
@@ -29,6 +30,13 @@ public class AiProviderRequest {
     }
     public void setModel(String model) {
         this.model = model;
+    }
+
+    public String getPdfEngine() {
+        return this.pdfEngine;
+    }
+    public void setPdfEngine(String pdfEngine) {
+        this.pdfEngine = pdfEngine;
     }
 
     public List<Resource> getAttachedFiles() {

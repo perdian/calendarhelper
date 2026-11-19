@@ -17,6 +17,7 @@ public class ExecutionModelPane extends GridPane {
         executeButton.disableProperty().bind(executionModel.availableProperty().not());
         executeButton.setMaxWidth(Double.MAX_VALUE);
         executeButton.setMaxHeight(Double.MAX_VALUE);
+        executeButton.setPrefWidth(160);
         GridPane.setHgrow(executeButton, Priority.ALWAYS);
         GridPane.setVgrow(executeButton, Priority.ALWAYS);
 

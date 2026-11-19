@@ -18,6 +18,7 @@ public class AiProviderModel {
     private final ObservableList<AiProvider> availableProviders;
     private final ObjectProperty<AiProvider> selectedProvider;
     private final StringProperty selectedModel;
+    private final StringProperty selectedPdfEngine;
     private final StringProperty apiKey;
 
     @Autowired
@@ -25,6 +26,7 @@ public class AiProviderModel {
 
         this.availableProviders = FXCollections.observableArrayList(availableProviders);
         this.selectedModel = storageService.getPersistentStringProperty("AiProviderModel.selectedModel", AiAnalyzerConstants.DEFAULT_MODEL);
+        this.selectedPdfEngine = storageService.getPersistentStringProperty("AiProviderModel.selectedPdfEngine", AiAnalyzerConstants.DEFAULT_PDF_ENGINE);
         this.selectedProvider = new SimpleObjectProperty<>();
         this.apiKey = storageService.getPersistentStringProperty("AiProviderModel.apiKey");
 
@@ -60,6 +62,16 @@ public class AiProviderModel {
     }
     public void setSelectedModel(String selectedModel) {
         this.selectedModel.set(selectedModel);
+    }
+
+    public String getSelectedPdfEngine() {
+        return this.selectedPdfEngine.get();
+    }
+    public StringProperty selectedPdfEngineProperty() {
+        return this.selectedPdfEngine;
+    }
+    public void setSelectedPdfEngine(String selectedPdfEngine) {
+        this.selectedPdfEngine.set(selectedPdfEngine);
     }
 
     public String getApiKey() {

@@ -1,8 +1,25 @@
 package de.perdian.apps.calendarbuddy.modules.ai;
 
+import java.util.List;
+
 public class AiAnalyzerConstants {
 
     public static final String DEFAULT_MODEL = "z-ai/glm-5.3-flash";
+
+    public static final List<String> AVAILABLE_MODELS = List.of(
+        "anthropic/claude-sonnet-5.5",
+        "z-ai/glm-5.3-flash",
+        "deepseek/deepseek-v4.1-flash-1017"
+
+    );
+
+    public static final String DEFAULT_PDF_ENGINE = "pdf-text";
+
+    public static final List<String> AVAILABLE_PDF_ENGINES = List.of(
+        "pdf-text",
+        "mistral-ocr",
+        "native"
+    );
 
     public static final String DATA_EXTRACTION_USER_PROMPT = """
 

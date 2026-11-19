@@ -15,12 +15,13 @@ class AiAnalyzerServiceImpl implements AiAnalyzerService {
     private ItemImportService itemImportService = null;
 
     @Override
-    public List<Item> parseItems(AiProvider aiProvider, String model, String apiKey, List<? extends Resource> resources) {
+    public List<Item> parseItems(AiProvider aiProvider, String model, String pdfEngine, String apiKey, List<? extends Resource> resources) {
 
         String aiProviderPrompt = this.createDataExtractionUserPrompt(resources);
         AiProviderRequest aiProviderRequest = new AiProviderRequest();
         aiProviderRequest.setPrompt(aiProviderPrompt);
         aiProviderRequest.setModel(model);
+        aiProviderRequest.setPdfEngine(pdfEngine);
         aiProviderRequest.setAttachedFiles(new ArrayList<>(resources));
 
         AiProviderResponse aiProviderResponse = aiProvider.getClient().sendRequest(aiProviderRequest, apiKey);
